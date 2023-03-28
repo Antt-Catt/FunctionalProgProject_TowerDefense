@@ -1,4 +1,5 @@
-
+type pointType = { i: number, j: number}
+type worldType = {points : number }
 type actorType = {
     pos: pointType,
     type : string,
@@ -6,10 +7,13 @@ type actorType = {
     actions: {(actor:actorType,aWorld: worldType):pointType}
 }; //i, j position, s speed attack, t attack type
 
-
+function tir(actor:actorType,aWorld: worldType):pointType{
+    const points:pointType = {i:2,j:4};
+    return points ;
+}
 const towers :actorType = {
-    pos : 0,
+    pos : {i:4,j:5},
     type : "tower",
     carac : 5,
-    actions : function (tower:actorType, world: worldType):
+    actions : tir
 };
