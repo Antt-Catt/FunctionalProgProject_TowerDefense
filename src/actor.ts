@@ -1,13 +1,22 @@
-type pointType = { i: number, j: number}
-type worldType = {points : number }
+type pointType = { i: number, j: number};
+type worldType = {points : number };
+type chemin ={};
+type actorT = {
+    range : number,
+    speed : number,
 
+};
+type actorM = {
+    life : number,
+    speed : number,
 
+};
 
 type actorType = {
     pos: pointType,
     type : string,
-    carac: number, //
-    actions: {(actor:actorType,aWorld: worldType):pointType}
+    classe : actorT | actorM 
+    actions: {(actor:actorType,aWorld: worldType):pointType} | {(actor:actorType,aWorld: worldType, aPath:chemin):pointType}
 };
 
 function tir(actor:actorType,aWorld: worldType):pointType{
@@ -18,7 +27,7 @@ function tir(actor:actorType,aWorld: worldType):pointType{
 const towers:actorType = {
     pos : {i:4,j:5},
     type : "tower",
-    carac : 5,
+    classe : {range : 5, speed: 1},
     actions : tir,
 };
 
