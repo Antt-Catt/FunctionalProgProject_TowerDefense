@@ -44,22 +44,24 @@
 	- [`us1-t02`] *tests Makefile* tester avec petits fichiers
 	
 - [`us2`][`8`] *Concevoir mondes*
-  - *EN TANT QUE*: 
-  - *JE VEUX QUE* : 
-  - *AFIN DE :*: 
-  - *DEPENDS*: `[us1]`
+  - *EN TANT QUE*: Luxel et Joachim
+  - *JE VEUX QUE* : L'on ai un monde de jeu fonctionnelle et exploitable pour les acteurs. 
+  - *AFIN DE :*: Pouvoir jouer 
+  - *DEPENDS*: `[NONE]`
   - *TASKS*:
-	- [`us2-t01`]  
-	- [`us2-t02`] 
+	- [`us2-t01`]  Faire un monde cadrillé en 2D et definir les positions. 
+	- [`us2-t02`]  Programmer les chemins exploitabla et les emplacement de tours.
 	
-- [`us3`][`7`] *Concevoir acteurs*
-  - *EN TANT QUE*: 
-  - *JE VEUX QUE* : 
-  - *AFIN DE :*: 
-  - *DEPENDS*: `[us1, us2]`
+- [`us3`][`7`] *Concevoir des acteurs*
+  - *EN TANT QUE*: Antton et Arthur  
+  - *JE VEUX QUE* : Créer des acteurs qui prendront place sur le plateau et interagiront entre eux. 
+  - *AFIN DE :*: Pouvoir jouer 
+  - *DEPENDS*: `[us 2]`
   - *TASKS*:
-	- [`us3-t01`]  
-	- [`us3-t02`] 
+	- [`us3-t01`]  Définir ce qu'est une tower et comment elle fonctionne. 
+	- [`us3-t02`] Définir ce qu'est un monstre et comment il avance.
+    - [`us3-t03`] Mettre en place des interaction entre les monstres et les towers.
+
 
 ## TODO
 
@@ -68,3 +70,8 @@
 - [us1][`10`][(FL3, FL4)] *Makefile fonctionnel* [`DONE`]
    	- [`us1-t01`] *dossiers*: créer dossiers src et tst [`DONE`]
 	- [`us1-t02`] *tests Makefile*: tester avec petits fichiers [`DONE`]
+
+## [28-03-2023]
+- [us2][`9`][(FL1,FL4)] Début de la création du monde [`IN PROGRESS`]
+  - [`us2-t01] 
+- [us3][`8`][(FL2,FL3)] Création des acteurs. 
