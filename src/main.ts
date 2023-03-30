@@ -1,8 +1,6 @@
-import {
-    GameStateType,
-    init as gameStateInit,
-} from "./game.js"
+import * as Game from "./game.js"
 
 console.log("[-] main");
 
-// const gameState: GameStateType = gameStateInit();
+const gameState: Game.GameStateType = Game.init();
+// console.log(gameState.world.points);

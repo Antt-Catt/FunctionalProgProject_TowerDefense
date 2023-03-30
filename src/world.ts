@@ -1,10 +1,7 @@
-import {
-    PointType,
-    create as pointCreate
-} from "./point.js";
+import * as Point from "./point.js";
 
 type WorldType = {
-    points: Array<Array<PointType>>;
+    points: Array<Array<Point.PointType>>;
 };
 
 function init(size: number): WorldType {
@@ -14,9 +11,9 @@ function init(size: number): WorldType {
         return innerInit([...array, p], size - 1, p);
     }
 
-    const world = innerInit([], size, innerInit([], size, pointCreate())).map((row, y) => {
+    const world = innerInit([], size, innerInit([], size, Point.create())).map((row, y) => {
         return row.map((_, x) => {
-            return pointCreate(x, y);
+            return Point.create(x, y);
         });
     });
 
