@@ -1,33 +1,37 @@
 import * as Point from "./point.js"
 
-type PathTile = {
-    type: "path";
-    disp: "= "
-}
-
-type GroundTile = {
-    type: "ground";
-    disp: "- "
-}
-
-type TowerTile = {
-    type: "tower";
-    disp: "# "
-}
-
 type Tile = {
     pos: Point.Point;
-    type: PathTile | GroundTile | TowerTile; // faire des types différents et utiliser ""
+    toString: () => string;
 };
 
-function create(x: number = 0, y: number = 0, tile: PathTile | GroundTile | TowerTile = { type: "ground", disp: "- "}): Tile {
-    return { pos: Point.create(x, y), type: tile};
+type PathTile = Tile & {
+    type: "path";
+}
+
+type GroundTile = Tile & {
+    type: "ground";
+}
+
+type TowerTile = Tile & {
+    type: "tower";
+}
+
+function createPath(x: number = 0, y: number = 0): PathTile {
+    return { pos: Point.create(x, y), type: "path" , toString: () => "=" };
+}
+
+function createGround(x: number = 0, y: number = 0): GroundTile {
+    return { pos: Point.create(x, y), type: "ground", toString: () => "-" };
+}
+
+function createTower(x: number = 0, y: number = 0): TowerTile {
+    return { pos: Point.create(x, y), type: "tower", toString: () => "#" };
 }
 
 export {
-    PathTile,
-    GroundTile,
-    TowerTile,
     Tile,
-    create,
+    createPath,
+    createGround,
+    createTower
 };
