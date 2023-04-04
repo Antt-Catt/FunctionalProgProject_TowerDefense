@@ -18,9 +18,9 @@ function init(size: number, path: Array<Point.Point>, towers: Array<Point.Point>
 
     const world = innerInit([], size, innerInit([], size, Tile.create())).map((row, y) => {
         return row.map((_, x) => {
-            if (isPointInArrays(Point.create(x, y), path)) { return Tile.create(x, y, 'path'); }
-            if (isPointInArrays(Point.create(x, y), towers)) { return Tile.create(x, y, 'tower'); }
-            return Tile.create(x, y, 'ground');
+            if (isPointInArrays(Point.create(x, y), path)) { return Tile.create(x, y, { type: "path" }); }
+            if (isPointInArrays(Point.create(x, y), towers)) { return Tile.create(x, y, { type: "tower" }); }
+            return Tile.create(x, y, { type: "ground" });
         });
     });
 

@@ -9,4 +9,4 @@ const arrayPath: Array<Point.Point> = [{x:0, y:2}, {x:1, y:2}, {x:2, y:2}, {x:3,
 const arrayTower: Array<Point.Point> = [{x:1, y:1}];
 
 const gameState: Game.GameState = Game.init(arrayPath, arrayTower);
-Display.displayWorld(gameState.world);
+console.log(Display.displayWorld(gameState.world));
