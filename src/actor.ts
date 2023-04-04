@@ -47,6 +47,7 @@ type Enemy = Actor &  {
         move: Action;
         // attack: Action;
     }
+    path: Array<pointType>;
 }
 
 type Tower = Actor & {
