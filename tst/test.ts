@@ -1,7 +1,8 @@
+import * as Actor from "../src/actor";
+
 describe('Main test suite', () => {
 
     test('Initial test', () => {
-        expect(1).toBe(1);
+        expect(Actor.towers.type).toBe("tower");
     });
-
 })
