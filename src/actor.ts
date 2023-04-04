@@ -1,3 +1,4 @@
+
 import { sortAndDeduplicateDiagnostics } from "typescript";
 type Tile = { i: number, j: number,pos: pointType};
 type pointType = { x: number, y: number};
@@ -45,7 +46,7 @@ type Actor = {
 
 type Action = (actor: Actor, world: worldType) => number;
 
-type Enemy = Actor &  {
+type Enemy = Actor & { 
     type : 'enemy';
     health: number;
     speed: number;
@@ -88,9 +89,16 @@ function distance_manhattan(r : number, A :Tile, B : pointType):boolean {
     return ( Math.abs(B.x - A.pos.x) + Math.abs(B.y - A.pos.y) <= r );
 }
 
-function move(l:Array<Tile>):Array<Tile>{
-    return l.slice(1,l.length);
+function moveActor( BradPitt : Enemy ) : Enemy {
+	 function move(l : Array<Tile>) : Array<Tile> {      
+	     return l.slice(1, l.length);
+	     }	     
+	     const newPath : Array<Tile> = move(BradPitt.path);
+	     const GeorgesClooney : Enemy = {...BradPitt, path : newPath, position : newPath[0] };
+	     return GeorgesClooney;
 }
+
+//Le moteur ( normalement ) doit faire un map sur cette fonction, afin de pouvoir bouger toutes les plantes polluées. 
 
 function reachable(l : Array<Tile>,p : pointType, r : number){
     const perimeter : Array<Tile> = [];
