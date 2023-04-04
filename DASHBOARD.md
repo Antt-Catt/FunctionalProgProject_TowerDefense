@@ -45,12 +45,11 @@
 	
 - [`us2`][`8`] *Concevoir mondes*
   - *EN TANT QUE*: Luxel et Joachim
-  - *JE VEUX QUE* : L'on ai un monde de jeu fonctionnelle et exploitable pour les acteurs. 
+  - *JE VEUX QUE* : L'on ait un monde de jeu fonctionnel et exploitable pour les acteurs. 
   - *AFIN DE :*: Pouvoir jouer 
   - *DEPENDS*: `[NONE]`
   - *TASKS*:
 	- [`us2-t01`]  Faire un monde cadrillé en 2D et definir les positions. 
-	- [`us2-t02`]  Programmer les chemins exploitabla et les emplacement de tours.
 	
 - [`us3`][`7`] *Concevoir des acteurs*
   - *EN TANT QUE*: Antton et Arthur  
@@ -62,6 +61,22 @@
 	- [`us3-t02`] Définir ce qu'est un monstre et comment il avance.
     - [`us3-t03`] Mettre en place des interaction entre les monstres et les towers.
 
+- ['us4'][``]*Raffiner le monde*
+  - *EN TANT QUE* : Antton et Luxel 
+  - *JE VEUX QUE* : Avoir une définition claire des différentes zones du jeu 
+  - *AFIN DE* : L'on puisse bouger les acteurs sur un monde bien défini
+  - *TASKS* : 
+     - [`us4-t01`]  Programmer les chemins exploitables pour les plantes polluées.
+     - [`us4-t02`]  Programmer les emplacements des tours.
+     - [`us4-t03`]  Programmer les emplacements exploitables pour les actions des tours (lancer d'engrais naturels, de lumière du soleil, d'attention par l'humain).
+
+- ['us5'][``]*Amorce dans la relation attaque-défense*
+  - *EN TANT QUE* : Arthur et Joachim 
+  - *JE VEUX QUE* : Avoir des actions bien définies pour les acteurs
+  - *AFIN QUE* : Pouvoir faire bouger des trucs, et tirer sur des trucs	
+  - *TASKS* : 
+    - [`us5-t01`] Programmer les mouvements des plantes polluées
+    - [`us5-t02`] Programmer la prise en charge des plantes polluées par les tours
 
 ## TODO
 
@@ -72,6 +87,10 @@
 	- [`us1-t02`] *tests Makefile*: tester avec petits fichiers [`DONE`]
 
 ## [28-03-2023]
-- [us2][`9`][(FL1,FL4)] Début de la création du monde [`IN PROGRESS`]
+- [us2][`9`][(FL1,FL4)] Début de la création du monde [`DONE`]
   - [`us2-t01] 
-- [us3][`8`][(FL2,FL3)] Création des acteurs. 
+- [us3][`8`][(FL2,FL3)] Création des acteurs.[`DONE`] 
+
+## [04-04-2023]
+- [`us4`](FL3,FL4) Implémentation du chemin [`IN PROGRESS`] 
+- [`us5`](FL1,FL2) Mouvement des acteurs [`IN PROGRESS`] 
