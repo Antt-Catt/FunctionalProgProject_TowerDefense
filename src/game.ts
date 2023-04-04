@@ -1,15 +1,15 @@
 import * as World from "./world.js";
 
-type GameStateType = {
-    world: World.WorldType;
-    // actors: Array<Actors.ActorsType>;
+type GameState = {
+    world: World.World;
+    // actors: Array<Actors.Actors>;
 };
 
-function init(): GameStateType {
+function init(): GameState {
     return { world: World.init(10) };
 }
 
 export {
-    GameStateType,
+    GameState,
     init,
 };

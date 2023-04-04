@@ -1,13 +1,13 @@
-type PointType = {
+type Point = {
     x: number;
     y: number;
 };
 
-function create(x: number = 0, y: number = 0): PointType {
+function create(x: number = 0, y: number = 0): Point {
     return { x: x, y: y };
 }
 
 export {
-    PointType,
-    create,
-};
+    Point,
+    create
+}

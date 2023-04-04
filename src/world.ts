@@ -1,19 +1,19 @@
-import * as Point from "./point.js";
+import * as Tile from "./tile.js";
 
-type WorldType = {
-    points: Array<Array<Point.PointType>>;
+type World = {
+    points: Array<Array<Tile.Tile>>;
 };
 
-function init(size: number): WorldType {
+function init(size: number): World {
     function innerInit<T>(array: Array<T>, size: number, p: T): Array<T> {
         if (size === 0)
             return array;
         return innerInit([...array, p], size - 1, p);
     }
 
-    const world = innerInit([], size, innerInit([], size, Point.create())).map((row, y) => {
+    const world = innerInit([], size, innerInit([], size, Tile.create())).map((row, y) => {
         return row.map((_, x) => {
-            return Point.create(x, y);
+            return Tile.create(x, y);
         });
     });
 
@@ -21,6 +21,6 @@ function init(size: number): WorldType {
 }
 
 export {
-    WorldType,
+    World,
     init,
 };
