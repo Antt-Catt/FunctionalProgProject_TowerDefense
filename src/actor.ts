@@ -1,6 +1,12 @@
-type pointType = { i: number, j: number};
+import { sortAndDeduplicateDiagnostics } from "typescript";
+type Tile = { i: number, j: number,pos: pointType};
+type pointType = { x: number, y: number};
 type worldType = {points : number };
-type chemin ={};
+
+const nil = {};
+function isEmpty<T>(l:Array<T>){
+    return l === nil;
+}
 /*type actorT = {
     range : number,
     speed : number,
@@ -37,7 +43,7 @@ type Actor = {
     type : 'enemy' | 'tower';
 }
 
-type Action = (actor: Actor, world: worldType) => any;
+type Action = (actor: Actor, world: worldType) => number;
 
 type Enemy = Actor &  {
     type : 'enemy';
@@ -55,26 +61,61 @@ type Tower = Actor & {
     damage : number;
     range : number;
     cooldown : number;
+    shootable : Array<Tile>;
     actions: {
         attack: Action;
     }
 }
-
+function TowerAttack(){
+    return 0;
+}
 const towers: Tower = {
     type : 'tower',
-    position : {i:2,j:4},
+    position : {x:2,y:4},
     characteristics : {attack : 'unique'},
     damage : 10,
     range : 3,
     cooldown : 1,
+    shootable : [],
     actions : {
-        attack : towerAttack,
+        attack : TowerAttack,
     }
 };
 
-function towerAttack() {
+
     
+function distance_manhattan(r : number, A :Tile, B : pointType):boolean {
+    return ( Math.abs(B.x - A.pos.x) + Math.abs(B.y - A.pos.y) <= r );
 }
+
+function move(l:Array<Tile>):Array<Tile>{
+    return l.slice(1,l.length);
+}
+
+function reachable(l : Array<Tile>,p : pointType, r : number){
+    const perimeter : Array<Tile> = [];
+    function reachableRec(l : Array<Tile>, t :Array<Tile>, p : pointType, r : number):Array<Tile>{
+        if (isEmpty(l))
+            return t;
+        else 
+        {
+            const head : Tile = l[0];
+            if (distance_manhattan(r, head, p))
+            {
+                t = [...t, head];
+            }
+            return reachableRec(l.slice(1,l.length) ,t ,p ,r );
+        }
+    }
+    return reachableRec(l, perimeter, p, r);
+}
+// const action: Action = (Enemies)
+
+// function foo(tipe: Actor){
+//     if (tipe.type === 'enemy'){ 
+
+//     }
+// }
 
 const world:worldType = {
     points:14,
