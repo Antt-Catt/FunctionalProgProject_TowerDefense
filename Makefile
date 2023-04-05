@@ -7,7 +7,7 @@ run:
 	node dist/main.js
 
 test:
-	npx jest tst/*.ts
+	npx jest --coverage tst/*.ts
 
 eslint:
 	npx eslint src tst
