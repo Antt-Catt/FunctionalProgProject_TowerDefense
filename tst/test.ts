@@ -1,5 +1,6 @@
 import * as Point from "../src/point.js";
 import * as Tile from "../src/tile.js";
+import * as World from "../src/world.js";
 
 describe('Functional tests for Point', () => {
 
@@ -72,5 +73,15 @@ describe('Functional tests for Tile', () => {
         expect(tower2.type).toBe("tower");
         expect(tower1.toString()).toBe("#");
         expect(tower2.toString()).toBe("#");
+    });
+});
+
+describe('Functional tests for World', () => {
+
+    test('World.init', () => {
+        const world = World.init(1, [], []);
+        expect(world.points.length).toBe(1)
+        expect(world.points[0].length).toBe(1)
+        expect(Point.isEqual(world.points[0][0].pos, {x:0,y:0})).toBe(true);
     });
 });
