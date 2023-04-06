@@ -52,6 +52,10 @@ describe('Functional tests for Tile', () => {
     });
 
     test('Tile.createGround', () => {
+        expect(() => {Tile.createPath(-1,15)}).toThrowError("Invalid point");
+        expect(() => {Tile.createGround(-1,15)}).toThrowError("Invalid point");
+        expect(() => {Tile.createTower(-1,15)}).toThrowError("Invalid point");
+
         const ground1 = Tile.createGround();
         const ground2 = Tile.createGround(17, 22);
         
@@ -74,14 +78,29 @@ describe('Functional tests for Tile', () => {
         expect(tower1.toString()).toBe("#");
         expect(tower2.toString()).toBe("#");
     });
+
+    test('Tile.getTileType', () => {
+        const path = Tile.createPath();
+        const path2 = path as Tile.Tile;
+
+        const ground = Tile.createGround();
+        const ground2 = ground as Tile.Tile;
+
+        const tower = Tile.createTower();
+        const tower2 = tower as Tile.Tile;
+
+        
+    });
 });
 
 describe('Functional tests for World', () => {
 
-    test('World.init', () => {
+    test('World.init 1x1', () => {
         const world = World.init(1, [], []);
-        expect(world.points.length).toBe(1)
-        expect(world.points[0].length).toBe(1)
+        expect(world.points.length).toBe(1);
+        expect(world.points[0].length).toBe(1);
         expect(Point.isEqual(world.points[0][0].pos, {x:0,y:0})).toBe(true);
+        expect(world.points[0][0].toString()).toBe("-");
+        expect(Tile.getTileType(world.points[0][0]).type).toBe("ground");
     });
 });

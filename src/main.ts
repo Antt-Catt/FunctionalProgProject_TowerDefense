@@ -70,7 +70,7 @@ function initActors(world: World.World) : Array<Actor> {
             return enemies;
         }
         return initEnemies(n - 1, enemies.concat({type : "enemy",
-        position : {x:0,y:3},
+        position : {x:0,y:2},
         health : 10,
         speed : 1,
         path : arrayPath,}));
