@@ -20,4 +20,4 @@ export {
     create,
     isEqual,
     isInArray
-}
+};

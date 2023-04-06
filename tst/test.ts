@@ -33,4 +33,4 @@ describe('Functional tests for Point', () => {
         expect(Point.isInArray(r, array)).toBe(false);
     });
 
-})
+});

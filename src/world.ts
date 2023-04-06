@@ -1,5 +1,5 @@
 import * as Tile from "./tile.js";
-import * as Point from "./point.js"
+import * as Point from "./point.js";
 
 type World = {
     points: Array<Array<Tile.Tile>>;

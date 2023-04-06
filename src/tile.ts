@@ -1,4 +1,4 @@
-import * as Point from "./point.js"
+import * as Point from "./point.js";
 
 type Tile = {
     pos: Point.Point;
