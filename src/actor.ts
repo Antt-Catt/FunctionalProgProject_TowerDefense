@@ -67,6 +67,14 @@ type Tower = Actor & {
         attack: Action;
     }
 }
+
+function getActorType(actor: Actor): Enemy | Tower {
+    if (actor.type === "enemy")
+        return actor as Enemy
+    else
+        return actor as Tower
+}
+
 function TowerAttack(){
     return 0;
 }
