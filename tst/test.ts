@@ -1,4 +1,5 @@
 import * as Point from "../src/point.js";
+import * as Tile from "../src/tile.js";
 
 describe('Functional tests for Point', () => {
 
@@ -33,4 +34,43 @@ describe('Functional tests for Point', () => {
         expect(Point.isInArray(r, array)).toBe(false);
     });
 
+});
+
+describe('Functional tests for Tile', () => {
+
+    test('Tile.createPath', () => {
+        const path1 = Tile.createPath();
+        const path2 = Tile.createPath(17, 22);
+        
+        expect(Point.isEqual(path1.pos, {x:0,y:0})).toBe(true);
+        expect(Point.isEqual(path2.pos, {x:17,y:22})).toBe(true);
+        expect(path1.type).toBe("path");
+        expect(path2.type).toBe("path");
+        expect(path1.toString()).toBe("=");
+        expect(path2.toString()).toBe("=");
+    });
+
+    test('Tile.createGround', () => {
+        const ground1 = Tile.createGround();
+        const ground2 = Tile.createGround(17, 22);
+        
+        expect(Point.isEqual(ground1.pos, {x:0,y:0})).toBe(true);
+        expect(Point.isEqual(ground2.pos, {x:17,y:22})).toBe(true);
+        expect(ground1.type).toBe("ground");
+        expect(ground2.type).toBe("ground");
+        expect(ground1.toString()).toBe("-");
+        expect(ground2.toString()).toBe("-");
+    });
+
+    test('Tile.createTower', () => {
+        const tower1 = Tile.createTower();
+        const tower2 = Tile.createTower(17, 22);
+        
+        expect(Point.isEqual(tower1.pos, {x:0,y:0})).toBe(true);
+        expect(Point.isEqual(tower2.pos, {x:17,y:22})).toBe(true);
+        expect(tower1.type).toBe("tower");
+        expect(tower2.type).toBe("tower");
+        expect(tower1.toString()).toBe("#");
+        expect(tower2.toString()).toBe("#");
+    });
 });
