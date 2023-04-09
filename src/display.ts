@@ -1,5 +1,4 @@
 import * as World from "./world.js";
-import * as Main from "./main.js";
 
 function displayWorld(world: World.World): string {
     let result: string = "";

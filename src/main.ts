@@ -53,15 +53,16 @@ type Tower = Actor & {
 
 function initActors(world: World.World) : Array<Actor> {
     function initTowers(towers: Array<Point.Point>): Array<Actor> {
-        return towers.map(point => {
-            return { type: "tower",
-            position: point,
-            characteristics : {attack : "unique"},
-            damage : 5,
-            range : 3,
-            cooldown : 1,
-            shootable : [],
-            };
+        const towersOk = towers.filter(point => point.x < world.points.length && point.y < world.points.length);
+        return towersOk.map(pt => {
+                return { type: "tower",
+                position: pt,
+                characteristics : {attack : "unique"},
+                damage : 5,
+                range : 3,
+                cooldown : 1,
+                shootable : [],
+                };
         });
     }
     
