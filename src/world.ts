@@ -6,6 +6,8 @@ type World = {
 };
 
 function init(size: number, path: Array<Point.Point>, towers: Array<Point.Point>): World {
+    if (size < 0) { throw Error("World size < 0");}
+
     function innerInit<T>(array: Array<T>, size: number, p: T): Array<T> {
         if (size === 0)
             return array;
