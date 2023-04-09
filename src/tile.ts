@@ -26,17 +26,17 @@ function getTileType(tile: Tile): PathTile | GroundTile | TowerTile {
 }
 
 function createPath(x: number = 0, y: number = 0): PathTile {
-    if (x < 0 || y < 0) {throw Error("Invalid point")};
+    if (x < 0 || y < 0) {throw Error("Invalid point: negative value(s)");}
     return { pos: Point.create(x, y), type: "path" , toString: () => "=" };
 }
 
 function createGround(x: number = 0, y: number = 0): GroundTile {
-    if (x < 0 || y < 0) {throw Error("Invalid point")};
+    if (x < 0 || y < 0) {throw Error("Invalid point: negative value(s)");}
     return { pos: Point.create(x, y), type: "ground", toString: () => "-" };
 }
 
 function createTower(x: number = 0, y: number = 0): TowerTile {
-    if (x < 0 || y < 0) {throw Error("Invalid point")};
+    if (x < 0 || y < 0) {throw Error("Invalid point: negative value(s)");}
     return { pos: Point.create(x, y), type: "tower", toString: () => "#" };
 }
 
