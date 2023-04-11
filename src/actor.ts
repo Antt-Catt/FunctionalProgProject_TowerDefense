@@ -32,7 +32,7 @@ type Tower = Actor & {
     damage : number;
     range : number;
     cooldown : number;
-    shootable : Array<Tile.Tile>;
+    shootable : Array<Point.Point>;
     actions: {
         attack: Action;
     }
@@ -40,14 +40,11 @@ type Tower = Actor & {
 
 function getActorType(actor: Actor): Enemy | Tower {
     if (actor.type === "enemy")
-        return actor as Enemy
+        return actor as Enemy;
     else
-        return actor as Tower
+        return actor as Tower;
 }
 
-function TowerAttack(){
-    return {x:0, y:0};
-}
 const towers: Tower = {
     type : 'tower',
     position : {x:2,y:4},
@@ -55,7 +52,7 @@ const towers: Tower = {
     damage : 10,
     range : 3,
     cooldown : 1,
-    shootable : [],
+    shootable : [{x:1, y:2}],
     actions : {
         attack : TowerAttack,
     }
@@ -88,6 +85,11 @@ function reachable(path : Array<Point.Point>, p : Point.Point, r : number):Array
         }
     }
     return reachableRec(path, perimeter, p, r);
+}
+
+function TowerAttack(actor: Actor, world: World.World) : Point.Point {
+    const tower = actor as Tower;
+    return tower.shootable[0];
 }
 
 export {
