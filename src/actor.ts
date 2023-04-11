@@ -1,29 +1,29 @@
+import * as World from "./world.js";
+import * as Point from "./point.js";
 
 import { sortAndDeduplicateDiagnostics } from "typescript";
 import * as Tile from "./tile.js"
-import * as World from "./world.js"
-import * as Point from "./point.js"
 function isEmpty<T>(l:Array<T>):boolean{
     const k:Array<any>=[]
     return l === k;
 }
 
 type Actor = {
-    position : Point.Point;
-    characteristics : Record<string, string | number>; //pour des infos plus specifiques, par ex les tours : attaque de zone ou unique, ralentir etc.
-    type : 'enemy' | 'tower';
+    position: Point.Point;
+    characteristics?: Record<string, string | number>;
+    type: 'enemy' | 'tower';
 }
 
 type Action = (actor: Actor, world: World.World) => Point.Point;
 
 type Enemy = Actor & {
-    type : 'enemy';
+    type: "enemy";
     health: number;
     speed: number;
-    actions: {
-        move: Action;
-        // attack: Action;
-    }
+    // actions: {
+    //     move: Action;
+    //     attack: Action;
+    // }
     path: Array<Point.Point>;
 }
 
@@ -38,11 +38,52 @@ type Tower = Actor & {
     }
 }
 
+function init(size: number, path: Array<Point.Point>, towers: Array<Point.Point>): Array<Actor> {
+
+    function initTowers(towers: Array<Point.Point>): Array<Actor> {
+        const towersOk = towers.filter(point => point.x < size && point.y < size);
+        return towersOk.map(pt => {
+            return {
+                type: "tower",
+                position: pt,
+                characteristics: { attack: "unique" },
+                damage: 5,
+                range: 3,
+                cooldown: 1,
+                shootable: [],
+            };
+        });
+    }
+
+
+    function initEnemies(n: number, enemies: Array<Enemy>): Array<Actor> {
+        if (n === 0) {
+            return enemies;
+        }
+
+        return initEnemies(n - 1, enemies.concat({
+            type: "enemy",
+            position: { x: 0, y: 2 },
+            health: 10,
+            speed: 1,
+            path: path,
+        }));
+    }
+
+    const actors = initTowers(towers).concat(initEnemies(2, []));
+
+    return actors;
+}
+
 function getActorType(actor: Actor): Enemy | Tower {
-    if (actor.type === "enemy")
+    if (actor.type === "enemy"){
         return actor as Enemy;
-    else
+        return actor as Enemy;
+    }   
+    else{
         return actor as Tower;
+        return actor as Tower;
+    }
 }
 
 const towers: Tower = {
@@ -60,12 +101,10 @@ const towers: Tower = {
 
 
 
-function distance_manhattan(r : number, A : Point.Point, B : Point.Point):boolean {
-    return ( Math.abs(B.x - A.x) + Math.abs(B.y - A.y) <= r );
-}
 
-function moveActor( BradPitt : Enemy ) : Point.Point {
-    return BradPitt.path[0];
+
+function distance_manhattan(r: number, A: Point.Point, B: Point.Point): boolean {
+    return (Math.abs(B.x - A.x) + Math.abs(B.y - A.y) <= r);
 }
 //Le moteur ( normalement ) doit faire un map sur cette fonction, afin de pouvoir bouger toutes les plantes polluées.
 
@@ -96,7 +135,7 @@ function TowerAttack(actor: Actor, world: World.World) : Point.Point {
         const k: Array<Point.Point> = tab.slice(-1);
         if (tab.length === 0 )
             return {x:-1,y:-1};
-        if ( kill(k) )
+        if ( kill(k[0]) )
             return k[0];
         return recAttack(tab);
     }   
@@ -106,9 +145,7 @@ function TowerAttack(actor: Actor, world: World.World) : Point.Point {
 export {
     distance_manhattan,
     towers,
-    moveActor,
     reachable,
-    isEmpty,
 };
 // const action: Action = (Enemies)
 
@@ -117,3 +154,8 @@ export {
 
 //     }
 // }
+
+export {
+    Actor,
+    init
+};
