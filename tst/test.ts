@@ -1,3 +1,4 @@
+import exp from "constants";
 import * as Actor from "../src/actor.js";
 import * as Point  from "../src/point.js";
 import * as Tile from "../src/tile.js";
@@ -133,6 +134,7 @@ describe('Functional tests for World', () => {
         expect(world.points[0][0].toString()).toBe("=");
         expect(Tile.getTileType(world.points[3][1]).type).toBe("path");
     });
+});
 
 
 describe('Main test suite', () => {
@@ -141,19 +143,26 @@ describe('Main test suite', () => {
     const A : Tile.Tile = {
         pos : {x:2,y:4},
         toString:  ()=> "."
-    } 
+    };
     const B : Tile.Tile = {
         pos : {x:0,y:0},
         toString: ()=> "#"
-    } 
-        const path : Array<Point.Point> = [{x:1,y:1},{x:1,y:2},{x:1,y:3},{x:2,y:3},{x:3,y:3},{x:3,y:4},{x:3,y:5},{x:2,y:5},{x:1,y:5}];
-        const world : World.World = World.init(8,path,[B.pos]);
+    };
+    const LuxelH : Actor.Actor = {
+        position : {x:49,y:3},
+        type : 'enemy'
+    };
+
+        const pathhh : Array<Point.Point> = [{x:1,y:1},{x:1,y:2},{x:1,y:3},{x:2,y:3},{x:3,y:3},{x:3,y:4},{x:3,y:5},{x:2,y:5},{x:1,y:5}];
+        const world : World.World = World.init(8,pathhh,[B.pos]);
         expect(Actor.towers.type).toBe("tower");
         expect(Actor.distance_manhattan(4,A.pos,B.pos)).toBe(false);
         const vide :Array<any> = [];
         expect(vide.length).toBe(0);
         //expect(Actor.reachable(path,B.pos,4)).toBe([ { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 1, y: 3 } ])
-        console.log(Actor.reachable(path,B.pos,4));
+        console.log(Actor.reachable(pathhh,B.pos,4));
+        expect(Actor.getActorType(LuxelH)).toBe(LuxelH);
+        //expect(Actor.kill());
 
     });
 
@@ -168,4 +177,4 @@ describe('Main test suite', () => {
         expect(world.points[0][0].toString()).toBe("#");
         expect(Tile.getTileType(world.points[3][1]).type).toBe("tower");
     });
-});})
+});

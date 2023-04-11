@@ -1,13 +1,6 @@
 import * as World from "./world.js";
 import * as Point from "./point.js";
 
-import { sortAndDeduplicateDiagnostics } from "typescript";
-import * as Tile from "./tile.js"
-function isEmpty<T>(l:Array<T>):boolean{
-    const k:Array<any>=[]
-    return l === k;
-}
-
 type Actor = {
     position: Point.Point;
     characteristics?: Record<string, string | number>;
@@ -76,14 +69,10 @@ function init(size: number, path: Array<Point.Point>, towers: Array<Point.Point>
 }
 
 function getActorType(actor: Actor): Enemy | Tower {
-    if (actor.type === "enemy"){
+    if (actor.type === "enemy")
         return actor as Enemy;
-        return actor as Enemy;
-    }   
-    else{
+    else
         return actor as Tower;
-        return actor as Tower;
-    }
 }
 
 const towers: Tower = {
@@ -116,36 +105,43 @@ function reachable(path : Array<Point.Point>, p : Point.Point, r : number):Array
         if (chemin.length === 0)
             return peri;
         else {
-            const head : Point.Point = path[0];
+            const head : Point.Point = chemin[0];
 
             if (distance_manhattan(r, head, p))
                 peri = [...peri, head];
-            return reachableRec(path.slice(1,path.length) ,peri ,p ,r );
+            return reachableRec(chemin.slice(1,chemin.length) ,peri ,p ,r );
         }
     }
     return reachableRec(path, perimeter, p, r);
 }
-function kill(tile :Point.Point):boolean{
+function kill(tile :Point.Point, world:World.World):boolean{
+    if (world.points[tile.y][tile.x].toString() === "*")
+        return true ;
     return false;
 }
 
 function TowerAttack(actor: Actor, world: World.World) : Point.Point {
     const tower = actor as Tower;
-    function recAttack (tab:Array<Point.Point>):Point.Point{
+    function recAttack (tab:Array<Point.Point>, world:World.World):Point.Point{
         const k: Array<Point.Point> = tab.slice(-1);
         if (tab.length === 0 )
             return {x:-1,y:-1};
-        if ( kill(k[0]) )
+        if ( kill(k[0],world) )
             return k[0];
-        return recAttack(tab);
+        return recAttack(tab,world);
     }   
-    return recAttack(tower.shootable)
+    return recAttack(tower.shootable,world);
 }
 
 export {
+    Actor,
+    init,
     distance_manhattan,
     towers,
     reachable,
+    TowerAttack,
+    getActorType,
+    kill
 };
 // const action: Action = (Enemies)
 
@@ -154,8 +150,3 @@ export {
 
 //     }
 // }
-
-export {
-    Actor,
-    init
-};
