@@ -1,6 +1,6 @@
-import * as Game from "./game.js"
-import * as Point from "./point.js"
-import * as Display from "./display.js"
+import * as Game from "./game.js";
+import * as Point from "./point.js";
+import * as Display from "./display.js";
 
 console.log("[-] main");
 

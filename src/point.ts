@@ -10,4 +10,4 @@ function create(x: number = 0, y: number = 0): Point {
 export {
     Point,
     create
-}
+};

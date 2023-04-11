@@ -1,4 +1,4 @@
-import * as World from "./world.js"
+import * as World from "./world.js";
 
 function displayWorld(world: World.World): void {
     world.points.forEach(row => {
@@ -20,4 +20,4 @@ function displayWorld(world: World.World): void {
 
 export {
     displayWorld,
-}
+};
