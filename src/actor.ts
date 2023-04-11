@@ -1,8 +1,7 @@
 import { sortAndDeduplicateDiagnostics } from "typescript";
-type Tile = { i: number, j: number,pos: pointType};
-type pointType = { x: number, y: number};
-type worldType = {points : number };
-
+import * as Tile from "./tile.js"
+import * as pointType from "./point.js"
+import * as World from "./world.js"
 const nil = {};
 function isEmpty<T>(l:Array<T>){
     return l === nil;
@@ -38,12 +37,12 @@ function tir(actor:actorType,aWorld: worldType):pointType{
 }*/
 
 type Actor = {
-    position : pointType;
+    position : pointType.Point;
     characteristics : Record<string, any>; //pour des infos plus specifiques, par ex les tours : attaque de zone ou unique, ralentir etc.
     type : 'enemy' | 'tower';
 }
 
-type Action = (actor: Actor, world: worldType) => number;
+type Action = (actor: Actor, world: World.World) => any;
 
 type Enemy = Actor &  {
     type : 'enemy';
@@ -53,7 +52,7 @@ type Enemy = Actor &  {
         move: Action;
         // attack: Action;
     }
-    path: Array<pointType>;
+    path: Array<pointType.Point>;
 }
 
 type Tower = Actor & {
@@ -61,12 +60,12 @@ type Tower = Actor & {
     damage : number;
     range : number;
     cooldown : number;
-    shootable : Array<Tile>;
+    shootable : Array<Tile.Tile>;
     actions: {
         attack: Action;
     }
 }
-function TowerAttack(){
+function TowerAttack(Toto : Actor,world: World.World ){
     return 0;
 }
 const towers: Tower = {
@@ -84,22 +83,22 @@ const towers: Tower = {
 
 
     
-function distance_manhattan(r : number, A :Tile, B : pointType):boolean {
+function distance_manhattan(r : number, A :Tile.Tile, B : pointType.Point):boolean {
     return ( Math.abs(B.x - A.pos.x) + Math.abs(B.y - A.pos.y) <= r );
 }
 
-function move(l:Array<Tile>):Array<Tile>{
+function move(l:Array<Tile.Tile>):Array<Tile.Tile>{
     return l.slice(1,l.length);
 }
 
-function reachable(l : Array<Tile>,p : pointType, r : number){
-    const perimeter : Array<Tile> = [];
-    function reachableRec(l : Array<Tile>, t :Array<Tile>, p : pointType, r : number):Array<Tile>{
+function reachable(l : Array<Tile.Tile>,p : pointType.Point, r : number){
+    const perimeter : Array<Tile.Tile> = [];
+    function reachableRec(l : Array<Tile.Tile>, t :Array<Tile.Tile>, p : pointType.Point, r : number):Array<Tile.Tile>{
         if (isEmpty(l))
             return t;
         else 
         {
-            const head : Tile = l[0];
+            const head : Tile.Tile = l[0];
             if (distance_manhattan(r, head, p))
             {
                 t = [...t, head];
@@ -109,6 +108,11 @@ function reachable(l : Array<Tile>,p : pointType, r : number){
     }
     return reachableRec(l, perimeter, p, r);
 }
+
+export {
+    distance_manhattan,
+    towers,
+};
 // const action: Action = (Enemies)
 
 // function foo(tipe: Actor){
@@ -117,13 +121,4 @@ function reachable(l : Array<Tile>,p : pointType, r : number){
 //     }
 // }
 
-const world:worldType = {
-    points:14,
-}
 
-export{
-    pointType,
-    worldType,
-    towers,
-    world,
-}
