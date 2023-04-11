@@ -72,28 +72,29 @@ function moveActor( BradPitt : Enemy ) : Point.Point {
 }
 //Le moteur ( normalement ) doit faire un map sur cette fonction, afin de pouvoir bouger toutes les plantes polluées.
 
-// doit etre appelee dans le main pour generer le champ shootable des tours
-function reachable(l : Array<Point.Point>,p : Point.Point, r : number){
+
+// doit etre appelee dans le main pour generer le champs shootable des tours
+function reachable(path : Array<Point.Point>, p : Point.Point, r : number):Array<Point.Point>{
     const perimeter : Array<Point.Point> = [];
-    function reachableRec(l : Array<Point.Point>, t :Array<Point.Point>, p : Point.Point, r : number):Array<Point.Point>{
-        if (isEmpty(l))
-            return t;
-        else
-        {
-            const head : Point.Point = l[0];
+    function reachableRec(path : Array<Point.Point>, peri :Array<Point.Point>, p : Point.Point, r : number):Array<Point.Point>{
+        if (isEmpty(peri))
+            return peri;
+        else {
+            const head : Point.Point = path[0];
+
             if (distance_manhattan(r, head, p))
-            {
-                t = [...t, head];
-            }
-            return reachableRec(l.slice(1,l.length) ,t ,p ,r );
+                peri = [...peri, head];
+            return reachableRec(path.slice(1,path.length) ,peri ,p ,r );
         }
     }
-    return reachableRec(l, perimeter, p, r);
+    return reachableRec(path, perimeter, p, r);
 }
 
 export {
     distance_manhattan,
     towers,
+    moveActor,
+    reachable,
 };
 // const action: Action = (Enemies)
 
