@@ -63,8 +63,8 @@ const towers: Tower = {
 
 
 
-function distance_manhattan(r : number, A :Tile.Tile, B : Point.Point):boolean {
-    return ( Math.abs(B.x - A.pos.x) + Math.abs(B.y - A.pos.y) <= r );
+function distance_manhattan(r : number, A :Point.Point, B : Point.Point):boolean {
+    return ( Math.abs(B.x - A.x) + Math.abs(B.y - A.y) <= r );
 }
 
 function moveActor( BradPitt : Enemy ) : Point.Point {
@@ -73,27 +73,30 @@ function moveActor( BradPitt : Enemy ) : Point.Point {
 
 //Le moteur ( normalement ) doit faire un map sur cette fonction, afin de pouvoir bouger toutes les plantes polluées.
 
-function reachable(l : Array<Tile.Tile>,p : Point.Point, r : number){
-    const perimeter : Array<Tile.Tile> = [];
-    function reachableRec(l : Array<Tile.Tile>, t :Array<Tile.Tile>, p : Point.Point, r : number):Array<Tile.Tile>{
-        if (isEmpty(l))
-            return t;
+// doit etre appelé dans le main pour générer le champs shootable des tours
+function reachable(chemin : Array<Point.Point>,p : Point.Point, r : number):Array<Point.Point>{
+    const perimeter : Array<Point.Point> = [];
+    function reachableRec(chemin : Array<Point.Point>, peri :Array<Point.Point>, p : Point.Point, r : number):Array<Point.Point>{
+        if (isEmpty(peri))
+            return peri;
         else
         {
-            const head : Tile.Tile = l[0];
+            const head : Point.Point = chemin[0];
             if (distance_manhattan(r, head, p))
             {
-                t = [...t, head];
+                peri = [...peri, head];
             }
-            return reachableRec(l.slice(1,l.length) ,t ,p ,r );
+            return reachableRec(chemin.slice(1,chemin.length) ,peri ,p ,r );
         }
     }
-    return reachableRec(l, perimeter, p, r);
+    return reachableRec(chemin, perimeter, p, r);
 }
 
 export {
     distance_manhattan,
     towers,
+    moveActor,
+    reachable,
 };
 // const action: Action = (Enemies)
 
