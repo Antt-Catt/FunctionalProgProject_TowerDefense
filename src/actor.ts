@@ -1,8 +1,7 @@
-
 import { sortAndDeduplicateDiagnostics } from "typescript";
-import * as Tile from "./tile.js"
-import * as World from "./world.js"
-import * as Point from "./point.js"
+import * as Tile from "./tile.js";
+import * as World from "./world.js";
+import * as Point from "./point.js";
 const nil = {};
 function isEmpty<T>(l:Array<T>){
     return l === nil;
@@ -40,9 +39,9 @@ type Tower = Actor & {
 
 function getActorType(actor: Actor): Enemy | Tower {
     if (actor.type === "enemy")
-        return actor as Enemy
+        return actor as Enemy;
     else
-        return actor as Tower
+        return actor as Tower;
 }
 
 function TowerAttack(){
