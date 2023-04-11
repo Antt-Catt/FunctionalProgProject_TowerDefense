@@ -3,9 +3,9 @@ import { sortAndDeduplicateDiagnostics } from "typescript";
 import * as Tile from "./tile.js"
 import * as World from "./world.js"
 import * as Point from "./point.js"
-const nil = {};
-function isEmpty<T>(l:Array<T>){
-    return l === nil;
+function isEmpty<T>(l:Array<T>):boolean{
+    const k:Array<any>=[]
+    return l === k;
 }
 
 type Actor = {
@@ -77,7 +77,7 @@ function moveActor( BradPitt : Enemy ) : Point.Point {
 function reachable(chemin : Array<Point.Point>,p : Point.Point, r : number):Array<Point.Point>{
     const perimeter : Array<Point.Point> = [];
     function reachableRec(chemin : Array<Point.Point>, peri :Array<Point.Point>, p : Point.Point, r : number):Array<Point.Point>{
-        if (isEmpty(peri))
+        if (chemin.length === 0)
             return peri;
         else
         {
@@ -97,6 +97,7 @@ export {
     towers,
     moveActor,
     reachable,
+    isEmpty,
 };
 // const action: Action = (Enemies)
 
