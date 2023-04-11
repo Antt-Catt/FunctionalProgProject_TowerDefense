@@ -1,3 +1,4 @@
+
 import { sortAndDeduplicateDiagnostics } from "typescript";
 import * as Tile from "./tile.js"
 import * as pointType from "./point.js"
@@ -44,7 +45,7 @@ type Actor = {
 
 type Action = (actor: Actor, world: World.World) => any;
 
-type Enemy = Actor &  {
+type Enemy = Actor & { 
     type : 'enemy';
     health: number;
     speed: number;
@@ -65,7 +66,15 @@ type Tower = Actor & {
         attack: Action;
     }
 }
-function TowerAttack(Toto : Actor,world: World.World ){
+
+function getActorType(actor: Actor): Enemy | Tower {
+    if (actor.type === "enemy")
+        return actor as Enemy
+    else
+        return actor as Tower
+}
+
+function TowerAttack(){
     return 0;
 }
 const towers: Tower = {
@@ -87,9 +96,18 @@ function distance_manhattan(r : number, A :Tile.Tile, B : pointType.Point):boole
     return ( Math.abs(B.x - A.pos.x) + Math.abs(B.y - A.pos.y) <= r );
 }
 
-function move(l:Array<Tile.Tile>):Array<Tile.Tile>{
-    return l.slice(1,l.length);
+function moveActor( BradPitt : Enemy ) : Enemy {
+	 function move(l : Array<Tile>) : Array<Tile> {      
+	     return l.slice(1, l.length);
+	     }	     
+	     const newPath : Array<Tile> = move(BradPitt.path);
+	     const GeorgesClooney : Enemy = {...BradPitt, path : newPath, position : newPath[0] };
+	     return GeorgesClooney;
 }
+
+//Le moteur ( normalement ) doit faire un map sur cette fonction, afin de pouvoir bouger toutes les plantes polluées. 
+
+//Le moteur ( normalement ) doit faire un map sur cette fonction, afin de pouvoir bouger toutes les plantes polluées. 
 
 function reachable(l : Array<Tile.Tile>,p : pointType.Point, r : number){
     const perimeter : Array<Tile.Tile> = [];
