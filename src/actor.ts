@@ -1,51 +1,22 @@
 
 import { sortAndDeduplicateDiagnostics } from "typescript";
 import * as Tile from "./tile.js"
-import * as pointType from "./point.js"
 import * as World from "./world.js"
+import * as Point from "./point.js"
 const nil = {};
 function isEmpty<T>(l:Array<T>){
     return l === nil;
 }
-/*type actorT = {
-    range : number,
-    speed : number,
-
-};
-type actorM = {
-    life : number,
-    speed : number,
-
-};
-
-type actorType = {
-    pos: pointType,
-    type : string,
-    classe : actorT | actorM
-    actions: {(actor:actorType,aWorld: worldType):pointType} | {(actor:actorType,aWorld: worldType, aPath:chemin):pointType}
-};
-
-const towers:actorType = {
-    pos : {i:4,j:5},
-    type : "tower",
-    classe : {range : 5, speed: 1},
-    actions : tir,
-};
-
-function tir(actor:actorType,aWorld: worldType):pointType{
-    const points:pointType = {i:2,j:4};
-    return points ;
-}*/
 
 type Actor = {
-    position : pointType.Point;
-    characteristics : Record<string, any>; //pour des infos plus specifiques, par ex les tours : attaque de zone ou unique, ralentir etc.
+    position : Point.Point;
+    characteristics : Record<string, string | number>; //pour des infos plus specifiques, par ex les tours : attaque de zone ou unique, ralentir etc.
     type : 'enemy' | 'tower';
 }
 
-type Action = (actor: Actor, world: World.World) => any;
+type Action = (actor: Actor, world: World.World) => Point.Point;
 
-type Enemy = Actor & { 
+type Enemy = Actor & {
     type : 'enemy';
     health: number;
     speed: number;
@@ -53,7 +24,7 @@ type Enemy = Actor & {
         move: Action;
         // attack: Action;
     }
-    path: Array<pointType.Point>;
+    path: Array<Point.Point>;
 }
 
 type Tower = Actor & {
@@ -75,7 +46,7 @@ function getActorType(actor: Actor): Enemy | Tower {
 }
 
 function TowerAttack(){
-    return 0;
+    return {x:0, y:0};
 }
 const towers: Tower = {
     type : 'tower',
@@ -91,30 +62,23 @@ const towers: Tower = {
 };
 
 
-    
-function distance_manhattan(r : number, A :Tile.Tile, B : pointType.Point):boolean {
+
+function distance_manhattan(r : number, A :Tile.Tile, B : Point.Point):boolean {
     return ( Math.abs(B.x - A.pos.x) + Math.abs(B.y - A.pos.y) <= r );
 }
 
-function moveActor( BradPitt : Enemy ) : Enemy {
-	 function move(l : Array<Tile>) : Array<Tile> {      
-	     return l.slice(1, l.length);
-	     }	     
-	     const newPath : Array<Tile> = move(BradPitt.path);
-	     const GeorgesClooney : Enemy = {...BradPitt, path : newPath, position : newPath[0] };
-	     return GeorgesClooney;
+function moveActor( BradPitt : Enemy ) : Point.Point {
+    return BradPitt.path[0];
 }
 
-//Le moteur ( normalement ) doit faire un map sur cette fonction, afin de pouvoir bouger toutes les plantes polluées. 
+//Le moteur ( normalement ) doit faire un map sur cette fonction, afin de pouvoir bouger toutes les plantes polluées.
 
-//Le moteur ( normalement ) doit faire un map sur cette fonction, afin de pouvoir bouger toutes les plantes polluées. 
-
-function reachable(l : Array<Tile.Tile>,p : pointType.Point, r : number){
+function reachable(l : Array<Tile.Tile>,p : Point.Point, r : number){
     const perimeter : Array<Tile.Tile> = [];
-    function reachableRec(l : Array<Tile.Tile>, t :Array<Tile.Tile>, p : pointType.Point, r : number):Array<Tile.Tile>{
+    function reachableRec(l : Array<Tile.Tile>, t :Array<Tile.Tile>, p : Point.Point, r : number):Array<Tile.Tile>{
         if (isEmpty(l))
             return t;
-        else 
+        else
         {
             const head : Tile.Tile = l[0];
             if (distance_manhattan(r, head, p))
@@ -134,9 +98,7 @@ export {
 // const action: Action = (Enemies)
 
 // function foo(tipe: Actor){
-//     if (tipe.type === 'enemy'){ 
+//     if (tipe.type === 'enemy'){
 
 //     }
 // }
-
-
