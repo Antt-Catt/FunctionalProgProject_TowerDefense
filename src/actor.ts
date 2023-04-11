@@ -86,10 +86,21 @@ function reachable(path : Array<Point.Point>, p : Point.Point, r : number):Array
     }
     return reachableRec(path, perimeter, p, r);
 }
+function kill(tile :Point.Point):boolean{
+    return false;
+}
 
 function TowerAttack(actor: Actor, world: World.World) : Point.Point {
     const tower = actor as Tower;
-    return tower.shootable[0];
+    function recAttack (tab:Array<Point.Point>):Point.Point{
+        const k: Array<Point.Point> = tab.slice(-1);
+        if (tab.length === 0 )
+            return {x:-1,y:-1};
+        if ( kill(k) )
+            return k[0];
+        return recAttack(tab);
+    }   
+    return recAttack(tower.shootable)
 }
 
 export {
