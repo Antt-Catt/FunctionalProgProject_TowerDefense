@@ -37,10 +37,10 @@ type Tower = Actor & {
     }
 }
 
-function init(world: World.World, path: Array<Point.Point>, towers: Array<Point.Point>): Array<Actor> {
+function init(size: number, path: Array<Point.Point>, towers: Array<Point.Point>): Array<Actor> {
 
     function initTowers(towers: Array<Point.Point>): Array<Actor> {
-        const towersOk = towers.filter(point => point.x < world.points.length && point.y < world.points.length);
+        const towersOk = towers.filter(point => point.x < size && point.y < size);
         return towersOk.map(pt => {
             return {
                 type: "tower",
@@ -74,29 +74,16 @@ function init(world: World.World, path: Array<Point.Point>, towers: Array<Point.
     return actors;
 }
 
-// function getActorType(actor: Actor): Enemy | Tower {
-//     if (actor.type === "enemy")
-//         return actor as Enemy;
-//     else
-//         return actor as Tower;
-// }
+function getActorType(actor: Actor): Enemy | Tower {
+    if (actor.type === "enemy")
+        return actor as Enemy;
+    else
+        return actor as Tower;
+}
 
 function TowerAttack() {
     return { x: 0, y: 0 };
 }
-
-// const towers: Tower = {
-//     type: 'tower',
-//     position: { x: 2, y: 4 },
-//     characteristics: { attack: 'unique' },
-//     damage: 10,
-//     range: 3,
-//     cooldown: 1,
-//     shootable: [],
-//     actions: {
-//         attack: TowerAttack,
-//     }
-// };
 
 function distance_manhattan(r: number, A: Point.Point, B: Point.Point): boolean {
     return (Math.abs(B.x - A.x) + Math.abs(B.y - A.y) <= r);
@@ -106,21 +93,21 @@ function distance_manhattan(r: number, A: Point.Point, B: Point.Point): boolean 
 //     return BradPitt.path[0];
 // }
 
-// function reachable(l: Array<Point.Point>, p: Point.Point, r: number) {
-//     const perimeter: Array<Point.Point> = [];
-//     function reachableRec(l: Array<Point.Point>, t: Array<Point.Point>, p: Point.Point, r: number): Array<Point.Point> {
-//         if (isEmpty(l))
-//             return t;
-//         else {
-//             const head: Point.Point = l[0];
-//             if (distance_manhattan(r, head, p)) {
-//                 t = [...t, head];
-//             }
-//             return reachableRec(l.slice(1, l.length), t, p, r);
-//         }
-//     }
-//     return reachableRec(l, perimeter, p, r);
-// }
+function reachable(l: Array<Point.Point>, p: Point.Point, r: number) {
+    const perimeter: Array<Point.Point> = [];
+    function reachableRec(l: Array<Point.Point>, t: Array<Point.Point>, p: Point.Point, r: number): Array<Point.Point> {
+        if (isEmpty(l))
+            return t;
+        else {
+            const head: Point.Point = l[0];
+            if (distance_manhattan(r, head, p)) {
+                t = [...t, head];
+            }
+            return reachableRec(l.slice(1, l.length), t, p, r);
+        }
+    }
+    return reachableRec(l, perimeter, p, r);
+}
 
 // const action: Action = (Enemies)
 

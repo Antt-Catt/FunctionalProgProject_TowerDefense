@@ -7,9 +7,8 @@ type GameState = {
     actors: Array<Actor.Actor>;
 };
 
-function init(path: Array<Point.Point>, towers: Array<Point.Point>): GameState {
-    const world = World.init(5, path, towers);
-    return { world: world, actors: Actor.init(world, path, towers) };
+function init(size: number, path: Array<Point.Point>, towers: Array<Point.Point>): GameState {
+    return { world: World.init(size, path, towers), actors: Actor.init(size, path, towers) };
 }
 
 export {
