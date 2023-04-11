@@ -4,7 +4,7 @@ build:
 	npx tsc -p tsconfig.json
 
 run:
-	node dist/main.js
+	node dist/motor.js
 
 test:
 	npx jest --coverage tst/*.ts
