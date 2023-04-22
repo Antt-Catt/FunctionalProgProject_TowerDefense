@@ -16,4 +16,4 @@ eslint:
 # 	npx parcel dist/index.html
 
 clean:
-	rm -f *~
+	rm -rf *~ coverage
