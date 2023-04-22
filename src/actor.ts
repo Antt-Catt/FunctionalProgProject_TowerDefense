@@ -1,6 +1,8 @@
 import * as World from "./world.js";
 import * as Point from "./point.js";
 
+const startPosition: Point.Point = {x: -1, y: -1};
+
 enum ActorType {
     Enemy = "enemy",
     Tower = "tower",
@@ -37,8 +39,6 @@ type Tower = Actor & {
 
 const askForMove: Action = (actor: Enemy): Point.Point => { return actor.path[0]; };
 
-// function move(actor: Enemy): Enemy
-
 function init(size: number, path: Array<Point.Point>, towers: Array<Point.Point>): Array<Actor> {
 
     function initTowers(towers: Array<Point.Point>): Array<Actor> {
@@ -61,8 +61,8 @@ function init(size: number, path: Array<Point.Point>, towers: Array<Point.Point>
             return enemies;
         return initEnemies(n - 1, enemies.concat({
             type: ActorType.Enemy,
-            position: { x: 0, y: 2 },
-            path: path,
+            position: startPosition,
+            path: path.slice(), // Slice is used to create a copy of path for each actor
             // health: 10,
             // speed: 1,
             actions: {
@@ -84,15 +84,15 @@ function asEnemy(actor: Actor): Enemy {
     return actor as Enemy;
 }
 
-// function moveEnemy(actor: Enemy): Enemy {
-//     return { ...actor };
-// }
+function moveEnemy(actor: Enemy): Enemy {
+    return { ...actor, position: actor.path.shift() as Point.Point };
+}
 
 // function getActorType(actor: Actor): Enemy | Tower {
 //     if (actor.type === ActorType.Enemy)
 //         return actor as Enemy;
 //     return actor as Tower;
-// }*
+// }
 
 // const towers: Tower = {
 //     type: 'tower',
@@ -149,13 +149,14 @@ function asEnemy(actor: Actor): Enemy {
 // }
 
 export {
+    startPosition,
     ActorType,
     Actor,
     Enemy,
     init,
     isEnemy,
     asEnemy,
-    // moveEnemy
+    moveEnemy
     // getActorType,
     // distance_manhattan,
     // towers,

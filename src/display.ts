@@ -6,7 +6,7 @@ function displayWorld(world: World.World): string {
         const rowStr = row.reduce((acc, tile) => { return acc + tile.toString() + ' '; }, '');
         result += `\n${rowStr}`;
     });
-    return result;
+    return `${result}\n`;
 }
 
 export {

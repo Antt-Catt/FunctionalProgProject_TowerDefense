@@ -17,7 +17,7 @@ function nextRound(gameState: GameState): GameState {
 }
 
 function moveAll(gameState: GameState): GameState {
-    const updatedWorld = gameState.world;
+    let updatedWorld = gameState.world;
     const updatedActors = gameState.actors.map(actor => {
         // If actor isnt an enemy (so he can ask to move)
         if (!Actor.isEnemy(actor))
@@ -27,11 +27,17 @@ function moveAll(gameState: GameState): GameState {
         const currentActor: Actor.Enemy = Actor.asEnemy(actor);
 
         // The actor request a position to move
-        const requestedPosition: Point.Point = currentActor.actions.move(currentActor, gameState.world);
+        const requestedPosition: Point.Point = currentActor.actions.move(currentActor, gameState.world);  
+        console.error(`-> ${currentActor.type} ask for (x:${requestedPosition.x}, y:${requestedPosition.y}), free according to motor : ${World.isFree(requestedPosition, gameState.world)}`);
+        if (World.isFree(requestedPosition, gameState.world)) {
+            if (currentActor.position !== Actor.startPosition)
+                updatedWorld = World.setFree(currentActor.position, true, updatedWorld);
+            updatedWorld = World.setFree(requestedPosition, false, updatedWorld);
+            console.error(`-> ${currentActor.type} move from (x: ${currentActor.position.x}, y: ${currentActor.position.y}) to (x: ${requestedPosition.x}, y: ${requestedPosition.y}).`);
+            return Actor.moveEnemy(currentActor);
+        }
 
-        // If the position is a accessible (path + free) according to the motor
-        console.log(`-> ${currentActor.type} ask for (x:${requestedPosition.x}, y:${requestedPosition.y}), free according to motor : ${World.isAccessible(requestedPosition, gameState.world)}`);
-
+        // The move wasn't possible
         return { ...actor };
     });
 

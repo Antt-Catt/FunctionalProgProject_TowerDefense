@@ -25,12 +25,22 @@ function init(size: number, path: Array<Point.Point>, towers: Array<Point.Point>
     return { points: world };
 }
 
-function isAccessible(point: Point.Point, world: World) {
-    return Tile.isAcessible(world.points[point.y][point.x]);
+function isFree(point: Point.Point, world: World): boolean {
+    return Tile.isFree(world.points[point.y][point.x]);
+}
+
+function setTileFree(points: Array<Array<Tile.Tile>>, point: Point.Point, free: boolean): Array<Array<Tile.Tile>> {
+    points[point.y][point.x] = Tile.setFree(points[point.y][point.x] as Tile.PathTile, free);
+    return points;
+}
+
+function setFree(point: Point.Point, free: boolean, world: World): World {
+    return { ...world, points: setTileFree(world.points, point, free) };
 }
 
 export {
     World,
     init,
-    isAccessible
+    isFree,
+    setFree
 };

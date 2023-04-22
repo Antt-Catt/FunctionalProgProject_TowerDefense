@@ -22,17 +22,17 @@ type TowerTile = Tile;
 
 function createPath(x: number = 0, y: number = 0): PathTile {
     if (x < 0 || y < 0) { throw Error("Invalid point: negative value(s)"); }
-    return { pos: Point.create(x, y), type: TileType.Path, toString: () => "=", free: true };
+    return { pos: Point.create(x, y), type: TileType.Path, toString: () => '=', free: true };
 }
 
 function createGround(x: number = 0, y: number = 0): GroundTile {
     if (x < 0 || y < 0) { throw Error("Invalid point: negative value(s)"); }
-    return { pos: Point.create(x, y), type: TileType.Ground, toString: () => "-" };
+    return { pos: Point.create(x, y), type: TileType.Ground, toString: () => '-' };
 }
 
 function createTower(x: number = 0, y: number = 0): TowerTile {
     if (x < 0 || y < 0) { throw Error("Invalid point: negative value(s)"); }
-    return { pos: Point.create(x, y), type: TileType.Tower, toString: () => "#" };
+    return { pos: Point.create(x, y), type: TileType.Tower, toString: () => '#' };
 }
 
 // function getTileType(tile: Tile): PathTile | GroundTile | TowerTile {
@@ -51,17 +51,23 @@ function asPathTile(tile: Tile): PathTile {
     return tile as PathTile;
 }
 
-function isAcessible(tile: Tile): boolean {
+function isFree(tile: Tile): boolean {
     if (!isPathTile(tile))
         return false;
     return (asPathTile(tile).free);
 }
 
+function setFree(tile: PathTile, free: boolean): PathTile {
+    return { ...tile, free: free, toString: () => (free ? '=' : '|') };
+}
+
 export {
     Tile,
+    PathTile,
     createPath,
     createGround,
     createTower,
-    isAcessible
+    isFree,
+    setFree
     // getTileType
 };
