@@ -1,7 +1,7 @@
 import * as World from "./world.js";
 import * as Point from "./point.js";
 
-const startPosition: Point.Point = {x: -1, y: -1};
+const startPosition: Point.Point = { x: -1, y: -1 };
 
 enum ActorType {
     Enemy = "enemy",
@@ -88,6 +88,10 @@ function moveEnemy(actor: Enemy): Enemy {
     return { ...actor, position: actor.path.shift() as Point.Point };
 }
 
+function endPath(actor: Enemy): boolean {
+    return (actor.path.length === 0);
+}
+
 // function getActorType(actor: Actor): Enemy | Tower {
 //     if (actor.type === ActorType.Enemy)
 //         return actor as Enemy;
@@ -156,7 +160,8 @@ export {
     init,
     isEnemy,
     asEnemy,
-    moveEnemy
+    moveEnemy,
+    endPath
     // getActorType,
     // distance_manhattan,
     // towers,
