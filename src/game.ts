@@ -5,12 +5,13 @@ import * as Actor from "./actor.js";
 type GameState = {
     world: World.World;
     actors: Array<Actor.Actor>;
+    path: Array<Point.Point>;
     round: number;
     end: boolean;
 };
 
 function init(size: number, path: Array<Point.Point>, towers: Array<Point.Point>): GameState {
-    return { world: World.init(size, path, towers), actors: Actor.init(size, path, towers), round: 0, end: false };
+    return { world: World.init(size, path, towers), actors: Actor.init(size, path, towers), path: path, round: 0, end: false };
 }
 
 function nextRound(gameState: GameState): GameState {
@@ -48,6 +49,21 @@ function moveAll(gameState: GameState): GameState {
     // Return updated game state with updated actors
     return { ...gameState, world: updatedWorld, actors: updatedActors, end: end };
 }
+
+
+function shootAll(gameState: GameState): GameState {
+    let updatedWorld: World.World = gameState.world;
+    let end: boolean = false;
+    const updatedActors = gameState.actors.map(actor => {
+        if (Actor.isEnemy(actor))
+            return { ...actor };
+
+        const currentActor: Actor.Tower = Actor.asTower(actor);
+
+        const requestShoot: Point.Point = currentActor.actions.attack(currentActor, gameState.world);
+    }
+}
+
 
 export {
     GameState,
