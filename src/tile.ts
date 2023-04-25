@@ -62,6 +62,7 @@ function setFree(tile: PathTile, free: boolean): PathTile {
 }
 
 export {
+    TileType,
     Tile,
     PathTile,
     createPath,
