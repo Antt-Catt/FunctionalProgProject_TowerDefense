@@ -159,12 +159,12 @@ describe('Functional tests for World', () => {
         const actor1: Actor.Actor = {
             type: Actor.ActorType.Enemy,
             position: Actor.startPosition,
-        } as Actor.Actor
+        } as Actor.Actor;
         expect(Actor.isEnemy(actor1)).toBe(true);
         const tower1: Actor.Actor = {
             type: Actor.ActorType.Tower,
             position: Actor.startPosition,
-        } as Actor.Actor
+        } as Actor.Actor;   
         expect(Actor.isEnemy(tower1)).toBe(false);
     });
 
@@ -172,7 +172,7 @@ describe('Functional tests for World', () => {
         const actor1: Actor.Actor = {
             type: Actor.ActorType.Enemy,
             position: Actor.startPosition,
-        } as Actor.Actor
+        } as Actor.Actor;
         expect(Actor.asEnemy(actor1)).toBe(actor1 as Actor.Enemy);
     });
 
@@ -181,7 +181,7 @@ describe('Functional tests for World', () => {
             type: Actor.ActorType.Enemy,
             position: {x:1, y:1},
             path: [{x:2, y:2}]
-        } as Actor.Actor
+        } as Actor.Actor;
         expect(actor1.position.x).toBe(1);
         expect(actor1.position.y).toBe(1);
         actor1 = Actor.moveEnemy(actor1 as Actor.Enemy) as Actor.Actor;
@@ -194,7 +194,7 @@ describe('Functional tests for World', () => {
             type: Actor.ActorType.Enemy,
             position: {x:1, y:1},
             path: [{x:2, y:2}]
-        } as Actor.Actor
+        } as Actor.Actor;
         expect(Actor.endPath(actor1 as Actor.Enemy)).toBe(false);
         actor1 = Actor.moveEnemy(actor1 as Actor.Enemy) as Actor.Actor;
         expect(Actor.endPath(actor1 as Actor.Enemy)).toBe(true);
@@ -203,35 +203,34 @@ describe('Functional tests for World', () => {
     test('Actor.init', () => {
         const actors = Actor.init(2, [{ x: 0, y: 0 }, { x: 1, y: 0 }], [{ x: 1, y: 1 }]);
     });
+
     test('Get Actor Type',()=>{
         const LuxelH : Actor.Actor = {
             type : Actor.ActorType.Enemy,
-            position : {x:49,y:3},
-      
+            position : {x:49,y:3}  
         };
         expect(Actor.getActorType(LuxelH)).toBe(LuxelH as Actor.Enemy);
-
     });
+
     test('Reachable', ()=>{
         const pathhh : Array<Point.Point> = [{x:1,y:1},{x:1,y:2},{x:1,y:3},{x:2,y:3},{x:3,y:3},{x:3,y:4},{x:3,y:5},{x:2,y:5},{x:1,y:5}];   
         const B : Tile.Tile = {
             type : Tile.TileType.Tower,
             pos : {x:0,y:0},
             toString: ()=> "#"
-
-    };
-    expect(Actor.reachable(pathhh,B.pos,4)).toBe( [ { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 1, y: 3 } ]);
+        };
+        expect(Actor.reachable(pathhh,B.pos,4)).toBe( [ { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 1, y: 3 } ]);
     });
+
     test('is there anybody ?', ()=>{
         const pathhh : Array<Point.Point> = [{x:1,y:1}, {x:1,y:2}, {x:1,y:3},{x:2,y:3},{x:3,y:3},{x:3,y:4},{x:3,y:5},{x:2,y:5},{x:1,y:5}];     
         const B : Tile.Tile = {
             type : Tile.TileType.Tower,
             pos : {x:0,y:0},
             toString: ()=> "#"
-
-    };
-    const world : World.World = World.init(8,pathhh,[B.pos]);
-    expect(Point.isEqual(Actor.isthereanybody(Actor.reachable(pathhh,B.pos,4),world),{ x: 1, y: 3 })).toBe(true);
+        };
+        const world : World.World = World.init(8,pathhh,[B.pos]);
+        expect(Point.isEqual(Actor.isthereanybody(Actor.reachable(pathhh,B.pos,4),world),{ x: 1, y: 3 })).toBe(true);
     });
 
 });

@@ -136,15 +136,15 @@ function reachable(path: Array<Point.Point>, p: Point.Point, r: number): Array<P
     return reachableRec(path, perimeter, p, r);
 }
 
-function isthereanybody (reach: Array<Point.Point>, world: World.World) : Point.Point{
+function isthereanybody(reach: Array<Point.Point>, world: World.World): Point.Point {
     if (reach.length === 0)
-        return startPosition ; 
-    if (World.isFree(reach[reach.length-1],world))
-        return reach[reach.length-1];
-    return isthereanybody(reach.slice(reach.length-2),world);
+        return startPosition;
+    if (World.isFree(reach[reach.length - 1], world))
+        return reach[reach.length - 1];
+    return isthereanybody(reach.slice(reach.length - 2), world);
 }
 
-const tiiir:Action = (actor:Tower ,world :World.World):Point.Point => { return isthereanybody(actor.shootable,world);}
+const tiiir: Action = (actor: Tower, world: World.World): Point.Point => { return isthereanybody(actor.shootable, world); };
 
 
 // function kill(tile: Point.Point, world: World.World): boolean {
