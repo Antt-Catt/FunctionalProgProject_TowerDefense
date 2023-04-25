@@ -61,7 +61,7 @@
 	- [`us3-t02`] Définir ce qu'est un monstre et comment il avance.
     - [`us3-t03`] Mettre en place des interaction entre les monstres et les towers.
 
-- ['us4'][``]*Raffiner le monde*
+- [`us4`][``] *Raffiner le monde*
   - *EN TANT QUE* : Antton et Luxel 
   - *JE VEUX QUE* : Avoir une définition claire des différentes zones du jeu 
   - *AFIN DE* : L'on puisse bouger les acteurs sur un monde bien défini
@@ -70,7 +70,7 @@
      - [`us4-t02`]  Programmer les emplacements des tours.
      - [`us4-t03`]  Programmer les emplacements exploitables pour les actions des tours (lancer d'engrais naturels, de lumière du soleil, d'attention par l'humain).
 
-- ['us5'][``]*Amorce dans la relation attaque-défense*
+- [`us5`][``] *Amorce dans la relation attaque-défense*
   - *EN TANT QUE* : Arthur et Joachim 
   - *JE VEUX QUE* : Avoir des actions bien définies pour les acteurs
   - *AFIN QUE* : Pouvoir faire bouger des trucs, et tirer sur des trucs	
@@ -78,7 +78,7 @@
     - [`us5-t01`] Programmer les mouvements des plantes polluées
     - [`us5-t02`] Programmer la prise en charge des plantes polluées par les tours
 
-- ['us6'][``]*Evolution du moteur de jeu*
+- [`us6`][``] *Evolution du moteur de jeu*
   - *EN TANT QUE* : Luxel et Joachim 
   - *JE VEUX QUE* : Mettre en place la structure de la boucle de jeu
   - *AFIN QUE* : Pouvoir gérer les appels aux acteurs et l'évoltion de la partie	
@@ -86,13 +86,31 @@
     - [`us6-t01`] Mettre en place la boucle de jeu
     - [`us6-t02`] Gerer les appels/ réponses des acteurs
 
-- ['us7'][``]*Independance des acteurs*
+- [`us7`][``] *Independance des acteurs*
   - *EN TANT QUE* : Arthur et Antton 
   - *JE VEUX QUE* : Mettre en place les fonctions des acteurs
   - *AFIN QUE* : Les acteurs puissent interragir avec le moteur	
   - *TASKS* : 
     - [`us7-t01`] Ecrire les interfaces des acteurs
     - [`us7-t02`] Poursuivre l'implémentations des actions des acteurs
+
+- [`us8`][``] *Fonction de tir des tours*
+  - *EN TANT QUE* : Arthur et Joachim
+  - *JE VEUX QUE* : Mettre en place la fonction de tir des tours et de traitement par le moteur
+  - *AFIN QUE* : Les tours puissent calculer un acteur sur lequel tirer et le transmettre au moteur
+  - *TASKS* :
+    - [`us8-t01`] Ecrire la fonction de calcul de l'acteur sur lequel tirer
+    - [`us8-t02`] Faire en sorte que le moteur traite les informations reçues
+
+- [`us9`][``] *Réaliser les tests*
+  - *EN TANT QUE* : Luxel et Antton
+  - *JE VEUX QUE* : Reformater les tests
+  - *AFIN QUE* : Les tests soient à jour avec les nouvelles implémentations et tout tester
+  - *TASKS* :
+    - [`us9-t01`] Mettre à jour les tests déjà écris
+    - [`us9-t02`] Ecrire la suite des tests
+    - [`us9-t03`] Avoir une couverture de test de 100%
+
 
 ## TODO
 
@@ -108,8 +126,12 @@
 
 ## [04-04-2023]
 - [`us4`](FL3,FL4) Implémentation du chemin [`DONE`] 
-- [`us5`](FL1,FL2) Mouvement des acteurs [`IN PROGRESS`] 
+- [`us5`](FL1,FL2) Mouvement des acteurs [`DONE`] 
 
 ## [11-04-2023]
 - [`us6`](FL3,FL4) Mise en place de la boucle de jeu [`IN PROGRESS`] 
-- [`us7`](FL1,FL2) Indépendance et actions des acteurs [`IN PROGRESS`] 
+- [`us7`](FL1,FL2) Indépendance et actions des acteurs [`DONE`] 
+
+## [25-04-2023]
+- [`us8-t01`](FL1,FL2) Ecrire la fonction de calcul de l'acteur sur lequel tirer [`IN PROGRESS`]
+- [`us9-t01`](FL3,FL4) Mettre à jour les tests déjà écris [`IN PROGRESS`]
