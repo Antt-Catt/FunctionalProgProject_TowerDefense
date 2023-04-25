@@ -28,13 +28,13 @@ type Enemy = Actor & {
 
 type Tower = Actor & {
     type: ActorType.Tower;
-    // damage: number;
-    // range: number;
+    damage: number;
+    range: number;
     // cooldown: number;
-    // shootable: Array<Point.Point>;
-    // actions: {
-    //     attack: Action;
-    // }
+    shootable: Array<Point.Point>;
+    //actions: {
+    //    attack: Action;
+    //};
 }
 
 const askForMove: Action = (actor: Enemy): Point.Point => { return actor.path[0]; };
@@ -44,15 +44,16 @@ function init(size: number, path: Array<Point.Point>, towers: Array<Point.Point>
     function initTowers(towers: Array<Point.Point>): Array<Actor> {
         const towersOk = towers.filter(point => point.x < size && point.y < size);
         return towersOk.map(pos => {
-            return {
+            const tower: Tower = {
                 type: ActorType.Tower,
                 position: pos,
                 // characteristics: { attack: "unique" },
-                // damage: 5,
-                // range: 3,
+                damage: 5,
+                range: 3,
                 // cooldown: 1,
-                // shootable: [],
+                shootable: [],
             };
+            return {...tower, shootable: reachable(path, tower.position, tower.range)};
         });
     }
 
@@ -92,6 +93,15 @@ function endPath(actor: Enemy): boolean {
     return (actor.path.length === 0);
 }
 
+function asTower(actor: Actor): Tower {
+    return actor as Tower;
+}
+
+function isTower(actor: Actor): boolean{
+    return (actor.type === ActorType.Tower);
+}
+
+
 // function getActorType(actor: Actor): Enemy | Tower {
 //     if (actor.type === ActorType.Enemy)
 //         return actor as Enemy;
@@ -111,27 +121,27 @@ function endPath(actor: Enemy): boolean {
 //     // }
 // };
 
-// function distance_manhattan(r: number, A: Point.Point, B: Point.Point): boolean {
-//     return (Math.abs(B.x - A.x) + Math.abs(B.y - A.y) <= r);
-// }
+function distance_manhattan(r: number, A: Point.Point, B: Point.Point): boolean {
+    return (Math.abs(B.x - A.x) + Math.abs(B.y - A.y) <= r);
+}
 //Le moteur ( normalement ) doit faire un map sur cette fonction, afin de pouvoir bouger toutes les plantes polluées.
 
 // doit etre appelee dans le main pour generer le champs shootable des tours
-// function reachable(path: Array<Point.Point>, p: Point.Point, r: number): Array<Point.Point> {
-//     const perimeter: Array<Point.Point> = [];
-//     function reachableRec(chemin: Array<Point.Point>, peri: Array<Point.Point>, p: Point.Point, r: number): Array<Point.Point> {
-//         if (chemin.length === 0)
-//             return peri;
-//         else {
-//             const head: Point.Point = chemin[0];
+function reachable(path: Array<Point.Point>, p: Point.Point, r: number): Array<Point.Point> {
+    const perimeter: Array<Point.Point> = [];
+    function reachableRec(chemin: Array<Point.Point>, peri: Array<Point.Point>, p: Point.Point, r: number): Array<Point.Point> {
+        if (chemin.length === 0)
+            return peri;
+        else {
+            const head: Point.Point = chemin[0];
 
-//             if (distance_manhattan(r, head, p))
-//                 peri = [...peri, head];
-//             return reachableRec(chemin.slice(1, chemin.length), peri, p, r);
-//         }
-//     }
-//     return reachableRec(path, perimeter, p, r);
-// }
+            if (distance_manhattan(r, head, p))
+                peri = [...peri, head];
+            return reachableRec(chemin.slice(1, chemin.length), peri, p, r);
+        }
+    }
+    return reachableRec(path, perimeter, p, r);
+}
 
 // function kill(tile: Point.Point, world: World.World): boolean {
 //     if (world.points[tile.y][tile.x].toString() === "*")
@@ -157,10 +167,13 @@ export {
     ActorType,
     Actor,
     Enemy,
+    Tower,
     init,
     isEnemy,
     asEnemy,
     moveEnemy,
+    asTower,
+    isTower,
     endPath
     // getActorType,
     // distance_manhattan,
