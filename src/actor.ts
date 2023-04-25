@@ -181,7 +181,8 @@ export {
     distance_manhattan,
     // towers,
     reachable,
-    isthereanybody
+    isthereanybody,
+    tiiir
     // TowerAttack,
     // kill
 };
