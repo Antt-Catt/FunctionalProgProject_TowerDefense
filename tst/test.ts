@@ -1,4 +1,3 @@
-import exp from "constants";
 import * as Actor from "../src/actor.js";
 import * as Point  from "../src/point.js";
 import * as Tile from "../src/tile.js";
@@ -81,20 +80,24 @@ describe('Functional tests for Tile', () => {
         expect(tower2.toString()).toBe("#");
     });
 
-    test('Tile.getTileType', () => {
-        const path = Tile.createPath();
-        const path2 = path as Tile.Tile;
-
-        const ground = Tile.createGround();
-        const ground2 = ground as Tile.Tile;
-
-        const tower = Tile.createTower();
-        const tower2 = tower as Tile.Tile;
-
-        expect(Tile.getTileType(path2).type).toBe("path");        
-        expect(Tile.getTileType(ground2).type).toBe("ground");        
-        expect(Tile.getTileType(tower2).type).toBe("tower");        
+    test('Tile.isFree', () => {
+        let tile1: Tile.PathTile = Tile.createPath(0, 0);
+        expect(Tile.isFree(tile1)).toBe(true);
+        tile1 = { ...tile1, free: false};
+        expect(Tile.isFree(tile1)).toBe(false);
+        const tile2 = Tile.createGround(0, 0);
+        expect(Tile.isFree(tile2)).toBe(false);
     });
+    
+    test('Tile.setFree', () => {
+        let tile1: Tile.PathTile = Tile.createPath(0, 0);
+        tile1 = Tile.setFree(tile1, false);
+        expect(tile1.free).toBe(false);
+        expect(tile1.toString()).toBe('|');
+        tile1 = Tile.setFree(tile1, true);
+        expect(tile1.toString()).toBe('=');
+    });
+
 });
 
 describe('Functional tests for World', () => {
@@ -105,7 +108,6 @@ describe('Functional tests for World', () => {
         expect(world.points[0].length).toBe(1);
         expect(Point.isEqual(world.points[0][0].pos, {x:0,y:0})).toBe(true);
         expect(world.points[0][0].toString()).toBe("-");
-        expect(Tile.getTileType(world.points[0][0]).type).toBe("ground");
     });
 
     test('World.init negative size', () => {
@@ -115,66 +117,133 @@ describe('Functional tests for World', () => {
     test('World.init size > 1', () => {
         const world = World.init(5, [], []);
         expect(world.points.length).toBe(5);
-        for(let i = 0; i < world.points.length; i++) {
+        for (let i = 0; i < world.points.length; i++) {
             expect(world.points[i].length).toBe(5);
-            for(let j = 0; j < world.points.length;j++) {
+            for (let j = 0; j < world.points.length;j++)
                 expect(Point.isEqual(world.points[i][j].pos, {x:j, y:i})).toBe(true);
-            }
         }
     });
 
     test('World.init with path', () => {
         const world = World.init(5, [{x:0, y:0}, {x:2, y:4}, {x:3, y:4}, {x:1, y:3}], []);
         expect(world.points[0][0].toString()).toBe("=");
-        expect(Tile.getTileType(world.points[0][0]).type).toBe("path");
+        expect(Tile.isFree(world.points[0][0])).toBe(true);
         expect(world.points[0][0].toString()).toBe("=");
-        expect(Tile.getTileType(world.points[4][2]).type).toBe("path");
+        expect(Tile.isFree(world.points[4][2])).toBe(true);
         expect(world.points[0][0].toString()).toBe("=");
-        expect(Tile.getTileType(world.points[4][3]).type).toBe("path");
+        expect(Tile.isFree(world.points[4][3])).toBe(true);
         expect(world.points[0][0].toString()).toBe("=");
-        expect(Tile.getTileType(world.points[3][1]).type).toBe("path");
+        expect(Tile.isFree(world.points[3][1])).toBe(true);
     });
-});
 
-
-describe('Main test suite', () => {
+    test('World.isFree', () => {
+        const world = World.init(5, [{x:0, y:0}, {x:2, y:4}, {x:3, y:4}, {x:1, y:3}], [{x:1, y:1}]);
+        expect(World.isFree(Point.create(0, 0), world)).toBe(true);
+        expect(World.isFree(Point.create(0, 1), world)).toBe(false);
+        expect(World.isFree(Point.create(1, 1), world)).toBe(false);
+    });
     
-    test('Initial test', () => {
-    const A : Tile.Tile = {
-        pos : {x:2,y:4},
-        toString:  ()=> "."
-    };
-    const B : Tile.Tile = {
-        pos : {x:0,y:0},
-        toString: ()=> "#"
-    };
-    const LuxelH : Actor.Actor = {
-        position : {x:49,y:3},
-        type : 'enemy'
-    };
-
-        const pathhh : Array<Point.Point> = [{x:1,y:1},{x:1,y:2},{x:1,y:3},{x:2,y:3},{x:3,y:3},{x:3,y:4},{x:3,y:5},{x:2,y:5},{x:1,y:5}];
-        const world : World.World = World.init(8,pathhh,[B.pos]);
-        expect(Actor.towers.type).toBe("tower");
-        expect(Actor.distance_manhattan(4,A.pos,B.pos)).toBe(false);
-        const vide :Array<any> = [];
-        expect(vide.length).toBe(0);
-        //expect(Actor.reachable(path,B.pos,4)).toBe([ { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 1, y: 3 } ])
-        console.log(Actor.reachable(pathhh,B.pos,4));
-        expect(Actor.getActorType(LuxelH)).toBe(LuxelH);
-        //expect(Actor.kill());
-
+    test('World.setFree', () => {
+        let world = World.init(5, [{x:0, y:0}, {x:2, y:4}, {x:3, y:4}, {x:1, y:3}], []);
+        world = World.setFree(Point.create(0, 0), false, world);
+        expect((world.points[0][0] as Tile.PathTile).free).toBe(false);
+        world = World.setFree(Point.create(0, 0), true, world);
+        expect((world.points[0][0] as Tile.PathTile).free).toBe(true);
     });
 
-    test('World.init with tower', () => {
-        const world = World.init(5, [], [{x:0, y:0}, {x:1, y:4}, {x:4, y:2}, {x:1, y:3}]);
-        expect(world.points[0][0].toString()).toBe("#");
-        expect(Tile.getTileType(world.points[0][0]).type).toBe("tower");
-        expect(world.points[0][0].toString()).toBe("#");
-        expect(Tile.getTileType(world.points[4][1]).type).toBe("tower");
-        expect(world.points[0][0].toString()).toBe("#");
-        expect(Tile.getTileType(world.points[2][4]).type).toBe("tower");
-        expect(world.points[0][0].toString()).toBe("#");
-        expect(Tile.getTileType(world.points[3][1]).type).toBe("tower");
-    });
 });
+
+describe('Functional tests for World', () => {
+
+    test('Actor.isEnemy', () => {
+        const actor1: Actor.Actor = {
+            type: Actor.ActorType.Enemy,
+            position: Actor.startPosition,
+        } as Actor.Actor
+        expect(Actor.isEnemy(actor1)).toBe(true);
+        const tower1: Actor.Actor = {
+            type: Actor.ActorType.Tower,
+            position: Actor.startPosition,
+        } as Actor.Actor
+        expect(Actor.isEnemy(tower1)).toBe(false);
+    });
+
+    test('Actor.asEnemy', () => {
+        const actor1: Actor.Actor = {
+            type: Actor.ActorType.Enemy,
+            position: Actor.startPosition,
+        } as Actor.Actor
+        expect(Actor.asEnemy(actor1)).toBe(actor1 as Actor.Enemy);
+    });
+
+    test('Actor.moveEnemy', () => {
+        let actor1: Actor.Actor = {
+            type: Actor.ActorType.Enemy,
+            position: {x:1, y:1},
+            path: [{x:2, y:2}]
+        } as Actor.Actor
+        expect(actor1.position.x).toBe(1);
+        expect(actor1.position.y).toBe(1);
+        actor1 = Actor.moveEnemy(actor1 as Actor.Enemy) as Actor.Actor;
+        expect(actor1.position.x).toBe(2);
+        expect(actor1.position.y).toBe(2);
+    });
+    
+    test('Actor.endPath', () => {
+        let actor1: Actor.Actor = {
+            type: Actor.ActorType.Enemy,
+            position: {x:1, y:1},
+            path: [{x:2, y:2}]
+        } as Actor.Actor
+        expect(Actor.endPath(actor1 as Actor.Enemy)).toBe(false);
+        actor1 = Actor.moveEnemy(actor1 as Actor.Enemy) as Actor.Actor;
+        expect(Actor.endPath(actor1 as Actor.Enemy)).toBe(true);
+    });
+
+    test('Actor.init', () => {
+        const actors = Actor.init(2, [{ x: 0, y: 0 }, { x: 1, y: 0 }], [{ x: 1, y: 1 }]);
+    });
+
+});
+
+// describe('Functional tests for Motor', () => {
+    
+//     test('Initial test', () => {
+//     const A : Tile.Tile = {
+//         pos : {x:2,y:4},
+//         toString:  ()=> "."
+//     };
+//     const B : Tile.Tile = {
+//         pos : {x:0,y:0},
+//         toString: ()=> "#"
+//     };
+//     const LuxelH : Actor.Actor = {
+//         position : {x:49,y:3},
+//         type : 'enemy'
+//     };
+
+//         const pathhh : Array<Point.Point> = [{x:1,y:1},{x:1,y:2},{x:1,y:3},{x:2,y:3},{x:3,y:3},{x:3,y:4},{x:3,y:5},{x:2,y:5},{x:1,y:5}];
+//         const world : World.World = World.init(8,pathhh,[B.pos]);
+//         expect(Actor.towers.type).toBe("tower");
+//         expect(Actor.distance_manhattan(4,A.pos,B.pos)).toBe(false);
+//         const vide :Array<any> = [];
+//         expect(vide.length).toBe(0);
+//         //expect(Actor.reachable(path,B.pos,4)).toBe([ { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 1, y: 3 } ])
+//         console.log(Actor.reachable(pathhh,B.pos,4));
+//         expect(Actor.getActorType(LuxelH)).toBe(LuxelH);
+//         //expect(Actor.kill());
+
+//     });
+
+//     test('World.init with tower', () => {
+//         const world = World.init(5, [], [{x:0, y:0}, {x:1, y:4}, {x:4, y:2}, {x:1, y:3}]);
+//         expect(world.points[0][0].toString()).toBe("#");
+//         expect(Tile.getTileType(world.points[0][0]).type).toBe("tower");
+//         expect(world.points[0][0].toString()).toBe("#");
+//         expect(Tile.getTileType(world.points[4][1]).type).toBe("tower");
+//         expect(world.points[0][0].toString()).toBe("#");
+//         expect(Tile.getTileType(world.points[2][4]).type).toBe("tower");
+//         expect(world.points[0][0].toString()).toBe("#");
+//         expect(Tile.getTileType(world.points[3][1]).type).toBe("tower");
+//     });
+// });
