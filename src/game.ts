@@ -51,18 +51,18 @@ function moveAll(gameState: GameState): GameState {
 }
 
 
-function shootAll(gameState: GameState): GameState {
-    let updatedWorld: World.World = gameState.world;
-    let end: boolean = false;
-    const updatedActors = gameState.actors.map(actor => {
-        if (Actor.isEnemy(actor))
-            return { ...actor };
+// function shootAll(gameState: GameState): GameState {
+//     let updatedWorld: World.World = gameState.world;
+//     let end: boolean = false;
+//     const updatedActors = gameState.actors.map(actor => {
+//         if (Actor.isEnemy(actor))
+//             return { ...actor };
 
-        const currentActor: Actor.Tower = Actor.asTower(actor);
+//         const currentActor: Actor.Tower = Actor.asTower(actor);
 
-        const requestShoot: Point.Point = currentActor.actions.attack(currentActor, gameState.world);
-    }
-}
+//         const requestShoot: Point.Point = currentActor.actions.attack(currentActor, gameState.world);
+//     });
+// }
 
 
 export {
