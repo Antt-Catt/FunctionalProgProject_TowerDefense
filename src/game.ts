@@ -10,6 +10,7 @@ type GameState = {
     end: boolean;
 };
 
+
 function init(size: number, path: Array<Point.Point>, towers: Array<Point.Point>): GameState {
     return { world: World.init(size, path, towers), actors: Actor.init(size, path, towers), path: path, round: 0, end: false };
 }
@@ -41,13 +42,29 @@ function moveAll(gameState: GameState): GameState {
             // console.error(`-> ${currentActor.type} move from (x: ${currentActor.position.x}, y: ${currentActor.position.y}) to (x: ${requestedPosition.x}, y: ${requestedPosition.y}).`);
             return Actor.moveEnemy(currentActor);
         }
-
+        
         // The move wasn't possible
         return { ...actor };
     });
 
     // Return updated game state with updated actors
     return { ...gameState, world: updatedWorld, actors: updatedActors, end: end };
+}
+
+function resolveMove(game: GameState, proposals: Array<Point.Point>, k: number): GameState {
+    const currentActor: Actor.Enemy = Actor.asEnemy(game.actors[k]); 
+    const requestedPosition: Point.Point = proposals[k];
+    if (Actor.endPath(currentActor))
+        return {...game, end: true};
+    else if (World.isFree(requestedPosition, game.world)) {
+        const freedWorld: World.World = World.setFree(currentActor.position, true, game.world);
+        const newWorld: World.World = World.setFree(requestedPosition, false, freedWorld);
+        const newActors: Array<Actor.Actor> = game.actors.splice(k, 1, Actor.moveEnemy(currentActor));
+        return { ...game, world : newWorld, actors : newActors };
+    }
+      // The move wasn't possible
+    return { ...game};
+
 }
 
 
@@ -61,8 +78,24 @@ function shootAll(gameState: GameState): GameState {
         const currentActor: Actor.Tower = Actor.asTower(actor);
 
         const requestShoot: Point.Point = currentActor.actions.attack(currentActor, gameState.world);
+    });
+    return gameState;
+}
+
+
+function resolveProposals( game: GameState, proposals: Array<Point.Point>, funcName: (game: GameState, list: Array<Point.Point> n: number) => GameState, k: number): GameState {
+    if ( k === proposals.length) {
+        return game;
+    }
+    else {
+        if ( proposals[k] !== Actor.startPosition) { 
+            const newGameState: GameState = funcName(game, proposals, k);
+            return resolveProposals(newGameState, proposals, funcName, k + 1);
+        } 
+        return resolveProposals(game, proposals, funcName, k + 1);
     }
 }
+
 
 
 export {

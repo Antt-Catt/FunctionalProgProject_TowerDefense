@@ -151,12 +151,8 @@ function reachable(path: Array<Point.Point>, p: Point.Point, r: number): Array<P
     return reachableRec(path, perimeter, p, r);
 }
 
-<<<<<<< HEAD
 
-function isthereanybody (reach: Array<Point.Point>, world: World.World) : Point.Point{
-=======
 function isthereanybody(reach: Array<Point.Point>, world: World.World): Point.Point {
->>>>>>> origin/move_actors
     if (reach.length === 0)
         return startPosition;
     if (World.isFree(reach[reach.length - 1], world))
@@ -164,14 +160,9 @@ function isthereanybody(reach: Array<Point.Point>, world: World.World): Point.Po
     return isthereanybody(reach.slice(reach.length - 2), world);
 }
 
-<<<<<<< HEAD
-const tiiir:Action = (actor:Tower ,world :World.World):Point.Point => {
-    return isthereanybody(actor.shootable,world);
-}
 
-=======
 const tiiir: Action = (actor: Tower, world: World.World): Point.Point => { return isthereanybody(actor.shootable, world); };
->>>>>>> origin/move_actors
+
 
 
 // function kill(tile: Point.Point, world: World.World): boolean {
@@ -197,6 +188,7 @@ export {
     startPosition,
     ActorType,
     Actor,
+    Action,
     Enemy,
     Tower,
     init,
