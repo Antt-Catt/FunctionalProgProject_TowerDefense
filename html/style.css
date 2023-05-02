@@ -1,24 +1,25 @@
-
-.mainz{
+main {
     width: 100%;
     overflow: hidden;
 }
-.game{
+
+.game {
     float: left;
     width: 80%;
     margin: auto auto 10px 10px;
-    background-image: url("../img/depositphotos_5452478-stock-photo-garden.jpg");
+    background-image: url("img/depositphotos_5452478-stock-photo-garden.jpg");
     background-size: cover;
     background-position: center;
     height: 700px;
     border: 2px solid black;
     box-sizing: border-box;
 }
-.right{
+
+.right {
     float: right;
     width: 15%;
-    margin: auto 15px auto auto ;
-    background-image: url("../img/s-l1600.jpg");
+    margin: auto 15px auto auto;
+    background-image: url("img/s-l1600.jpg");
     background-size: cover;
     background-position: center;
     border: 1px solid red;
@@ -31,41 +32,44 @@
 
 }
 
-
-@keyframes pub {
-        from{
-            background-image: url("../img/s-l1600.jpg");
-        }
-        to{
-            background-image: url("../img/pub-idole-lancome-zendaya.jpg");
-        }
+.fond-vert {
+    background-color: green;
 }
- 
 
-
-
-.d1{
+.d1 {
     background-color: green;
     animation-name: couleur1;
     animation-duration: 2s;
 }
 
-@keyframes couleur1{
-    from{
+@keyframes pub {
+    from {
+        background-image: url("img/s-l1600.jpg");
+    }
+
+    to {
+        background-image: url("img/pub-idole-lancome-zendaya.jpg");
+    }
+}
+
+@keyframes couleur1 {
+    from {
         background-color: green;
     }
-    to{
+
+    to {
         background-color: red;
     }
 }
 
 @keyframes animate {
-    0%{
+    0% {
         transform: translateY(0) rotate(0deg);
         opacity: 1;
         border-radius: 0;
     }
-    100%{
+
+    100% {
         transform: translateY(-1000px) rotate(720deg);
         opacity: 0;
         border-radius: 50%;
@@ -82,8 +86,9 @@
     padding: 0;
     background: #57e389;
     overflow: hidden;
-    
+
 }
+
 .background li {
     position: absolute;
     display: block;
@@ -94,9 +99,6 @@
     animation: animate 19s linear infinite;
 }
 
-
-
-
 .background li:nth-child(0) {
     left: 26%;
     width: 139px;
@@ -104,6 +106,7 @@
     bottom: -139px;
     animation-delay: 1s;
 }
+
 .background li:nth-child(1) {
     left: 5%;
     width: 116px;
@@ -111,6 +114,7 @@
     bottom: -116px;
     animation-delay: 3s;
 }
+
 .background li:nth-child(2) {
     left: 1%;
     width: 109px;
@@ -118,6 +122,7 @@
     bottom: -109px;
     animation-delay: 3s;
 }
+
 .background li:nth-child(3) {
     left: 12%;
     width: 132px;
@@ -125,6 +130,7 @@
     bottom: -132px;
     animation-delay: 14s;
 }
+
 .background li:nth-child(4) {
     left: 86%;
     width: 191px;
@@ -132,6 +138,7 @@
     bottom: -191px;
     animation-delay: 20s;
 }
+
 .background li:nth-child(5) {
     left: 52%;
     width: 168px;
@@ -139,6 +146,7 @@
     bottom: -168px;
     animation-delay: 5s;
 }
+
 .background li:nth-child(6) {
     left: 31%;
     width: 110px;
@@ -146,6 +154,7 @@
     bottom: -110px;
     animation-delay: 15s;
 }
+
 .background li:nth-child(7) {
     left: 76%;
     width: 152px;
@@ -153,6 +162,7 @@
     bottom: -152px;
     animation-delay: 23s;
 }
+
 .background li:nth-child(8) {
     left: 66%;
     width: 191px;
@@ -160,6 +170,7 @@
     bottom: -191px;
     animation-delay: 8s;
 }
+
 .background li:nth-child(9) {
     left: 79%;
     width: 152px;
