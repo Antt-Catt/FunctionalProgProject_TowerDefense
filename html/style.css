@@ -3,27 +3,32 @@
     width: 100%;
     overflow: hidden;
 }
+
+.box {
+    display: flex;
+}
+
 .game{
     float: left;
     width: 80%;
     margin: auto auto 10px 10px;
-    background-image: url("../img/depositphotos_5452478-stock-photo-garden.jpg");
+    background-image: url("./img/depositphotos_5452478-stock-photo-garden.jpg");
     background-size: cover;
     background-position: center;
-    height: 700px;
+    height: 43vw;
     border: 2px solid black;
     box-sizing: border-box;
 }
 .right{
     float: right;
     width: 15%;
-    margin: auto 15px auto auto ;
-    background-image: url("../img/s-l1600.jpg");
+    margin: auto 15px 10px auto ;
+    background-image: url("./img/s-l1600.jpg");
     background-size: cover;
     background-position: center;
     border: 1px solid red;
     box-sizing: border-box;
-    height: 700px;
+    height: 43vw;
     animation-name: pub;
     animation-duration: 4s;
     animation-iteration-count: infinite;
@@ -34,10 +39,10 @@
 
 @keyframes pub {
         from{
-            background-image: url("../img/s-l1600.jpg");
+            background-image: url("./img/s-l1600.jpg");
         }
         to{
-            background-image: url("../img/pub-idole-lancome-zendaya.jpg");
+            background-image: url("./img/pub-idole-lancome-zendaya.jpg");
         }
 }
  
