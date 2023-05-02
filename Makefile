@@ -12,8 +12,8 @@ test:
 eslint:
 	npx eslint src tst
 
-# parcel:
-# 	npx parcel dist/index.html
+parcel:
+	npx parcel html/game.html
 
 clean:
 	rm -rf *~ coverage
