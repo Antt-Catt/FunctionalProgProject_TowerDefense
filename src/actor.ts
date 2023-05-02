@@ -1,6 +1,5 @@
 import * as World from "./world.js";
 import * as Point from "./point.js";
-// import { isFree } from "./tile.js";
 
 const startPosition: Point.Point = { x: -1, y: -1 };
 
@@ -113,28 +112,11 @@ function getActorType(actor: Actor): Enemy | Tower {
     return actor as Tower;
 }
 
-
-// const towers: Tower = {
-//     type: 'tower',
-//     position: { x: 2, y: 4 },
-//     characteristics: { attack: 'unique' },
-//     damage: 10,
-//     range: 3,
-//     cooldown: 1,
-//     shootable: [{ x: 1, y: 2 }],
-//     // actions: {
-//     //     attack: TowerAttack,
-//     // }
-// };
-
 function distance_manhattan(r: number, A: Point.Point, B: Point.Point): boolean {
     return (Math.abs(B.x - A.x) + Math.abs(B.y - A.y) <= r);
 }
 
-//Le moteur ( normalement ) doit faire un map sur cette fonction, afin de pouvoir bouger toutes les plantes polluées.
-
 // doit etre appelee dans le main pour generer le champs shootable des tours
-
 function reachable(path: Array<Point.Point>, p: Point.Point, r: number): Array<Point.Point> {
     const perimeter: Array<Point.Point> = [];
     function reachableRec(chemin: Array<Point.Point>, peri: Array<Point.Point>, p: Point.Point, r: number): Array<Point.Point> {
@@ -155,14 +137,14 @@ function reachable(path: Array<Point.Point>, p: Point.Point, r: number): Array<P
 function isthereanybody(reach: Array<Point.Point>, world: World.World): Point.Point {
     if (reach.length === 0)
         return startPosition;
-    if (World.isFree(reach[reach.length - 1], world))
+    if (!World.isFree(reach[reach.length - 1], world))
         return reach[reach.length - 1];
-    return isthereanybody(reach.slice(reach.length - 2), world);
+    return isthereanybody(reach.slice(0, -1), world);
 }
 
-
-const tiiir: Action = (actor: Tower, world: World.World): Point.Point => { return isthereanybody(actor.shootable, world); };
-
+const tiiir: Action = (actor: Tower, world: World.World): Point.Point => {
+    return isthereanybody(actor.shootable,world);
+};
 
 
 // function kill(tile: Point.Point, world: World.World): boolean {
@@ -192,6 +174,7 @@ export {
     Enemy,
     Tower,
     init,
+    askForMove,
     isEnemy,
     asEnemy,
     moveEnemy,
@@ -200,18 +183,9 @@ export {
     endPath,
     getActorType,
     distance_manhattan,
-    // towers,
     reachable,
-    tiiir,
-    isthereanybody
+    isthereanybody,
+    tiiir
     // TowerAttack,
     // kill
 };
-
-// const action: Action = (Enemies)
-
-// function foo(tipe: Actor){
-//     if (tipe.type === 'enemy'){
-
-//     }
-// }

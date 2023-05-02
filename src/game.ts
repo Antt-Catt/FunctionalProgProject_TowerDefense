@@ -84,7 +84,7 @@ function shootAll(gameState: GameState): GameState {
 
 
 function resolveProposals( game: GameState, proposals: Array<Point.Point>, funcName: (game: GameState, list: Array<Point.Point> n: number) => GameState, k: number): GameState {
-    if ( k === proposals.length) {
+    if ( k === proposals.length ) {
         return game;
     }
     else {
