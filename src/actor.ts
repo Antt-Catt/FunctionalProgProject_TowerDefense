@@ -1,129 +1,190 @@
-import { sortAndDeduplicateDiagnostics } from "typescript";
-type Tile = { i: number, j: number,pos: pointType};
-type pointType = { x: number, y: number};
-type worldType = {points : number };
+import * as World from "./world.js";
+import * as Point from "./point.js";
 
-const nil = {};
-function isEmpty<T>(l:Array<T>){
-    return l === nil;
+const startPosition: Point.Point = { x: -1, y: -1 };
+
+enum ActorType {
+    Enemy = "enemy",
+    Tower = "tower",
 }
-/*type actorT = {
-    range : number,
-    speed : number,
-
-};
-type actorM = {
-    life : number,
-    speed : number,
-
-};
-
-type actorType = {
-    pos: pointType,
-    type : string,
-    classe : actorT | actorM
-    actions: {(actor:actorType,aWorld: worldType):pointType} | {(actor:actorType,aWorld: worldType, aPath:chemin):pointType}
-};
-
-const towers:actorType = {
-    pos : {i:4,j:5},
-    type : "tower",
-    classe : {range : 5, speed: 1},
-    actions : tir,
-};
-
-function tir(actor:actorType,aWorld: worldType):pointType{
-    const points:pointType = {i:2,j:4};
-    return points ;
-}*/
 
 type Actor = {
-    position : pointType;
-    characteristics : Record<string, any>; //pour des infos plus specifiques, par ex les tours : attaque de zone ou unique, ralentir etc.
-    type : 'enemy' | 'tower';
+    type: ActorType;
+    position: Point.Point;
+    // characteristics?: Record<string, string | number>;
 }
 
-type Action = (actor: Actor, world: worldType) => number;
+type Action = (actor: Enemy | Tower, world: World.World) => Point.Point;
 
-type Enemy = Actor &  {
-    type : 'enemy';
-    health: number;
-    speed: number;
+type Enemy = Actor & {
+    type: ActorType.Enemy;
+    path: Array<Point.Point>;
     actions: {
-        move: Action;
-        // attack: Action;
+        move: Action
     }
-    path: Array<pointType>;
+    // health: number;
+    // speed: number;
 }
 
 type Tower = Actor & {
-    type : 'tower';
-    damage : number;
-    range : number;
-    cooldown : number;
-    shootable : Array<Tile>;
+    type: ActorType.Tower;
+    damage: number;
+    range: number;
+    // cooldown: number;
+    shootable: Array<Point.Point>;
     actions: {
         attack: Action;
     }
 }
-function TowerAttack(){
-    return 0;
-}
-const towers: Tower = {
-    type : 'tower',
-    position : {x:2,y:4},
-    characteristics : {attack : 'unique'},
-    damage : 10,
-    range : 3,
-    cooldown : 1,
-    shootable : [],
-    actions : {
-        attack : TowerAttack,
+
+const askForMove: Action = (actor: Enemy): Point.Point => { return actor.path[0]; };
+
+function init(size: number, path: Array<Point.Point>, towers: Array<Point.Point>): Array<Actor> {
+
+    function initTowers(towers: Array<Point.Point>): Array<Actor> {
+        const towersOk = towers.filter(point => point.x < size && point.y < size);
+        return towersOk.map(pos => {
+            const tower: Tower = {
+                type: ActorType.Tower,
+                position: pos,
+                // characteristics: { attack: "unique" },
+                damage: 5,
+                range: 3,
+                // cooldown: 1,
+                shootable: [],
+                actions: {
+                    attack: tiiir
+                }
+            };
+            return {...tower, shootable: reachable(path, tower.position, tower.range)};
+        });
     }
+
+    function initEnemies(n: number, enemies: Array<Enemy>): Array<Actor> {
+        if (n === 0)
+            return enemies;
+        return initEnemies(n - 1, enemies.concat({
+            type: ActorType.Enemy,
+            position: startPosition,
+            path: path.slice(), // Slice is used to create a copy of path for each actor
+            // health: 10,
+            // speed: 1,
+            actions: {
+                move: askForMove
+            }
+        }));
+    }
+
+    const actors = initTowers(towers).concat(initEnemies(2, []));
+
+    return actors;
+}
+
+function isEnemy(actor: Actor): boolean {
+    return (actor.type === ActorType.Enemy);
+}
+
+function asEnemy(actor: Actor): Enemy {
+    return actor as Enemy;
+}
+
+function moveEnemy(actor: Enemy): Enemy {
+    return { ...actor, position: actor.path.shift() as Point.Point };
+}
+
+function endPath(actor: Enemy): boolean {
+    return (actor.path.length === 0);
+}
+
+
+function asTower(actor: Actor): Tower {
+    return actor as Tower;
+}
+
+function isTower(actor: Actor): boolean{
+    return (actor.type === ActorType.Tower);
+}
+
+
+function getActorType(actor: Actor): Enemy | Tower {
+    if (actor.type === ActorType.Enemy)
+        return actor as Enemy;
+    return actor as Tower;
+}
+
+function distance_manhattan(r: number, A: Point.Point, B: Point.Point): boolean {
+    return (Math.abs(B.x - A.x) + Math.abs(B.y - A.y) <= r);
+}
+
+// doit etre appelee dans le main pour generer le champs shootable des tours
+function reachable(path: Array<Point.Point>, p: Point.Point, r: number): Array<Point.Point> {
+    const perimeter: Array<Point.Point> = [];
+    function reachableRec(chemin: Array<Point.Point>, peri: Array<Point.Point>, p: Point.Point, r: number): Array<Point.Point> {
+        if (chemin.length === 0)
+            return peri;
+        else {
+            const head: Point.Point = chemin[0];
+
+            if (distance_manhattan(r, head, p))
+                peri = [...peri, head];
+            return reachableRec(chemin.slice(1, chemin.length), peri, p, r);
+        }
+    }
+    return reachableRec(path, perimeter, p, r);
+}
+
+
+function isthereanybody(reach: Array<Point.Point>, world: World.World): Point.Point {
+    if (reach.length === 0)
+        return startPosition;
+    if (!World.isFree(reach[reach.length - 1], world))
+        return reach[reach.length - 1];
+    return isthereanybody(reach.slice(0, -1), world);
+}
+
+const tiiir: Action = (actor: Tower, world: World.World): Point.Point => {
+    return isthereanybody(actor.shootable,world);
 };
 
 
-    
-function distance_manhattan(r : number, A :Tile, B : pointType):boolean {
-    return ( Math.abs(B.x - A.pos.x) + Math.abs(B.y - A.pos.y) <= r );
-}
-
-function move(l:Array<Tile>):Array<Tile>{
-    return l.slice(1,l.length);
-}
-
-function reachable(l : Array<Tile>,p : pointType, r : number){
-    const perimeter : Array<Tile> = [];
-    function reachableRec(l : Array<Tile>, t :Array<Tile>, p : pointType, r : number):Array<Tile>{
-        if (isEmpty(l))
-            return t;
-        else 
-        {
-            const head : Tile = l[0];
-            if (distance_manhattan(r, head, p))
-            {
-                t = [...t, head];
-            }
-            return reachableRec(l.slice(1,l.length) ,t ,p ,r );
-        }
-    }
-    return reachableRec(l, perimeter, p, r);
-}
-// const action: Action = (Enemies)
-
-// function foo(tipe: Actor){
-//     if (tipe.type === 'enemy'){ 
-
-//     }
+// function kill(tile: Point.Point, world: World.World): boolean {
+//     if (world.points[tile.y][tile.x].toString() === "*")
+//         return true;
+//     return false;
 // }
 
-const world:worldType = {
-    points:14,
-}
+// function TowerAttack(actor: Actor, world: World.World): Point.Point {
+//     const tower = actor as Tower;
+//     function recAttack(tab: Array<Point.Point>, world: World.World): Point.Point {
+//         const k: Array<Point.Point> = tab.slice(-1);
+//         if (tab.length === 0)
+//             return { x: -1, y: -1 };
+//         if (kill(k[0], world))
+//             return k[0];
+//         return recAttack(tab, world);
+//     }
+//     return recAttack(tower.shootable, world);
+// }
 
-export{
-    pointType,
-    worldType,
-    towers,
-    world,
-}
+export {
+    startPosition,
+    ActorType,
+    Actor,
+    Enemy,
+    Tower,
+    init,
+    askForMove,
+    isEnemy,
+    asEnemy,
+    moveEnemy,
+    asTower,
+    isTower,
+    endPath,
+    getActorType,
+    distance_manhattan,
+    reachable,
+    isthereanybody,
+    tiiir
+    // TowerAttack,
+    // kill
+};

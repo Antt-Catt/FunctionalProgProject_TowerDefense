@@ -78,8 +78,23 @@
     - [`us5-t01`] Programmer les mouvements des plantes polluées
     - [`us5-t02`] Programmer la prise en charge des plantes polluées par les tours
 
-## TODO
+- ['us6'][``]*Evolution du moteur de jeu*
+  - *EN TANT QUE* : Luxel et Joachim 
+  - *JE VEUX QUE* : Mettre en place la structure de la boucle de jeu
+  - *AFIN QUE* : Pouvoir gérer les appels aux acteurs et l'évoltion de la partie	
+  - *TASKS* : 
+    - [`us6-t01`] Mettre en place la boucle de jeu
+    - [`us6-t02`] Gerer les appels/ réponses des acteurs
 
+- ['us7'][``]*Independance des acteurs*
+  - *EN TANT QUE* : Arthur et Antton 
+  - *JE VEUX QUE* : Mettre en place les fonctions des acteurs
+  - *AFIN QUE* : Les acteurs puissent interragir avec le moteur	
+  - *TASKS* : 
+    - [`us7-t01`] Ecrire les interfaces des acteurs
+    - [`us7-t02`] Poursuivre l'implémentations des actions des acteurs
+
+## TODO
 
 ## [21-03-2023] 
 - [us1][`10`][(FL3, FL4)] *Makefile fonctionnel* [`DONE`]
@@ -92,5 +107,9 @@
 - [us3][`8`][(FL2,FL3)] Création des acteurs.[`DONE`] 
 
 ## [04-04-2023]
-- [`us4`](FL3,FL4) Implémentation du chemin [`IN PROGRESS`] 
+- [`us4`](FL3,FL4) Implémentation du chemin [`DONE`] 
 - [`us5`](FL1,FL2) Mouvement des acteurs [`IN PROGRESS`] 
+
+## [11-04-2023]
+- [`us6`](FL3,FL4) Mise en place de la boucle de jeu [`IN PROGRESS`] 
+- [`us7`](FL1,FL2) Indépendance et actions des acteurs [`IN PROGRESS`] 

@@ -4,10 +4,10 @@ build:
 	npx tsc -p tsconfig.json
 
 run:
-	node dist/main.js
+	node dist/motor.js
 
 test:
-	npx jest tst/*.ts
+	npx jest --coverage tst/*.ts
 
 eslint:
 	npx eslint src tst
@@ -16,4 +16,4 @@ eslint:
 # 	npx parcel dist/index.html
 
 clean:
-	rm -f *~
+	rm -rf *~ coverage
