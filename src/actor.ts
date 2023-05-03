@@ -172,6 +172,7 @@ export {
     Actor,
     Enemy,
     Tower,
+    Action,
     init,
     askForMove,
     isEnemy,
