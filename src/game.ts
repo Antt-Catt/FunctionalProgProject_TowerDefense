@@ -67,6 +67,12 @@ function resolveMove(game: GameState, proposals: Array<Point.Point>, k: number):
 
 }
 
+function resolveShoot(game: GameState, proposals:  Array<Point.Point>, k: number): GameState {
+    const currentActor: Actor.Tower = Actor.asTower(game.actors[k]);
+    
+    if ()
+    return game;
+}
 
 function shootAll(gameState: GameState): GameState {
     let updatedWorld: World.World = gameState.world;
@@ -83,7 +89,7 @@ function shootAll(gameState: GameState): GameState {
 }
 
 
-function resolveProposals( game: GameState, proposals: Array<Point.Point>, funcName: (game: GameState, list: Array<Point.Point> n: number) => GameState, k: number): GameState {
+function resolveProposals( game: GameState, proposals: Array<Point.Point>, funcName: (game: GameState, list: Array<Point.Point>, n: number) => GameState, k: number): GameState {
     if ( k === proposals.length ) {
         return game;
     }
