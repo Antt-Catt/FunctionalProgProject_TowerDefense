@@ -299,8 +299,6 @@ describe('Functional tests for Actor', () => {
         const tower = {...Tow, shootable: Actor.reachable(pathhh, Tow.position, Tow.range)};
         const world : World.World = World.init(8,pathhh,[Tow.position]);
         World.setFree({x:1, y:1}, false, world);
-        console.log(Actor.tiiir(tower, world));
-        console.log(tower.shootable);
         expect(Point.isEqual(Actor.tiiir(tower,world),{ x: 1, y: 1 })).toBe(true);
     });
 });

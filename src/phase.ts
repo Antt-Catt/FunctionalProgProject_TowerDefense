@@ -4,9 +4,10 @@ import * as Actor from "./actor.js";
 import * as Game from "./game.js";
 
 type Phase = {
-    proposal: Actor.Action;
-    //resolve: (game: Game.GameState, proposals: Array<Point.Point>, k: number) => Game.GameState;
-}
+    name: string;
+    proposal: Actor.Action;  
+    resolve: ( game: Game.GameState, proposals: Array<Point.Point>, k: number) => Game.GameState;
+};
 
 function computePhases(game: Game.GameState): Array<Phase> {
     // function allPhases(actors: Array<Actor.Actor>, phases: Array<Phase>): Array<Phase> {
@@ -28,6 +29,11 @@ function computePhases(game: Game.GameState): Array<Phase> {
 
     // }
     // return allPhases(game.actors, []);
-    const phases: Array<Phase> = [{proposal: Actor.askForMove}]//, resolve}]
+    const phases: Array<Phase> = [{name: "move", proposal: Actor.askForMove, resolve: Game.resolveMove}];//, resolve}];
     return phases;
 }
+
+export {
+    Phase,
+    computePhases
+};

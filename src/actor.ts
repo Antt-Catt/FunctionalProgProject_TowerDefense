@@ -19,9 +19,7 @@ type Action = (actor: Enemy | Tower, world: World.World) => Point.Point;
 type Enemy = Actor & {
     type: ActorType.Enemy;
     path: Array<Point.Point>;
-    actions: {
-        move: Action
-    }
+    actions: Record<string, Action>;
     // health: number;
     // speed: number;
 }
@@ -32,9 +30,7 @@ type Tower = Actor & {
     range: number;
     // cooldown: number;
     shootable: Array<Point.Point>;
-    actions: {
-        attack: Action;
-    }
+    actions: Record<string, Action>;
 }
 
 const askForMove: Action = (actor: Enemy): Point.Point => { return actor.path[0]; };
@@ -170,9 +166,9 @@ export {
     startPosition,
     ActorType,
     Actor,
+    Action,
     Enemy,
     Tower,
-    Action,
     init,
     askForMove,
     isEnemy,
