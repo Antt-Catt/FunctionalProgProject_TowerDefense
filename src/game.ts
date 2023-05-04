@@ -73,6 +73,12 @@ function setFreeMove(src: Point.Point, dst: Point.Point, world: World.World): Wo
     return World.setFree(dst, false, world);
 }
 
+function resolveShoot(game: GameState, proposals:  Array<Point.Point>, k: number): GameState {
+    const currentActor: Actor.Tower = Actor.asTower(game.actors[k]);
+    
+    if ()
+    return game;
+}
 
 function shootAll(gameState: GameState): GameState {
     let updatedWorld: World.World = gameState.world;
