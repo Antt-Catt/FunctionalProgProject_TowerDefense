@@ -29,7 +29,7 @@ function computePhases(game: Game.GameState): Array<Phase> {
 
     // }
     // return allPhases(game.actors, []);
-    const phases: Array<Phase> = [{name: "move", proposal: Actor.askForMove, resolve: Game.resolveMove}];//, resolve}];
+    const phases: Array<Phase> = [{name: "move", proposal: Actor.askForMove, resolve: Game.resolveMove},{name: "attack", proposal: Actor.tiiir, resolve: Game.resolveShoot}];//, resolve}];
     return phases;
 }
 
