@@ -21,9 +21,10 @@ type Action = (actor: Enemy | Tower, world: World.World) => Point.Point;
 type Enemy = Actor & {
     type: ActorType.Enemy;
     path: Array<Point.Point>;
-    // health: number;
+    health: number;
     // speed: number;
 }
+type Dead = Actor;
 
 type Tower = Actor & {
     type: ActorType.Tower;
@@ -44,7 +45,7 @@ function init(size: number): Array<Actor> {
                 type: ActorType.Tower,
                 position: pos,
                 // characteristics: { attack: "unique" },
-                damage: 5,
+                damage: 4,
                 range: 3,
                 // cooldown: 1,
                 shootable: [],
@@ -63,7 +64,7 @@ function init(size: number): Array<Actor> {
             type: ActorType.Enemy,
             position: startPosition,
             path: (n % 2 ? Path.arrayPath1 : Path.arrayPath2).concat(Path.arrayPathEnd), // Slice is used to create a copy of path for each actor
-            // health: 10,
+            health: 40,
             // speed: 1,
             actions: {
                 move: askForMove
@@ -71,7 +72,7 @@ function init(size: number): Array<Actor> {
         }));
     }
 
-    const actors = initTowers(Path.arrayTower).concat(initEnemies(2, []));
+    const actors = initTowers(Path.arrayTower).concat(initEnemies(26, []));
 
     return actors;
 }
@@ -83,6 +84,7 @@ function isEnemy(actor: Actor): boolean {
 function asEnemy(actor: Actor): Enemy {
     return actor as Enemy;
 }
+
 
 function moveEnemy(actor: Enemy): Enemy {
     return { ...actor, position: actor.path.shift() as Point.Point };
@@ -169,6 +171,7 @@ export {
     Action,
     Enemy,
     Tower,
+    Dead,
     init,
     askForMove,
     isEnemy,
