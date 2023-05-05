@@ -44,6 +44,8 @@ main {
     background-color: green;
     animation-name: couleur1;
     animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-delay: 2s;
 }
 
 @keyframes pub {
