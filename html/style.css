@@ -80,8 +80,10 @@ td {
 }
 
 .flower {
-    background-image: url(img/png-clipart-monster-graphy-illustration-cartoon-monster-flowers-love-leaf.png);
+    background-image: url(img/Daco_5883000.png);
+    background-position: 0px 10px;
     background-size: 100%;
+    background-repeat: no-repeat;
 }
 
 .tower {
