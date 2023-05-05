@@ -13,7 +13,7 @@ let gameState: Game.GameState = Game.init(worldSize, arrayPath, arrayTower);
 
 // Print initial world
 console.log(`[-] Initial world.`);
-console.log(Display.displayWorld(gameState.world));
+Display.displayWorld(gameState.world);
 
 while (!gameState.end && gameState.round < maxRound) {
     // Increment and print the round
@@ -24,7 +24,7 @@ while (!gameState.end && gameState.round < maxRound) {
     gameState = Game.moveAll(gameState);
 
     // Print world and actors
-    console.log(Display.displayWorld(gameState.world));
+    Display.displayWorld(gameState.world);
     // console.error(gameState.actors);
 }
 
