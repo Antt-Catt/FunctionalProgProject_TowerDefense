@@ -23,6 +23,12 @@ main {
     animation-delay: 4s;
     
 }
+.test{
+    position: relative;
+    width: 7%;
+    left: 93%;
+
+}
 
 .fond-vert {
     background-color: green;
