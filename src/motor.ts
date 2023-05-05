@@ -13,22 +13,29 @@ let gameState: Game.GameState = Game.init(worldSize, arrayPath, arrayTower);
 
 // Print initial world
 console.log(`[-] Initial world.`);
-Display.displayWorld(gameState.world);
+Display.initDisplay(gameState);
+Display.displayWorld(gameState);
 
-while (!gameState.end && gameState.round < maxRound) {
-    // Increment and print the round
-    gameState = Game.nextRound(gameState);
-    console.log(`[-] Turn ${gameState.round}.`);
+let round = 0;
+const interval = setInterval(() => {
+    round++;
 
-    // Move enemies
-    gameState = Game.moveAll(gameState);
+    if (!gameState.end && round <= maxRound) {
+        // Increment and print the round
+        gameState = Game.nextRound(gameState);
+        console.log(`[-] Turn ${gameState.round}.`);
 
-    // Print world and actors
-    Display.displayWorld(gameState.world);
-    // console.error(gameState.actors);
-}
+        // Move enemies
+        gameState = Game.moveAll(gameState);
 
-if (gameState.end)
-    console.log(`[-] Game lost, an enemy has reached the end of the course !`);
-else if (gameState.round >= maxRound)
-    console.log(`[-] Maximum number of rounds reached !`);
+        // Print world and actors
+        Display.displayWorld(gameState);
+        // console.error(gameState.actors);
+    } else {
+        clearInterval(interval);
+        if (gameState.end)
+            console.log(`[-] Game lost, an enemy has reached the end of the course !`);
+        else
+            console.log(`[-] Maximum number of rounds reached !`);
+    }
+}, 1500);

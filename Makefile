@@ -1,4 +1,4 @@
-all: eslint build run
+all: eslint build
 
 build:
 	npx tsc -p tsconfig.json
@@ -16,4 +16,4 @@ parcel:
 	npx parcel html/game.html
 
 clean:
-	rm -rf *~ coverage
+	rm -rf *~ coverage .parcel-cache dist/*
