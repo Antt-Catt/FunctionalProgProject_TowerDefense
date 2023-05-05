@@ -32,7 +32,6 @@ function displayWorld(gameState: GameState.GameState) {
             if (Actor.isEnemy(actor) && (actor.position !== Actor.startPosition))
                 index_list.push(Actor.asEnemy(actor).position.y * 5 + Actor.asEnemy(actor).position.x);
         });
-        console.log(index_list);
         for (let i = 0; i < gameState.world.points.length*gameState.world.points[0].length; i++) {
             const element: HTMLElement = (document.getElementsByClassName("case")[i] as HTMLElement);
             if ((index_list.includes(i)) !== (element.classList.contains("flower")))

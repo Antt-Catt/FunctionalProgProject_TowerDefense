@@ -19,12 +19,11 @@ type Action = (actor: Enemy | Tower, world: World.World) => Point.Point;
 type Enemy = Actor & {
     type: ActorType.Enemy;
     path: Array<Point.Point>;
-    actions: {
-        move: Action
-    }
-    // health: number;
+    actions: Record<string, Action>;
+     health: number;
     // speed: number;
 }
+type Dead = Actor;
 
 type Tower = Actor & {
     type: ActorType.Tower;
@@ -32,9 +31,7 @@ type Tower = Actor & {
     range: number;
     // cooldown: number;
     shootable: Array<Point.Point>;
-    actions: {
-        attack: Action;
-    }
+    actions: Record<string, Action>;
 }
 
 const askForMove: Action = (actor: Enemy): Point.Point => { return actor.path[0]; };
@@ -48,7 +45,7 @@ function init(size: number, path: Array<Point.Point>, towers: Array<Point.Point>
                 type: ActorType.Tower,
                 position: pos,
                 // characteristics: { attack: "unique" },
-                damage: 5,
+                damage: 4,
                 range: 3,
                 // cooldown: 1,
                 shootable: [],
@@ -67,7 +64,7 @@ function init(size: number, path: Array<Point.Point>, towers: Array<Point.Point>
             type: ActorType.Enemy,
             position: startPosition,
             path: path.slice(), // Slice is used to create a copy of path for each actor
-            // health: 10,
+            health: 10,
             // speed: 1,
             actions: {
                 move: askForMove
@@ -75,7 +72,7 @@ function init(size: number, path: Array<Point.Point>, towers: Array<Point.Point>
         }));
     }
 
-    const actors = initTowers(towers).concat(initEnemies(2, []));
+    const actors = initTowers(towers).concat(initEnemies(5, []));
 
     return actors;
 }
@@ -87,6 +84,7 @@ function isEnemy(actor: Actor): boolean {
 function asEnemy(actor: Actor): Enemy {
     return actor as Enemy;
 }
+
 
 function moveEnemy(actor: Enemy): Enemy {
     return { ...actor, position: actor.path.shift() as Point.Point };
@@ -170,8 +168,10 @@ export {
     startPosition,
     ActorType,
     Actor,
+    Action,
     Enemy,
     Tower,
+    Dead,
     init,
     askForMove,
     isEnemy,
