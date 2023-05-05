@@ -2,6 +2,7 @@ import * as Point from "./point.js";
 import * as World from "./world.js";
 import * as Actor from "./actor.js";
 import { Z_ASCII } from 'zlib';
+import { isFree } from './tile.js';
 
 type GameState = {
     world: World.World;
@@ -19,7 +20,7 @@ function init(size: number, path: Array<Point.Point>, towers: Array<Point.Point>
 function nextRound(gameState: GameState): GameState {
     return { ...gameState, round: gameState.round + 1 };
 }
-
+/*
 function moveAll(gameState: GameState): GameState {
     let updatedWorld: World.World = gameState.world;
     let end: boolean = false;
@@ -51,6 +52,7 @@ function moveAll(gameState: GameState): GameState {
     // Return updated game state with updated actors
     return { ...gameState, world: updatedWorld, actors: updatedActors, end: end };
 }
+*/
 
 function resolveMove(game: GameState, proposals: Array<Point.Point>, k: number): GameState {
     const currentActor: Actor.Enemy = Actor.asEnemy(game.actors[k]); 
@@ -76,18 +78,23 @@ function setFreeMove(src: Point.Point, dst: Point.Point, world: World.World): Wo
 
 function resolveShoot(game: GameState, proposals:  Array<Point.Point>, k: number): GameState {
     const targetPlace: Point.Point = proposals[k];
+    if (World.isFree(targetPlace, game.world)) {
+        return game;
+    }
     const targettingTower: Actor.Tower = Actor.asTower(game.actors[k]);
-    const targetActor: Actor.Enemy = Actor.asEnemy(getActor(game.actors, targetPlace));
+    const targetIdx: number = getIdx(game.actors, targetPlace, 0);
+    const targetActor: Actor.Enemy = Actor.asEnemy(game.actors[targetIdx]);
     //case where the enemy is being killed
     if ( targetActor.health <= targettingTower.damage) {
-        const newDead: Actor.Enemy = {...targetActor, path: [Actor.startPosition], position: Actor.startPosition};
-        return {...game, actors: newActors(newDead, game, k) ,world: World.setFree(targetPlace, true, game.world)};
+        const newDead: Actor.Enemy = {...targetActor, path: [Actor.startPosition], position: Actor.startPosition, health: 0};
+        return {...game, actors: newActors(newDead, game, targetIdx), world: World.setFree(targetPlace, true, game.world)};
     }
     else {
     const newActor: Actor.Enemy = removeHealth(targetActor, targettingTower.damage);
-    return {...game, actors: newActors(newActor, game, k)};
+    return {...game, actors: newActors(newActor, game, targetIdx)};
     }
 }
+
 //return new array of actors where the actor in k-position is shifted with newActor in the game.actors array
 function newActors(newActor: Actor.Actor, game: GameState, k: number): Array<Actor.Actor> {
     return [...game.actors.slice(0, k), newActor, ...game.actors.slice(k + 1)];
@@ -98,13 +105,14 @@ function removeHealth(enemy: Actor.Enemy, damage: number): Actor.Enemy {
     const newHealth: number = enemy.health - damage;
     return {...enemy, health: newHealth};
 }
+
 //return the actor in postion pos in array actors
-function getActor(actors: Array<Actor.Actor>, pos: Point.Point): Actor.Actor {
+function getIdx(actors: Array<Actor.Actor>, pos: Point.Point, k: number): number{
     if (actors[0].position === pos) {
-        return actors[0];
+        return k;
     }
     else {
-        return getActor(actors.slice(1), pos);
+        return getIdx(actors.slice(1), pos, k + 1);
     }
 }
 

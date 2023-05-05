@@ -45,7 +45,7 @@ function init(size: number, path: Array<Point.Point>, towers: Array<Point.Point>
                 type: ActorType.Tower,
                 position: pos,
                 // characteristics: { attack: "unique" },
-                damage: 9,
+                damage: 4,
                 range: 3,
                 // cooldown: 1,
                 shootable: [],
@@ -72,7 +72,7 @@ function init(size: number, path: Array<Point.Point>, towers: Array<Point.Point>
         }));
     }
 
-    const actors = initTowers(towers).concat(initEnemies(1, []));
+    const actors = initTowers(towers).concat(initEnemies(5, []));
 
     return actors;
 }
@@ -85,9 +85,6 @@ function asEnemy(actor: Actor): Enemy {
     return actor as Enemy;
 }
 
-function asDead(actor: Enemy): Dead {
-    return actor as Dead;
-}
 
 function moveEnemy(actor: Enemy): Enemy {
     return { ...actor, position: actor.path.shift() as Point.Point };
@@ -182,7 +179,6 @@ export {
     moveEnemy,
     asTower,
     isTower,
-    asDead,
     endPath,
     getActorType,
     distance_manhattan,

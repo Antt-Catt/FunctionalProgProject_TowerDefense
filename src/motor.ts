@@ -22,31 +22,34 @@ console.log(Display.displayWorld(gameState.world));
 while (!gameState.end && gameState.round < maxRound) {
     // Increment and print the round
     gameState = Game.nextRound(gameState);
-
+    console.log(`[-] Turn ${gameState.round}.`);
+    
     gameState = phases.reduce((game: Game.GameState, aPhase: Phase.Phase) => {
         const proposals: Array<Point.Point> = game.actors.map((anActor) => {
             const actor: Actor.Enemy | Actor.Tower = Actor.getActorType(anActor);
             if (aPhase.name in actor.actions) {
-                // console.log(actor.type);
-                // console.log(actor.actions.move);
+                //console.log(actor.type);
+                //console.log(actor.actions.move);
                 const prop = aPhase.name;
-                // console.log(prop);
-                // console.log(actor.actions[prop]);
+                //console.log(prop);
+                //console.log(actor.actions[prop]);
                 return actor.actions[prop](actor, game.world);
             }
             return Actor.startPosition;
         });
         const newGame: Game.GameState = Game.resolveProposals(game, proposals, aPhase.resolve, 0);
+        console.log(aPhase.name);
+        console.log(Display.displayWorld(gameState.world));
         return newGame;
     },gameState);
 
-    console.log(`[-] Turn ${gameState.round}.`);
+
 
     // Move enemies
     // gameState = Game.moveAll(gameState);
 
     // Print world and actors
-    console.log(Display.displayWorld(gameState.world));
+    //console.log(Display.displayWorld(gameState.world));
     // console.error(gameState.actors);
 }
 
