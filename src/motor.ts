@@ -3,15 +3,14 @@ import * as Game from "./game.js";
 import * as Display from "./display.js";
 import * as Phase from "./phase.js";
 import * as Actor from "./actor.js";
+import * as Path from "./path.js";
 
 console.log("[-] Game started.\n");
 
 const maxRound: number = 10;
-const worldSize: number = 5;
-const arrayPath: Array<Point.Point> = [{ x: 0, y: 2 }, { x: 1, y: 2 }, { x: 2, y: 2 }, { x: 3, y: 2 }, { x: 4, y: 2 }];
-const arrayTower: Array<Point.Point> = [{ x: 1, y: 1 }, { x: 3, y: 3 }];
+const worldSize: number = 15;
 
-let gameState: Game.GameState = Game.init(worldSize, arrayPath, arrayTower);
+let gameState: Game.GameState = Game.init(worldSize);
 
 const phases: Array<Phase.Phase> = Phase.computePhases(gameState);
 
@@ -27,11 +26,7 @@ while (!gameState.end && gameState.round < maxRound) {
         const proposals: Array<Point.Point> = game.actors.map((anActor) => {
             const actor: Actor.Enemy | Actor.Tower = Actor.getActorType(anActor);
             if (aPhase.name in actor.actions) {
-                // console.log(actor.type);
-                // console.log(actor.actions.move);
                 const prop = aPhase.name;
-                // console.log(prop);
-                // console.log(actor.actions[prop]);
                 return actor.actions[prop](actor, game.world);
             }
             return Actor.startPosition;
