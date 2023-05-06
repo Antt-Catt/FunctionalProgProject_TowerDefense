@@ -10,7 +10,7 @@ main {
 .right {
     float: right;
     width: 15%;
-    margin: auto 15px 10px auto ;
+    margin: auto 15px 10px auto;
     background-image: url("./img/s-l1600.jpg");
     background-size: cover;
     background-position: center;
@@ -21,13 +21,13 @@ main {
     animation-duration: 4s;
     animation-iteration-count: infinite;
     animation-delay: 4s;
-    
+
 }
-.test{
+
+#cross {
     position: relative;
     width: 7%;
     left: 93%;
-
 }
 
 .fond-vert {
@@ -42,7 +42,7 @@ main {
     animation-delay: 2s;
 }
 
-.game{
+.game {
     float: left;
     width: 80%;
     margin: auto auto 10px 10px;
@@ -52,8 +52,22 @@ main {
     height: 43vw;
     border: 2px solid black;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
+}
+
+#game_text_div {
+    background-color: green;
+    border: 2px solid black;
+    margin: 1vw;
+}
+
+#game_text {
+    color: black;
+    font-size: 1.5vw;
+    padding-right: 1.5vw;
+    padding-left: 1.5vw;
 }
 
 table {

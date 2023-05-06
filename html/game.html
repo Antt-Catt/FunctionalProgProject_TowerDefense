@@ -29,52 +29,17 @@
 			<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
 				<input type="submit" value="NE PAS TOUCHER" class="d1">
 			</a>
-			<input type="submit" value="TOUCHE !" class="d1">
+			<input type="submit" value="TOUCHE !" class="d1" onclick="window.location.reload();">
 		</p>
 	</header>
 
 	<main class="box">
 		<div class="game">
-			<table>
-				<tr>
-					<td class="case"></td>
-					<td class="case"></td>
-					<td class="case"></td>
-					<td class="case"></td>
-					<td class="case"></td>
-				</tr>
-				<tr>
-					<td class="case"></td>
-					<td class="case"></td>
-					<td class="case"></td>
-					<td class="case"></td>
-					<td class="case"></td>
-				</tr>
-				<tr>
-					<td class="case"></td>
-					<td class="case"></td>
-					<td class="case"></td>
-					<td class="case"></td>
-					<td class="case"></td>
-				</tr>
-				<tr>
-					<td class="case"></td>
-					<td class="case"></td>
-					<td class="case"></td>
-					<td class="case"></td>
-					<td class="case"></td>
-				</tr>
-				<tr>
-					<td class="case"></td>
-					<td class="case"></td>
-					<td class="case"></td>
-					<td class="case"></td>
-					<td class="case"></td>
-				</tr>
-			</table>
+			<div id="game_text_div"><h2 id="game_text">Phase X : Attack</h2></div>
+			<table></table> <!-- Game table -->
 		</div>
 		<aside class="right">
-			<img class="test" src="img/1487086345-cross_81577.png">
+			<img id="cross" src="img/1487086345-cross_81577.png">
 		</aside>
 	</main>
 
