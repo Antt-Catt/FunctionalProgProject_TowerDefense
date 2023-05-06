@@ -5,12 +5,35 @@ import * as Phase from "./phase.js";
 import * as Actor from "./actor.js";
 import * as Path from "./path.js";
 
+function loop(gameState: Game.GameState): Game.GameState {
+    if (gameState.end || gameState.round >= maxRound) {
+        return gameState;
+    }
+    console.log(`[-] Turn ${gameState.round}.`);
+    const newGame: Game.GameState = phases.reduce((game: Game.GameState, aPhase: Phase.Phase) => {
+        const proposals: Array<Point.Point> = game.actors.map((anActor) => {
+            const actor: Actor.Enemy | Actor.Tower = Actor.getActorType(anActor);
+            if (aPhase.name in actor.actions) {
+                const prop = aPhase.name;
+                return actor.actions[prop](actor, game.world);
+            }
+            return Actor.startPosition;
+        });
+        const reducedGame: Game.GameState = Game.resolveProposals(game, proposals, aPhase.resolve, 0);
+        console.log(aPhase.name);
+        console.log(Display.displayWorld(gameState.world));
+        return reducedGame;
+    },gameState);
+
+    return loop(Game.nextRound(newGame));
+}
+
 console.log("[-] Game started.\n");
 
 const maxRound: number = 60;
 const worldSize: number = 15;
 
-let gameState: Game.GameState = Game.init(worldSize);
+const gameState: Game.GameState = Game.init(worldSize);
 
 const phases: Array<Phase.Phase> = Phase.computePhases(gameState);
 
@@ -18,41 +41,43 @@ const phases: Array<Phase.Phase> = Phase.computePhases(gameState);
 console.log(`[-] Initial world.`);
 console.log(Display.displayWorld(gameState.world));
 
-while (!gameState.end && gameState.round < maxRound) {
-    // Increment and print the round
-    gameState = Game.nextRound(gameState);
-    console.log(`[-] Turn ${gameState.round}.`);
+// while (!gameState.end && gameState.round < maxRound) {
+//     // Increment and print the round
+//     gameState = Game.nextRound(gameState);
+//     console.log(`[-] Turn ${gameState.round}.`);
     
-    gameState = phases.reduce((game: Game.GameState, aPhase: Phase.Phase) => {
-        const proposals: Array<Point.Point> = game.actors.map((anActor) => {
-            const actor: Actor.Enemy | Actor.Tower = Actor.getActorType(anActor);
-            if (aPhase.name in actor.actions) {
-                //console.log(actor.type);
-                //console.log(actor.actions.move);
-                const prop = aPhase.name;
-                //console.log(prop);
-                //console.log(actor.actions[prop]);
-                return actor.actions[prop](actor, game.world);
-            }
-            return Actor.startPosition;
-        });
-        const newGame: Game.GameState = Game.resolveProposals(game, proposals, aPhase.resolve, 0);
-        console.log(aPhase.name);
-        console.log(Display.displayWorld(gameState.world));
-        return newGame;
-    },gameState);
+//     gameState = phases.reduce((game: Game.GameState, aPhase: Phase.Phase) => {
+//         const proposals: Array<Point.Point> = game.actors.map((anActor) => {
+//             const actor: Actor.Enemy | Actor.Tower = Actor.getActorType(anActor);
+//             if (aPhase.name in actor.actions) {
+//                 //console.log(actor.type);
+//                 //console.log(actor.actions.move);
+//                 const prop = aPhase.name;
+//                 //console.log(prop);
+//                 //console.log(actor.actions[prop]);
+//                 return actor.actions[prop](actor, game.world);
+//             }
+//             return Actor.startPosition;
+//         });
+//         const newGame: Game.GameState = Game.resolveProposals(game, proposals, aPhase.resolve, 0);
+//         console.log(aPhase.name);
+//         console.log(Display.displayWorld(gameState.world));
+//         return newGame;
+//     },gameState);
 
 
 
-    // Move enemies
-    // gameState = Game.moveAll(gameState);
+//     Move enemies
+//     gameState = Game.moveAll(gameState);
 
-    // Print world and actors
-    //console.log(Display.displayWorld(gameState.world));
-    // console.error(gameState.actors);
-}
+//     Print world and actors
+//     console.log(Display.displayWorld(gameState.world));
+//     console.error(gameState.actors);
+// }
 
-if (gameState.end)
+const finalGameState: Game.GameState = loop(gameState);
+
+if (finalGameState.end)
     console.log(`[-] Game lost, an enemy has reached the end of the course !`);
-else if (gameState.round >= maxRound)
+else if (finalGameState.round >= maxRound)
     console.log(`[-] Maximum number of rounds reached !`);

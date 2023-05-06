@@ -13,7 +13,7 @@ type GameState = {
 
 
 function init(size: number): GameState {
-    return { world: World.init(size, Path.totalPath, Path.arrayTower), actors: Actor.init(size), path: Path.totalPath, round: 0, end: false };
+    return { world: World.init(size, Path.totalPath, Path.arrayTower), actors: Actor.init(size), path: Path.totalPath, round: 1, end: false };
 }
 
 function nextRound(gameState: GameState): GameState {

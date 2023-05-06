@@ -87,7 +87,7 @@ function asEnemy(actor: Actor): Enemy {
 
 
 function moveEnemy(actor: Enemy): Enemy {
-    return { ...actor, position: actor.path.shift() as Point.Point };
+    return { ...actor, position: Path.getPathHead(actor.path), path: Path.removePathHead(actor.path)};
 }
 
 function endPath(actor: Enemy): boolean {

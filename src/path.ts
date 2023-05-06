@@ -14,7 +14,17 @@ const totalPath: Array<Point.Point> = arrayPath1.concat(arrayPath2, arrayPathEnd
 const arrayTower: Array<Point.Point> = [{ x: 1, y: 1 }, { x: 3, y: 4 }, {x: 5, y: 8},
     {x: 4, y: 10}, {x: 8, y: 12}, {x: 11, y: 9}, {x: 13, y: 13}, {x: 2, y: 14}, {x: 14, y: 7}];
 
+function removePathHead(path: Array<Point.Point>): Array<Point.Point> {
+    return path.slice(1);
+}
+
+function getPathHead(path: Array<Point.Point>): Point.Point {
+    return path[0];
+}
+
 export {
+    removePathHead,
+    getPathHead,
     arrayPath1,
     arrayPath2,
     arrayPathEnd,

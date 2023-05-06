@@ -2,6 +2,8 @@ import * as Actor from "../src/actor.js";
 import * as Point  from "../src/point.js";
 import * as Tile from "../src/tile.js";
 import * as World from "../src/world.js";
+import * as Path from "../src/path.js";
+import * as Game from "../src/game.js";
 
 describe('Functional tests for Point', () => {
 
@@ -162,7 +164,7 @@ describe('Functional tests for Actor', () => {
             type: Actor.ActorType.Enemy,
             position: Actor.startPosition,
             path: pathhh,
-            // health: 10,
+            health: 10,
             // speed: 1,
             actions: {
                 move: Actor.askForMove
@@ -174,11 +176,13 @@ describe('Functional tests for Actor', () => {
         const actor1: Actor.Actor = {
             type: Actor.ActorType.Enemy,
             position: Actor.startPosition,
+            actions: {},
         };
         expect(Actor.isEnemy(actor1)).toBe(true);
         const tower1: Actor.Actor = {
             type: Actor.ActorType.Tower,
             position: Actor.startPosition,
+            actions: {},
         };
         expect(Actor.isEnemy(tower1)).toBe(false);
     });
@@ -187,6 +191,7 @@ describe('Functional tests for Actor', () => {
         const actor1: Actor.Actor = {
             type: Actor.ActorType.Enemy,
             position: Actor.startPosition,
+            actions: {},
         };
         expect(Actor.asEnemy(actor1)).toBe(actor1 as Actor.Enemy);
     });
@@ -195,11 +200,13 @@ describe('Functional tests for Actor', () => {
         const actor1: Actor.Actor = {
             type: Actor.ActorType.Tower,
             position: Actor.startPosition,
+            actions: {},
         };
         expect(Actor.isTower(actor1)).toBe(true);
         const enemy1: Actor.Actor = {
             type: Actor.ActorType.Enemy,
             position: Actor.startPosition,
+            actions: {},
         };
         expect(Actor.isTower(enemy1)).toBe(false);
     });
@@ -208,6 +215,7 @@ describe('Functional tests for Actor', () => {
         const actor1: Actor.Actor = {
             type: Actor.ActorType.Tower,
             position: Actor.startPosition,
+            actions: {},
         } as Actor.Actor;
         expect(Actor.asTower(actor1)).toBe(actor1 as Actor.Tower);
     });
@@ -216,7 +224,8 @@ describe('Functional tests for Actor', () => {
         let actor1: Actor.Actor = {
             type: Actor.ActorType.Enemy,
             position: {x:1, y:1},
-            path: [{x:2, y:2}]
+            actions: {},
+            path: [{x:2, y:2}],
         } as Actor.Actor;
         expect(actor1.position.x).toBe(1);
         expect(actor1.position.y).toBe(1);
@@ -229,7 +238,8 @@ describe('Functional tests for Actor', () => {
         let actor1: Actor.Actor = {
             type: Actor.ActorType.Enemy,
             position: {x:1, y:1},
-            path: [{x:2, y:2}]
+            actions: {},
+            path: [{x:2, y:2}],
         } as Actor.Actor;
         expect(Actor.endPath(actor1 as Actor.Enemy)).toBe(false);
         actor1 = Actor.moveEnemy(actor1 as Actor.Enemy) as Actor.Actor;
@@ -237,17 +247,19 @@ describe('Functional tests for Actor', () => {
     });
 
     test('Actor.init', () => {
-        const actors = Actor.init(2, [{ x: 0, y: 0 }, { x: 1, y: 0 }], [{ x: 1, y: 1 }]);
+        const actors = Actor.init(2);//, [{ x: 0, y: 0 }, { x: 1, y: 0 }], [{ x: 1, y: 1 }]);
     });
 
     test('Get Actor Type',()=>{
         const LuxelH : Actor.Actor = {
             type : Actor.ActorType.Enemy,
-            position : {x:49,y:3}
+            position : {x:49,y:3},
+            actions: {}
         };
         const pasLuxelH: Actor.Actor = {
             type: Actor.ActorType.Tower,
-            position: {x: 0, y: 0}
+            position: {x: 0, y: 0},
+            actions: {}
         };
         expect(Actor.getActorType(LuxelH)).toBe(LuxelH as Actor.Enemy);
         expect(Actor.getActorType(pasLuxelH)).toBe(pasLuxelH as Actor.Tower);
@@ -300,6 +312,37 @@ describe('Functional tests for Actor', () => {
         const world : World.World = World.init(8,pathhh,[Tow.position]);
         World.setFree({x:1, y:1}, false, world);
         expect(Point.isEqual(Actor.tiiir(tower,world),{ x: 1, y: 1 })).toBe(true);
+    });
+});
+
+describe('Functional tests for Path', () => {
+
+    test('removePathHead test', () => {
+        const path: Array<Point.Point> = [{x: 0, y: 0}, {x: 1, y: 3}];
+        const newPath: Array<Point.Point> = Path.removePathHead(path); 
+        expect(newPath.length).toBe(1);
+        expect(Point.isEqual(newPath[0], {x: 1, y: 3})).toBe(true);
+    });
+
+    test('getPathHead test', () => {
+        const path: Array<Point.Point> = [{x: 0, y: 0}, {x: 1, y: 3}];
+        expect(Point.isEqual(Path.getPathHead(path), {x: 0, y: 0})).toBe(true);
+    });
+});
+
+describe('Functional tests for Game', () => {
+
+    test('nextRound test', () => {
+        const gameState: Game.GameState = Game.init(15);
+        expect(gameState.round).toBe(1);
+        expect(Game.nextRound(gameState).round).toBe(2);
+        expect(Game.nextRound(Game.nextRound(gameState)).round).toBe(3);
+        console.log(gameState);
+    });
+
+    test('resolveMove test', () => {
+        const gameState: Game.GameState = Game.init(20);
+        const proposals: Array<Point.Point> = [];
     });
 });
 
