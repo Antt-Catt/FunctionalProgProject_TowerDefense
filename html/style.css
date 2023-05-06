@@ -1,0 +1,243 @@
+main {
+    width: 100%;
+    overflow: hidden;
+}
+
+.box {
+    display: flex;
+}
+
+.right {
+    float: right;
+    width: 15%;
+    margin: auto 15px 10px auto;
+    background-image: url("./img/s-l1600.jpg");
+    background-size: cover;
+    background-position: center;
+    border: 1px solid red;
+    box-sizing: border-box;
+    height: 43vw;
+    animation-name: pub;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    animation-delay: 4s;
+
+}
+
+#cross {
+    position: relative;
+    width: 7%;
+    left: 93%;
+}
+
+.fond-vert {
+    background-color: green;
+}
+
+.d1 {
+    background-color: green;
+    animation-name: couleur1;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-delay: 2s;
+}
+
+.game {
+    float: left;
+    width: 80%;
+    margin: auto auto 10px 10px;
+    background-image: url("./img/depositphotos_5452478-stock-photo-garden.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 43vw;
+    border: 2px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#game_text_div {
+    background-color: green;
+    border: 2px solid black;
+    margin: 1vw;
+}
+
+#game_text {
+    color: black;
+    font-size: 1.5vw;
+    padding-right: 1.5vw;
+    padding-left: 1.5vw;
+}
+
+table {
+    display: block;
+    border-collapse: collapse;
+}
+
+td {
+    width: 2vw;
+    height: 2vw;
+    border: 2px solid black;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.path {
+    background-color: gray;
+}
+
+.ground {
+    background-color: green;
+}
+
+.flower {
+    background-image: url(img/Daco_5883000.png);
+    background-position: 0px 10px;
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+.tower {
+    background-image: url(img/pub-idole-lancome-zendaya.jpg);
+    background-size: 100%;
+}
+
+@keyframes pub {
+    from {
+        background-image: url("img/s-l1600.jpg");
+    }
+
+    to {
+        background-image: url("img/pub-idole-lancome-zendaya.jpg");
+    }
+}
+
+@keyframes couleur1 {
+    from {
+        background-color: green;
+    }
+
+    to {
+        background-color: red;
+    }
+}
+
+@keyframes animate {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+        border-radius: 0;
+    }
+
+    100% {
+        transform: translateY(-1000px) rotate(720deg);
+        opacity: 0;
+        border-radius: 50%;
+    }
+}
+
+.background {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    background: #57e389;
+    overflow: hidden;
+
+}
+
+.background li {
+    position: absolute;
+    display: block;
+    list-style: none;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    animation: animate 19s linear infinite;
+}
+
+.background li:nth-child(0) {
+    left: 26%;
+    width: 139px;
+    height: 139px;
+    bottom: -139px;
+    animation-delay: 1s;
+}
+
+.background li:nth-child(1) {
+    left: 5%;
+    width: 116px;
+    height: 116px;
+    bottom: -116px;
+    animation-delay: 3s;
+}
+
+.background li:nth-child(2) {
+    left: 1%;
+    width: 109px;
+    height: 109px;
+    bottom: -109px;
+    animation-delay: 3s;
+}
+
+.background li:nth-child(3) {
+    left: 12%;
+    width: 132px;
+    height: 132px;
+    bottom: -132px;
+    animation-delay: 14s;
+}
+
+.background li:nth-child(4) {
+    left: 86%;
+    width: 191px;
+    height: 191px;
+    bottom: -191px;
+    animation-delay: 20s;
+}
+
+.background li:nth-child(5) {
+    left: 52%;
+    width: 168px;
+    height: 168px;
+    bottom: -168px;
+    animation-delay: 5s;
+}
+
+.background li:nth-child(6) {
+    left: 31%;
+    width: 110px;
+    height: 110px;
+    bottom: -110px;
+    animation-delay: 15s;
+}
+
+.background li:nth-child(7) {
+    left: 76%;
+    width: 152px;
+    height: 152px;
+    bottom: -152px;
+    animation-delay: 23s;
+}
+
+.background li:nth-child(8) {
+    left: 66%;
+    width: 191px;
+    height: 191px;
+    bottom: -191px;
+    animation-delay: 8s;
+}
+
+.background li:nth-child(9) {
+    left: 79%;
+    width: 152px;
+    height: 152px;
+    bottom: -152px;
+    animation-delay: 45s;
+}
