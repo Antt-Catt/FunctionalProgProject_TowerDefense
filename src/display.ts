@@ -23,12 +23,12 @@ function initDisplay(gameState: GameState.GameState) {
         }
         gameState.world.points.forEach((row, row_index) => {
             row.forEach((item, item_index) => {
-                (document.getElementsByClassName("case")[row_index * 5 + item_index] as HTMLElement).classList.add((item.type === Tile.TileType.Path) ? "path" : "ground");
+                (document.getElementsByClassName("case")[row_index * 15 + item_index] as HTMLElement).classList.add((item.type === Tile.TileType.Path) ? "path" : "ground");
             }, '');
         });
         gameState.actors.forEach((actor, index) => {
             if (Actor.isTower(actor))
-                (document.getElementsByClassName("case")[actor.position.x * 5 + actor.position.y] as HTMLElement).classList.add("tower");
+                (document.getElementsByClassName("case")[actor.position.x + actor.position.y * 15] as HTMLElement).classList.add("tower");
         });
     }
 
@@ -53,7 +53,7 @@ function displayWorld(gameState: GameState.GameState) {
     function displayParcel(gameState: GameState.GameState) {
         gameState.world.points.forEach((row, row_index) => {
             row.forEach((item, item_index) => {
-                const element: HTMLElement = (document.getElementsByClassName("case")[row_index * 5 + item_index] as HTMLElement);
+                const element: HTMLElement = (document.getElementsByClassName("case")[row_index * 15 + item_index] as HTMLElement);
                 if ((item.type === Tile.TileType.Path && !Tile.isFree(item))  !== (element.classList.contains("flower")))
                     element.classList.toggle("flower");
             }, '');

@@ -1,5 +1,4 @@
 import * as Point from "./point.js";
-import * as World from "./world.js";
 import * as Actor from "./actor.js";
 import * as Game from "./game.js";
 
@@ -10,25 +9,13 @@ type Phase = {
 };
 
 function computePhases(game: Game.GameState): Array<Phase> {
-    // function allPhases(actors: Array<Actor.Actor>, phases: Array<Phase>): Array<Phase> {
-    //     function isPhaseExists(newPhase: Phase, listPhases: Array<Phase>): boolean {
-    //         if (listPhases.length === 0) {
-    //             return false
-    //         }
-    //         if (listPhases[0].proposal === newPhase.proposal) {
-    //             return true;
-    //         }
-    //         return isPhaseExists(newPhase, listPhases.splice(1));
-    //     }
-
-    //     if (actors.length === 0) {
-    //         return phases;
-    //     }
-
-    //     if isPhaseExists(actors[0].actions)
-
-    // }
-    // return allPhases(game.actors, []);
+    // const actions: Array<Record<string, Actor.Action>> = game.actors.map((actor) => actor.actions);
+    // const namesP: Array<string> = [];
+    // const namesPhases: Array<string> = actions.reduce((names: Array<string>, actions: Record<string, Actor.Action>) => {
+    //     const newNames: Array<string> = names.concat(Object.keys(actions)[0]);
+    //     return newNames;
+    // }, namesP);
+    // console.log(namesPhases.filter((x, i) => namesPhases.indexOf(x) === i));
     const phases: Array<Phase> = [{name: "move", proposal: Actor.askForMove, resolve: Game.resolveMove},{name: "attack", proposal: Actor.tiiir, resolve: Game.resolveShoot}];//, resolve}];
     return phases;
 }

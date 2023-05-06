@@ -76,8 +76,8 @@ table {
 }
 
 td {
-    width: 5vw;
-    height: 5vw;
+    width: 2vw;
+    height: 2vw;
     border: 2px solid black;
     text-align: center;
     vertical-align: middle;

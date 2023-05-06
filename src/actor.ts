@@ -1,5 +1,6 @@
 import * as World from "./world.js";
 import * as Point from "./point.js";
+import * as Path from "./path.js";
 
 const startPosition: Point.Point = { x: -1, y: -1 };
 
@@ -11,6 +12,7 @@ enum ActorType {
 type Actor = {
     type: ActorType;
     position: Point.Point;
+    actions: Record<string, Action>;
     // characteristics?: Record<string, string | number>;
 }
 
@@ -19,8 +21,7 @@ type Action = (actor: Enemy | Tower, world: World.World) => Point.Point;
 type Enemy = Actor & {
     type: ActorType.Enemy;
     path: Array<Point.Point>;
-    actions: Record<string, Action>;
-     health: number;
+    health: number;
     // speed: number;
 }
 type Dead = Actor;
@@ -31,12 +32,11 @@ type Tower = Actor & {
     range: number;
     // cooldown: number;
     shootable: Array<Point.Point>;
-    actions: Record<string, Action>;
 }
 
 const askForMove: Action = (actor: Enemy): Point.Point => { return actor.path[0]; };
 
-function init(size: number, path: Array<Point.Point>, towers: Array<Point.Point>): Array<Actor> {
+function init(size: number): Array<Actor> {
 
     function initTowers(towers: Array<Point.Point>): Array<Actor> {
         const towersOk = towers.filter(point => point.x < size && point.y < size);
@@ -53,7 +53,7 @@ function init(size: number, path: Array<Point.Point>, towers: Array<Point.Point>
                     attack: tiiir
                 }
             };
-            return {...tower, shootable: reachable(path, tower.position, tower.range)};
+            return {...tower, shootable: reachable(Path.totalPath, tower.position, tower.range)};
         });
     }
 
@@ -63,8 +63,8 @@ function init(size: number, path: Array<Point.Point>, towers: Array<Point.Point>
         return initEnemies(n - 1, enemies.concat({
             type: ActorType.Enemy,
             position: startPosition,
-            path: path.slice(), // Slice is used to create a copy of path for each actor
-            health: 10,
+            path: (n % 2 ? Path.arrayPath1 : Path.arrayPath2).concat(Path.arrayPathEnd), // Slice is used to create a copy of path for each actor
+            health: 40,
             // speed: 1,
             actions: {
                 move: askForMove
@@ -72,7 +72,7 @@ function init(size: number, path: Array<Point.Point>, towers: Array<Point.Point>
         }));
     }
 
-    const actors = initTowers(towers).concat(initEnemies(5, []));
+    const actors = initTowers(Path.arrayTower).concat(initEnemies(26, []));
 
     return actors;
 }
@@ -87,7 +87,7 @@ function asEnemy(actor: Actor): Enemy {
 
 
 function moveEnemy(actor: Enemy): Enemy {
-    return { ...actor, position: actor.path.shift() as Point.Point };
+    return { ...actor, position: Path.getPathHead(actor.path), path: Path.removePathHead(actor.path)};
 }
 
 function endPath(actor: Enemy): boolean {
@@ -141,7 +141,7 @@ function isthereanybody(reach: Array<Point.Point>, world: World.World): Point.Po
 }
 
 const tiiir: Action = (actor: Tower, world: World.World): Point.Point => {
-    return isthereanybody(actor.shootable,world);
+    return isthereanybody(actor.shootable, world);
 };
 
 
