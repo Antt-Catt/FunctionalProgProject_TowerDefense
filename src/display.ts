@@ -3,8 +3,14 @@ import * as GameState from "./game.js";
 import * as Actor from "./actor.js";
 import * as Tile from "./tile.js";
 
+const runWithParcel = (): boolean => { return (typeof window !== 'undefined'); };
+
 function initDisplay(gameState: GameState.GameState) {
-    if (typeof window !== "undefined") {
+    function displayNode(gameStage: GameState.GameState) {
+        console.log(`\n[-] Initial world.\n`);
+    }
+
+    function displayParcel(gameStage: GameState.GameState) {
         const table: HTMLElement = document.querySelector("table") as HTMLElement;
         for (let i = 0; i < gameState.world.points.length; i++) {
             const row = document.createElement('tr');
@@ -25,6 +31,14 @@ function initDisplay(gameState: GameState.GameState) {
                 (document.getElementsByClassName("case")[actor.position.x * 5 + actor.position.y] as HTMLElement).classList.add("tower");
         });
     }
+
+    runWithParcel() ? displayParcel(gameState) : displayNode(gameState);
+}
+
+function displayInfos(message: string) {
+    const displayNode = (message: string) => { console.log(`[-] ${message}`); };
+    const displayParcel = (message: string) => { (document.getElementById("game_text") as HTMLElement).innerHTML = `${message}`; };
+    runWithParcel() ? displayParcel(message) : displayNode(message);
 }
 
 function displayWorld(gameState: GameState.GameState) {
@@ -37,22 +51,21 @@ function displayWorld(gameState: GameState.GameState) {
     }
 
     function displayParcel(gameState: GameState.GameState) {
-        const index_list: Array<number> = [];
-        gameState.actors.forEach(actor => {
-            if (Actor.isEnemy(actor) && (actor.position !== Actor.startPosition))
-                index_list.push(Actor.asEnemy(actor).position.y * 5 + Actor.asEnemy(actor).position.x);
+        gameState.world.points.forEach((row, row_index) => {
+            row.forEach((item, item_index) => {
+                const element: HTMLElement = (document.getElementsByClassName("case")[row_index * 5 + item_index] as HTMLElement);
+                if ((item.type === Tile.TileType.Path && !Tile.isFree(item))  !== (element.classList.contains("flower")))
+                    element.classList.toggle("flower");
+            }, '');
         });
-        for (let i = 0; i < gameState.world.points.length * gameState.world.points[0].length; i++) {
-            const element: HTMLElement = (document.getElementsByClassName("case")[i] as HTMLElement);
-            if ((index_list.includes(i)) !== (element.classList.contains("flower")))
-                element.classList.toggle("flower");
-        }
+        displayNode(gameState.world);
     }
 
-    (typeof window !== 'undefined') ? displayParcel(gameState) : displayNode(gameState.world);
+    runWithParcel() ? displayParcel(gameState) : displayNode(gameState.world);
 }
 
 export {
     initDisplay,
+    displayInfos,
     displayWorld,
 };
