@@ -4,7 +4,7 @@ import * as Display from "./display.js";
 import * as Phase from "./phase.js";
 import * as Actor from "./actor.js";
 
-const maxRound: number = 60;
+const maxRound: number = 10;
 const worldSize: number = 15;
 
 let gameState: Game.GameState = Game.init(worldSize);
