@@ -22,6 +22,7 @@ type Enemy = Actor & {
     type: ActorType.Enemy;
     path: Array<Point.Point>;
     health: number;
+    initialHealth: number;
     // speed: number;
 }
 type Dead = Actor;
@@ -65,6 +66,7 @@ function init(size: number): Array<Actor> {
             position: startPosition,
             path: (n % 2 ? Path.arrayPath1 : Path.arrayPath2).concat(Path.arrayPathEnd), // Slice is used to create a copy of path for each actor
             health: 40,
+            initialHealth: 40,
             // speed: 1,
             actions: {
                 move: askForMove
