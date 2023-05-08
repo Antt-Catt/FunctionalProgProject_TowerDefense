@@ -6,7 +6,6 @@
 >- [Prérequis](#prérequis)
 >- [Installation](#installation)
 >- [Utilisation](#utilisation)
->    - [Compilation](#compilation)
 >    - [Execution](#execution)
 >    - [Tests](#tests)
 >    - [Rapport](#rapport)
