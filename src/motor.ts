@@ -27,7 +27,7 @@ while (!gameState.end && gameState.round <= maxRound) {
         });
         const newGame: Game.GameState = Game.resolveProposals(game, proposals, aPhase.resolve, 0);
 
-        Display.update(gameState);
+        Display.update(newGame);
 
         return newGame;
     }, gameState);

@@ -2,6 +2,7 @@ import * as World from "./world.js";
 import * as GameState from "./game.js";
 import * as Actor from "./actor.js";
 import * as Tile from "./tile.js";
+import * as Point from "./point.js";
 
 /**
  * The time between phases.
@@ -85,11 +86,14 @@ function initDisplay(gameState: GameState.GameState) {
     function displayParcel(gameState: GameState.GameState) {
         const table: HTMLElement = document.querySelector("table") as HTMLElement;
         for (let i = 0; i < gameState.world.points.length; i++) {
-            const row = document.createElement('tr');
+            const row = document.createElement("tr");
             for (let j = 0; j < gameState.world.points[0].length; j++) {
-                const cell: HTMLElement = document.createElement('td') as HTMLElement;
-                cell.classList.add('case');
+                const cell: HTMLElement = document.createElement("td") as HTMLElement;
+                cell.classList.add("case");
                 row.appendChild(cell);
+                const life_div: HTMLElement = document.createElement("div") as HTMLElement;
+                life_div.classList.add("life_div");
+                cell.appendChild(life_div);
             }
             table.appendChild(row);
         }
@@ -130,7 +134,15 @@ function displayWorld(gameState: GameState.GameState) {
                 const element: HTMLElement = (document.getElementsByClassName("case")[row_index * 15 + item_index] as HTMLElement);
                 if ((item.type === Tile.TileType.Path && !Tile.isFree(item)) !== (element.classList.contains("flower")))
                     element.classList.toggle("flower");
+                (document.getElementsByClassName("life_div")[row_index * 15 + item_index] as HTMLElement).style.width = "0%";
             }, '');
+        });
+        gameState.actors.forEach((actor, _) => {
+            if (Actor.isEnemy(actor) && !Point.isEqual(actor.position, Actor.startPosition)) {
+                const elt: HTMLElement = (document.getElementsByClassName("life_div")[actor.position.y * 15 + actor.position.x] as HTMLElement);
+                const enemy: Actor.Enemy = Actor.asEnemy(actor);
+                elt.style.width = `${100 - enemy.health * 100 / enemy.initialHealth}%`;
+            }
         });
     }
 
@@ -180,7 +192,7 @@ function displayAll(lastGameState: GameState.GameState, phases: Array<string>, m
             }, index * timeBetweenPhases);
         });
     }
-    
+
     runWithParcel ? displayParcel() : displayNode();
 }
 
