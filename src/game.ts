@@ -1,7 +1,5 @@
-import * as Point from "./point.js";
-import * as World from "./world.js";
 import * as Actor from "./actor.js";
-import * as Path from "./path.js";
+import { Point, World, Path } from "./actor.js";
 
 type GameState = {
     world: World.World;
@@ -117,5 +115,9 @@ export {
     nextRound,
     resolveMove,
     resolveShoot,
-    resolveProposals
+    resolveProposals,
+    Point,
+    Actor,
+    World,
+    Path
 };

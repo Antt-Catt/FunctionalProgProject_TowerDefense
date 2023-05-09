@@ -1,8 +1,6 @@
-import * as World from "./world.js";
 import * as GameState from "./game.js";
-import * as Actor from "./actor.js";
-import * as Tile from "./tile.js";
-import * as Point from "./point.js";
+import { Point, World, Actor } from "./game.js";
+import { Tile } from "./world.js";
 
 /**
  * The time between phases.

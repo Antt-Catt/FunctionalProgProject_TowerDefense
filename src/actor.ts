@@ -1,5 +1,5 @@
 import * as World from "./world.js";
-import * as Point from "./point.js";
+import { Point } from "./world.js";
 import * as Path from "./path.js";
 
 const startPosition: Point.Point = { x: -1, y: -1 };
@@ -186,7 +186,8 @@ export {
     distance_manhattan,
     reachable,
     isthereanybody,
-    tiiir
-    // TowerAttack,
-    // kill
+    tiiir,
+    Point,
+    World,
+    Path
 };

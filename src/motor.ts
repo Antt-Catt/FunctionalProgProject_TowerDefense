@@ -1,8 +1,8 @@
-import * as Point from "./point.js";
-import * as Game from "./game.js";
-import * as Display from "./display.js";
 import * as Phase from "./phase.js";
-import * as Actor from "./actor.js";
+import { Point, Game, Actor, Path } from "./phase.js";
+import * as Display from "./display.js";
+import * as World from "./world.js";
+import { Tile } from "./world.js";
 
 function loop(gameState: Game.GameState): Game.GameState {
     if (gameState.end || gameState.round >= maxRound) {
@@ -40,3 +40,14 @@ Display.initDisplay(gameState);
 const finalGameState: Game.GameState = loop(gameState);
 
 Display.displayAll(finalGameState, phases.map((elt) => elt.name), maxRound);
+
+export {
+    Actor,
+    Display,
+    Game,
+    Path,
+    Phase,
+    Point,
+    Tile,
+    World
+};

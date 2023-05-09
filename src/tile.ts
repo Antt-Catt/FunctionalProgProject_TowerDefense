@@ -69,6 +69,6 @@ export {
     createGround,
     createTower,
     isFree,
-    setFree
-    // getTileType
+    setFree,
+    Point
 };

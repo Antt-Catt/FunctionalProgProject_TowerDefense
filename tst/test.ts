@@ -1,9 +1,5 @@
-import * as Actor from "../src/actor.js";
-import * as Point  from "../src/point.js";
-import * as Tile from "../src/tile.js";
-import * as World from "../src/world.js";
-import * as Path from "../src/path.js";
-import * as Game from "../src/game.js";
+import * as Motor from "../src/motor.js";
+import { Actor, Display, Game, Path, Phase, Point, Tile, World } from "../src/motor.js";
 
 describe('Functional tests for Point', () => {
 
@@ -165,6 +161,7 @@ describe('Functional tests for Actor', () => {
             position: Actor.startPosition,
             path: pathhh,
             health: 10,
+            initialHealth: 10,
             // speed: 1,
             actions: {
                 move: Actor.askForMove
