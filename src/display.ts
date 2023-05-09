@@ -83,6 +83,7 @@ function displayInfos(message: string) {
 function initDisplay(gameState: GameState.GameState) {
     function displayParcel(gameState: GameState.GameState) {
         const table: HTMLElement = document.querySelector("table") as HTMLElement;
+        const size: number = gameState.world.points.length;
         for (let i = 0; i < gameState.world.points.length; i++) {
             const row = document.createElement("tr");
             for (let j = 0; j < gameState.world.points[0].length; j++) {
@@ -97,12 +98,12 @@ function initDisplay(gameState: GameState.GameState) {
         }
         gameState.world.points.forEach((row, row_index) => {
             row.forEach((item, item_index) => {
-                (document.getElementsByClassName("case")[row_index * 15 + item_index] as HTMLElement).classList.add((item.type === Tile.TileType.Path) ? "path" : "ground");
+                (document.getElementsByClassName("case")[row_index * size + item_index] as HTMLElement).classList.add((item.type === Tile.TileType.Path) ? "path" : "ground");
             }, '');
         });
         gameState.actors.forEach((actor, index) => {
             if (Actor.isTower(actor))
-                (document.getElementsByClassName("case")[actor.position.x + actor.position.y * 15] as HTMLElement).classList.add("tower");
+                (document.getElementsByClassName("case")[actor.position.x + actor.position.y * size] as HTMLElement).classList.add("tower");
         });
     }
 

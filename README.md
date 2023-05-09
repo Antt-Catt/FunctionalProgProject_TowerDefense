@@ -27,16 +27,21 @@ Ce projet necessite l'installation de  `git`, `make`,  ainsi que `npm` pour acce
 ```sh
 sudo apt-get install git
 sudo apt-get install make
-npm install
-npm install --save-dev parcel
+sudo apt-get install npm
 ```
 
 ## Installation
 
-Avant de commencer, il est neccessaire de cloner le dépot git disponible sur la forge de l'ENSEIRB-MATMECA.
+Avant de commencer, il est nécessaire de cloner le dépôt git disponible sur la forge de l'ENSEIRB-MATMECA.
 ```sh
 git clone https://<user>@thor.enseirb-matmeca.fr/git/projetss6-tower-19042
 cd projetss6-tower-19042
+```
+
+De plus, un certain nombre de packages sont indispensables au fonctionnement du jeu, ils peuvent être téléchargés en exécutant ligne suivante dans le répertoire du projet.
+```sh
+npm install
+npm install --save-dev parcel
 ```
 
 ## Utilisation 
@@ -44,13 +49,20 @@ cd projetss6-tower-19042
 
 ### Execution
 
-Pour executer notre jeu il vous faut d'abord créer les fichiers adequat à l'aide de:
+Pour executer notre jeu il vous faut d'abord créer les fichiers adequat à l'aide de :
 ```sh
 make all
 ```
-Puis lancer le serveur permettant de faire tourner la page web sur votre ordinateur:
+
+Le jeu peux ensuite être lancé sur la sortie standard (run) ou sur une page web dynamique (parcel) :
 ```sh
+make run
 make parcel
+```
+
+Si le jeu est lancé sur l'interface web, il faudra se rendre à l'adresse suivante :
+```sh
+http://localhost:1234
 ```
 
 ### Tests
