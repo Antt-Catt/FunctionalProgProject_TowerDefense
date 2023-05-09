@@ -4,19 +4,12 @@ import * as Display from "./display.js";
 import * as Phase from "./phase.js";
 import * as Actor from "./actor.js";
 
-const maxRound: number = 10;
-const worldSize: number = 15;
-
-let gameState: Game.GameState = Game.init(worldSize);
-
-const phases: Array<Phase.Phase> = Phase.computePhases(gameState);
-
-Display.initDisplay(gameState);
-
-while (!gameState.end && gameState.round <= maxRound) {
-    gameState = Game.nextRound(gameState);
-
-    gameState = phases.reduce((game: Game.GameState, aPhase: Phase.Phase) => {
+function loop(gameState: Game.GameState): Game.GameState {
+    if (gameState.end || gameState.round >= maxRound) {
+        return gameState;
+    }
+    console.log(`[-] Turn ${gameState.round}.`);
+    const newGame: Game.GameState = phases.reduce((game: Game.GameState, aPhase: Phase.Phase) => {
         const proposals: Array<Point.Point> = game.actors.map((anActor) => {
             const actor: Actor.Enemy | Actor.Tower = Actor.getActorType(anActor);
             if (aPhase.name in actor.actions) {
@@ -25,12 +18,25 @@ while (!gameState.end && gameState.round <= maxRound) {
             }
             return Actor.startPosition;
         });
-        const newGame: Game.GameState = Game.resolveProposals(game, proposals, aPhase.resolve, 0);
+        const reducedGame: Game.GameState = Game.resolveProposals(game, proposals, aPhase.resolve, 0);
+        
+        Display.update(reducedGame);
 
-        Display.update(newGame);
+        return reducedGame;
+    },gameState);
 
-        return newGame;
-    }, gameState);
+    return loop(Game.nextRound(newGame));
 }
 
-Display.displayAll(gameState, phases.map((elt) => elt.name), maxRound);
+const maxRound: number = 10;
+const worldSize: number = 15;
+
+const gameState: Game.GameState = Game.init(worldSize);
+
+const phases: Array<Phase.Phase> = Phase.computePhases(gameState);
+
+Display.initDisplay(gameState);
+
+const finalGameState: Game.GameState = loop(gameState);
+
+Display.displayAll(finalGameState, phases.map((elt) => elt.name), maxRound);
