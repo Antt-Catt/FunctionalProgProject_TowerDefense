@@ -1,5 +1,7 @@
-import * as Motor from "../src/motor.js";
-import { Actor, Display, Game, Path, Phase, Point, Tile, World } from "../src/motor.js";
+import * as Phase from "../src/phase.js";
+import { Actor, Path, Game, Point } from "../src/phase.js";
+import * as World from "../src/world.js";
+import { Tile } from "../src/world.js";
 
 describe('Functional tests for Point', () => {
 
@@ -244,7 +246,16 @@ describe('Functional tests for Actor', () => {
     });
 
     test('Actor.init', () => {
-        const actors = Actor.init(2);//, [{ x: 0, y: 0 }, { x: 1, y: 0 }], [{ x: 1, y: 1 }]);
+        const actors = Actor.init(15);
+        let i = 0;
+        for (i; i < Path.arrayTower.length; i++) {
+            expect(actors[i].type).toBe("tower");
+            expect(Point.isEqual(actors[i].position, Path.arrayTower[i])).toBe(true);
+        }
+        for (i; i < actors.length; i++) {
+            expect(actors[i].type).toBe("enemy");
+            expect(Point.isEqual(actors[i].position, Actor.startPosition)).toBe(true);
+        }
     });
 
     test('Get Actor Type',()=>{
@@ -310,6 +321,86 @@ describe('Functional tests for Actor', () => {
         World.setFree({x:1, y:1}, false, world);
         expect(Point.isEqual(Actor.tiiir(tower,world),{ x: 1, y: 1 })).toBe(true);
     });
+
+    test('removeHealth', () => {
+        const enemy: Actor.Enemy = {
+            type: Actor.ActorType.Enemy,
+            position: {x:1, y:1},
+            actions: {},
+            path: [{x:2, y:2}],
+            health: 10,
+            initialHealth: 10,
+        };
+        const newEnemy: Actor.Enemy = Actor.removeHealth(enemy, 2);
+        expect(newEnemy.health).toBe(8);
+        const testEnemy: Actor.Enemy = Actor.removeHealth(newEnemy, 8);
+        expect(testEnemy.health).toBe(0);
+    });
+
+    test('newActors', () => {
+        const enemy1: Actor.Enemy = {
+            type: Actor.ActorType.Enemy,
+            position: {x:1, y:1},
+            actions: {},
+            path: [],
+            health: 10,
+            initialHealth: 10,
+        };
+        const enemy2: Actor.Enemy = {
+            type: Actor.ActorType.Enemy,
+            position: {x:2, y:2},
+            actions: {},
+            path: [],
+            health: 10,
+            initialHealth: 10,
+        };
+        const enemy3: Actor.Enemy = {
+            type: Actor.ActorType.Enemy,
+            position: {x:3, y:3},
+            actions: {},
+            path: [],
+            health: 10,
+            initialHealth: 10,
+        };
+        const actors: Array<Actor.Actor> = [enemy1, enemy2, enemy3];
+        const newActors1: Array<Actor.Actor> = Actor.newActors({...enemy2, position: {x:10, y:10}}, actors, 1);
+        const newActors2: Array<Actor.Actor> = Actor.newActors({...enemy1, position: {x:10, y:10}}, actors, 0);
+        const newActors3: Array<Actor.Actor> = Actor.newActors({...enemy3, position: {x:10, y:10}}, actors, 2);
+        expect(Point.isEqual(newActors1[1].position, {x: 10, y: 10})).toBe(true);
+        expect(Point.isEqual(newActors2[0].position, {x: 10, y: 10})).toBe(true);
+        expect(Point.isEqual(newActors3[2].position, {x: 10, y: 10})).toBe(true);
+    });
+
+    test('getIdx', () => {
+        const enemy1: Actor.Enemy = {
+            type: Actor.ActorType.Enemy,
+            position: {x:1, y:1},
+            actions: {},
+            path: [],
+            health: 10,
+            initialHealth: 10,
+        };
+        const enemy2: Actor.Enemy = {
+            type: Actor.ActorType.Enemy,
+            position: {x:2, y:2},
+            actions: {},
+            path: [],
+            health: 10,
+            initialHealth: 10,
+        };
+        const enemy3: Actor.Enemy = {
+            type: Actor.ActorType.Enemy,
+            position: {x:3, y:3},
+            actions: {},
+            path: [],
+            health: 10,
+            initialHealth: 10,
+        };
+        const actors: Array<Actor.Actor> = [enemy1, enemy2, enemy3];
+        expect(Actor.getIdx(actors, {x:1, y:1}, 0)).toBe(0);
+        expect(Actor.getIdx(actors, {x:2, y:2}, 0)).toBe(1);
+        expect(Actor.getIdx(actors, {x:3, y:3}, 0)).toBe(2);
+    });
 });
 
 describe('Functional tests for Path', () => {
@@ -329,19 +420,86 @@ describe('Functional tests for Path', () => {
 
 describe('Functional tests for Game', () => {
 
+    test('Game.init', () => {
+        const gameState: Game.GameState = Game.init(15);
+        expect(gameState.path).toBe(Path.totalPath);
+        expect(gameState.round).toBe(1);
+        expect(gameState.end).toBe(false);
+    });
+
     test('nextRound test', () => {
         const gameState: Game.GameState = Game.init(15);
-        expect(gameState.round).toBe(1);
         expect(Game.nextRound(gameState).round).toBe(2);
         expect(Game.nextRound(Game.nextRound(gameState)).round).toBe(3);
-        console.log(gameState);
+    });
+
+    test('setFreeMove test', () => {
+        const gameState: Game.GameState = Game.init(15);
+        const newWorld: World.World = Game.setFreeMove(Actor.startPosition, {x: 2, y: 2}, gameState.world);
+        expect(World.isFree({x: 2, y: 2}, newWorld)).toBe(false);
+        const testWorld: World.World = Game.setFreeMove({x: 2, y: 2}, {x: 7, y: 9}, newWorld);
+        expect(World.isFree({x: 2, y: 2}, newWorld)).toBe(true);
+        expect(World.isFree({x: 7, y: 9}, newWorld)).toBe(false);
     });
 
     test('resolveMove test', () => {
-        const gameState: Game.GameState = Game.init(20);
-        const proposals: Array<Point.Point> = [];
+        const enemy1: Actor.Actor = {
+            type: Actor.ActorType.Enemy,
+            position: {x:0, y:0},
+            actions: {},
+            path: [{x:2, y:4}, {x:3, y:4}, {x:1, y:3}],
+            health: 40,
+        } as Actor.Actor;
+        const enemy2: Actor.Actor = {
+            type: Actor.ActorType.Enemy,
+            position: {x:1, y:1},
+            actions: {},
+            path: [{x:2, y:4}, {x:3, y:4}, {x:1, y:3}],
+            health: 40,
+        } as Actor.Actor;
+        const enemy3: Actor.Actor = {
+            type: Actor.ActorType.Enemy,
+            position: {x:3, y:3},
+            actions: {},
+            path: [{x:3, y:4}, {x:1, y:3}],
+            health: 40,
+        } as Actor.Actor;
+        const enemyrand: Actor.Actor = {
+            type: Actor.ActorType.Enemy,
+            position: {x:10, y:10},
+            actions: {},
+            path: [{x:15, y:10}, {x:1, y:3}],
+            health: 40,
+        } as Actor.Actor;
+        const gameState: Game.GameState = {
+            world: World.init(5, [{x:0, y:0}, {x:2, y:4}, {x:3, y:4}, {x:1, y:3}], []),
+            actors: [enemy1, enemy2, enemy3, enemyrand],
+            path: [{x:0, y:0}, {x:2, y:4}, {x:3, y:4}, {x:1, y:3}],
+            round: 0,
+            end: false,
+        };
+        const proposals: Array<Point.Point> = [Actor.askForMove(Actor.getActorType(enemy1), gameState.world), Actor.askForMove(Actor.getActorType(enemy2), gameState.world), Actor.askForMove(Actor.getActorType(enemy3), gameState.world), Actor.askForMove(Actor.getActorType(enemyrand), gameState.world)];
+        const newGame1: Game.GameState = Game.resolveMove(gameState, proposals, 0);
+        expect(Point.isEqual(newGame1.actors[0].position, {x:2, y:4})).toBe(true);
+        const newGame2: Game.GameState = Game.resolveMove(newGame1, proposals, 1);
+        expect(Point.isEqual(newGame2.actors[1].position, {x:1, y:1})).toBe(true);
+        const newGame3: Game.GameState = Game.resolveMove(newGame2, proposals, 2);
+        expect(Point.isEqual(newGame3.actors[2].position, {x:3, y:4})).toBe(true);
     });
 });
+
+describe('Functional tests for Phase', () => {
+
+    test('computePhases test', () => {
+    const gameState: Game.GameState = Game.init(15);
+    const phases: Array<Phase.Phase> = Phase.computePhases(gameState);
+    expect(phases[0].name).toBe("move");
+    expect(phases[1].name).toBe("attack");
+    expect(phases[0].resolve).toBe(Game.resolveMove);
+    expect(phases[1].resolve).toBe(Game.resolveShoot);
+    });
+});
+
 
 // describe('Functional tests for Motor', () => {
 
