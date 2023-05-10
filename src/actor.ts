@@ -35,6 +35,27 @@ type Tower = Actor & {
     shootable: Array<Point.Point>;
 }
 
+//return new array of actors where the actor in k-position is shifted with newActor in the game.actors array
+function newActors(newActor: Actor, actors: Array<Actor>, k: number): Array<Actor> {
+    return [...actors.slice(0, k), newActor, ...actors.slice(k + 1)];
+}
+
+//it's in the name of the function xD
+function removeHealth(enemy: Enemy, damage: number): Enemy {
+    const newHealth: number = enemy.health - damage;
+    return {...enemy, health: newHealth};
+}
+
+//return the actor in postion pos in array actors
+function getIdx(actors: Array<Actor>, pos: Point.Point, k: number): number{
+    if (Point.isEqual(actors[0].position, pos)) {
+        return k;
+    }
+    else {
+        return getIdx(actors.slice(1), pos, k + 1);
+    }
+}
+
 const askForMove: Action = (actor: Enemy): Point.Point => { return actor.path[0]; };
 
 function init(size: number): Array<Actor> {
@@ -175,6 +196,8 @@ export {
     Tower,
     Dead,
     init,
+    newActors,
+    getIdx,
     askForMove,
     isEnemy,
     asEnemy,
@@ -187,6 +210,7 @@ export {
     reachable,
     isthereanybody,
     tiiir,
+    removeHealth,
     Point,
     World,
     Path
