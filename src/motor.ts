@@ -1,8 +1,6 @@
 import * as Phase from "./phase.js";
-import { Point, Game, Actor, Path } from "./phase.js";
+import { Point, Game, Actor} from "./phase.js";
 import * as Display from "./display.js";
-import * as World from "./world.js";
-import { Tile } from "./world.js";
 
 function loop(gameState: Game.GameState): Game.GameState {
     if (gameState.end || gameState.round >= maxRound) {
@@ -13,8 +11,8 @@ function loop(gameState: Game.GameState): Game.GameState {
         const proposals: Array<Point.Point> = game.actors.map((anActor) => {
             const actor: Actor.Enemy | Actor.Tower = Actor.getActorType(anActor);
             if (aPhase.name in actor.actions) {
-                const prop = aPhase.name;
-                return actor.actions[prop](actor, game.world);
+                const funcName = aPhase.name;
+                return actor.actions[funcName](actor, game.world);
             }
             return Actor.startPosition;
         });
@@ -40,14 +38,3 @@ Display.initDisplay(gameState);
 const finalGameState: Game.GameState = loop(gameState);
 
 Display.displayAll(finalGameState, phases.map((elt) => elt.name), maxRound);
-
-export {
-    Actor,
-    Display,
-    Game,
-    Path,
-    Phase,
-    Point,
-    Tile,
-    World
-};
