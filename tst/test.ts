@@ -568,6 +568,81 @@ describe('Functional tests for Game', () => {
 
         expect(Game.resolveShoot(newGame3, proposals, 2)).toBe(newGame3);
     });
+
+    test('resolveProposals test', () => {
+        const enemy1: Actor.Actor = {
+            type: Actor.ActorType.Enemy,
+            position: {x:0, y:0},
+            actions: {},
+            path: [{x:2, y:4}, {x:3, y:4}, {x:1, y:3}],
+            health: 3,
+        } as Actor.Actor;
+        const enemy2: Actor.Actor = {
+            type: Actor.ActorType.Enemy,
+            position: {x:1, y:1},
+            actions: {},
+            path: [{x:2, y:4}, {x:3, y:4}, {x:1, y:3}],
+            health: 3,
+        } as Actor.Actor;
+        const enemy3: Actor.Actor = {
+            type: Actor.ActorType.Enemy,
+            position: {x:3, y:3},
+            actions: {},
+            path: [{x:3, y:4}, {x:1, y:3}],
+            health: 3,
+        } as Actor.Actor;
+
+        const tower1: Actor.Actor = {
+            type: Actor.ActorType.Enemy,
+            position: {x:4, y:3},
+            actions: {},
+            damage: 2,
+            range: 2,
+            shootable: [{x:1, y:1}],
+        } as Actor.Actor;
+        const tower2: Actor.Actor = {
+            type: Actor.ActorType.Enemy,
+            position: {x:3, y:2},
+            actions: {},
+            damage: 2,
+            range: 2,
+            shootable: [{x:2, y:4}],
+        } as Actor.Actor;
+        const tower3: Actor.Actor = {
+            type: Actor.ActorType.Enemy,
+            position: {x:2, y:3},
+            actions: {},
+            damage: 2,
+            range: 2,
+            shootable: [{x:1, y:1}, {x:2, y:4}],
+        } as Actor.Actor;
+
+        const gameState: Game.GameState = {
+            world: World.init(5, [{x:0, y:0}, {x:2, y:4}, {x:3, y:4}, {x:1, y:3}], []),
+            actors: [enemy1, enemy2, enemy3, tower1, tower2, tower3],
+            path: [{x:0, y:0}, {x:2, y:4}, {x:3, y:4}, {x:1, y:3}],
+            round: 0,
+            end: false,
+        };
+
+        const proposalsM: Array<Point.Point> = [Actor.askForMove(Actor.getActorType(gameState.actors[0]), gameState.world), Actor.askForMove(Actor.getActorType(gameState.actors[1]), gameState.world), Actor.askForMove(Actor.getActorType(gameState.actors[2]), gameState.world), Actor.startPosition, Actor.startPosition, Actor.startPosition];
+
+        const newGame1: Game.GameState = Game.resolveProposals(gameState, proposalsM, Game.resolveMove, 0);
+
+        expect(Point.isEqual(newGame1.actors[0].position, {x: 2, y: 4})).toBe(true);
+        expect(Point.isEqual(newGame1.actors[1].position, {x: 1, y: 1})).toBe(true);
+        expect(Point.isEqual(newGame1.actors[2].position, {x: 3, y: 4})).toBe(true);
+
+        const proposalsA: Array<Point.Point> = [Actor.startPosition, Actor.startPosition, Actor.startPosition, Actor.tiiir(Actor.getActorType(newGame1.actors[3]), newGame1.world), Actor.tiiir(Actor.getActorType(newGame1.actors[4]), newGame1.world), Actor.tiiir(Actor.getActorType(newGame1.actors[5]), newGame1.world)];
+        
+        const newGame2: Game.GameState = Game.resolveProposals(newGame1, proposalsA, Game.resolveShoot, 0);
+
+        const newEnemies: Array<Actor.Enemy> = [newGame2.actors[0] as Actor.Enemy, newGame2.actors[1] as Actor.Enemy, newGame2.actors[2] as Actor.Enemy];
+
+        expect(newEnemies[0].health).toBe(0); // shooted by 2 towers
+        expect(newEnemies[1].health).toBe(1); // shooted by 1 tower
+        expect(newEnemies[2].health).toBe(3); // shooted by 0 tower
+    });
 });
 
 describe('Functional tests for Phase', () => {
