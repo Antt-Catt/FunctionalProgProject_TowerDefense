@@ -464,27 +464,109 @@ describe('Functional tests for Game', () => {
             path: [{x:3, y:4}, {x:1, y:3}],
             health: 40,
         } as Actor.Actor;
-        const enemyrand: Actor.Actor = {
-            type: Actor.ActorType.Enemy,
-            position: {x:10, y:10},
-            actions: {},
-            path: [{x:15, y:10}, {x:1, y:3}],
-            health: 40,
-        } as Actor.Actor;
+
         const gameState: Game.GameState = {
             world: World.init(5, [{x:0, y:0}, {x:2, y:4}, {x:3, y:4}, {x:1, y:3}], []),
-            actors: [enemy1, enemy2, enemy3, enemyrand],
+            actors: [enemy1, enemy2, enemy3],
             path: [{x:0, y:0}, {x:2, y:4}, {x:3, y:4}, {x:1, y:3}],
             round: 0,
             end: false,
         };
-        const proposals: Array<Point.Point> = [Actor.askForMove(Actor.getActorType(enemy1), gameState.world), Actor.askForMove(Actor.getActorType(enemy2), gameState.world), Actor.askForMove(Actor.getActorType(enemy3), gameState.world), Actor.askForMove(Actor.getActorType(enemyrand), gameState.world)];
-        const newGame1: Game.GameState = Game.resolveMove(gameState, proposals, 0);
+
+        const proposals1: Array<Point.Point> = [Actor.askForMove(Actor.getActorType(gameState.actors[0]), gameState.world), Actor.askForMove(Actor.getActorType(gameState.actors[1]), gameState.world), Actor.askForMove(Actor.getActorType(gameState.actors[2]), gameState.world)];
+        const newGame1: Game.GameState = Game.resolveMove(gameState, proposals1, 0);
         expect(Point.isEqual(newGame1.actors[0].position, {x:2, y:4})).toBe(true);
-        const newGame2: Game.GameState = Game.resolveMove(newGame1, proposals, 1);
+        expect(newGame1.end).toBe(false);
+
+        const newGame2: Game.GameState = Game.resolveMove(newGame1, proposals1, 1);
         expect(Point.isEqual(newGame2.actors[1].position, {x:1, y:1})).toBe(true);
-        const newGame3: Game.GameState = Game.resolveMove(newGame2, proposals, 2);
+        expect(newGame2.end).toBe(false);
+
+        const newGame3: Game.GameState = Game.resolveMove(newGame2, proposals1, 2);
         expect(Point.isEqual(newGame3.actors[2].position, {x:3, y:4})).toBe(true);
+        expect(newGame3.end).toBe(false);
+
+        const proposals2: Array<Point.Point> = [Actor.askForMove(Actor.getActorType(newGame3.actors[0]), newGame3.world), Actor.askForMove(Actor.getActorType(newGame3.actors[1]), newGame3.world), Actor.askForMove(Actor.getActorType(newGame3.actors[2]), newGame3.world)];
+        const newGame4: Game.GameState = Game.resolveMove(newGame3, proposals2, 2);
+        expect(Point.isEqual(newGame4.actors[2].position, {x:1, y:3})).toBe(true);
+        expect(newGame4.end).toBe(false);
+
+        const proposals3: Array<Point.Point> = [Actor.askForMove(Actor.getActorType(newGame4.actors[0]), newGame4.world), Actor.askForMove(Actor.getActorType(newGame4.actors[1]), newGame4.world), Actor.askForMove(Actor.getActorType(newGame4.actors[2]), newGame4.world)];
+        const newGame5: Game.GameState = Game.resolveMove(newGame4, proposals3, 2);
+        expect(newGame5.end).toBe(true);
+    });
+
+    test('resolveShoot test', () => {
+        const enemy1: Actor.Actor = {
+            type: Actor.ActorType.Enemy,
+            position: {x:0, y:0},
+            actions: {},
+            path: [{x:2, y:4}, {x:3, y:4}, {x:1, y:3}],
+            health: 3,
+        } as Actor.Actor;
+        const enemy2: Actor.Actor = {
+            type: Actor.ActorType.Enemy,
+            position: {x:2, y:4},
+            actions: {},
+            path: [{x:3, y:4}, {x:1, y:3}],
+            health: 3,
+        } as Actor.Actor;
+
+        const tower1: Actor.Actor = {
+            type: Actor.ActorType.Enemy,
+            position: {x:3, y:3},
+            actions: {},
+            damage: 2,
+            range: 2,
+            shootable: [{x:0, y:0}],
+        } as Actor.Actor;
+        const tower2: Actor.Actor = {
+            type: Actor.ActorType.Enemy,
+            position: {x:3, y:2},
+            actions: {},
+            damage: 2,
+            range: 2,
+            shootable: [{x:2, y:4}],
+        } as Actor.Actor;
+        const tower3: Actor.Actor = {
+            type: Actor.ActorType.Enemy,
+            position: {x:2, y:3},
+            actions: {},
+            damage: 2,
+            range: 2,
+            shootable: [{x:0, y:0}, {x:2, y:4}],
+        } as Actor.Actor;
+
+        const game: Game.GameState = {
+            world: World.init(5, [{x:0, y:0}, {x:2, y:4}, {x:3, y:4}, {x:1, y:3}], []),
+            actors: [tower1, tower2, tower3, enemy1, enemy2],
+            path: [{x:0, y:0}, {x:2, y:4}, {x:3, y:4}, {x:1, y:3}],
+            round: 0,
+            end: false,
+        };
+
+        const gameState: Game.GameState = {...game, world: World.setFree(enemy2.position, false, World.setFree(enemy1.position, false, game.world))};
+
+        const proposals: Array<Point.Point> = [Actor.tiiir(Actor.getActorType(gameState.actors[0]), gameState.world), Actor.tiiir(Actor.getActorType(gameState.actors[1]), gameState.world), Actor.tiiir(Actor.getActorType(gameState.actors[2]), gameState.world)];
+        const newGame1: Game.GameState = Game.resolveShoot(gameState, proposals, 0);
+        const newEnemies1: Array<Actor.Enemy> = [newGame1.actors[3] as Actor.Enemy, newGame1.actors[4] as Actor.Enemy];
+        expect(newEnemies1[0].health).toBe(1);
+        expect(newEnemies1[1].health).toBe(3);
+
+        const newGame2: Game.GameState = Game.resolveShoot(newGame1, proposals, 1);
+        const newEnemies2: Array<Actor.Enemy> = [newGame2.actors[3] as Actor.Enemy, newGame2.actors[4] as Actor.Enemy];
+        expect(newEnemies2[0].health).toBe(1);
+        expect(newEnemies2[1].health).toBe(1);
+
+        const newGame3: Game.GameState = Game.resolveShoot(newGame2, proposals, 2);
+        const newEnemies3: Array<Actor.Enemy> = [newGame3.actors[3] as Actor.Enemy, newGame3.actors[4] as Actor.Enemy];
+        expect(newEnemies3[0].health).toBe(1);
+        expect(newEnemies3[1].health).toBe(0);
+        expect(Point.isEqual(newEnemies3[1].position, Actor.startPosition)).toBe(true);
+        expect(Point.isEqual(newEnemies3[1].path[0], Actor.startPosition)).toBe(true);
+        expect(newEnemies3[1].path.length).toBe(1);
+
+        expect(Game.resolveShoot(newGame3, proposals, 2)).toBe(newGame3);
     });
 });
 
