@@ -18,7 +18,6 @@ type Phase = {
 
 /**
  * Computes and returns an array of game phases based on the current state of the game.
- * @function
  * @param {Game.GameState} game - The current state of the game.
  * @returns {Array<Phase>} An array of game phases, each with a name and a resolve function to update the game state.
  */

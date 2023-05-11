@@ -11,7 +11,6 @@ type Point = {
 
 /**
  * Creates a new Point element with the specified x and y coordinates.
- * @function
  * @param {number} [x=0] - The x-coordinate of the new Point. Defaults to 0 if not provided.
  * @param {number} [y=0] - The y-coordinate of the new Point. Defaults to 0 if not provided.
  * @returns {Point} A new Point element with the specified coordinates.
@@ -22,7 +21,6 @@ function create(x: number = 0, y: number = 0): Point {
 
 /**
  * Checks whether two Point elements have equal x and y coordinates.
- * @function
  * @param {Point} p - The first Point element to compare.
  * @param {Point} q - The second Point element to compare.
  * @returns {boolean} True if the two points have equal x and y coordinates, false otherwise.
@@ -33,7 +31,6 @@ function isEqual(p: Point, q: Point) {
 
 /**
  * Checks whether a given Point element is equal to a Point in an array of Point elements.
- * @function
  * @param {Point} point - The Point element to search for in the array.
  * @param {Array<Point>} array - The array of Point elements to search in.
  * @returns {boolean} True if an element equal to point is found in the array, false otherwise.

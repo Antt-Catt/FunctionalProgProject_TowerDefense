@@ -12,7 +12,6 @@ type World = {
 
 /**
  * Initializes a new World element.
- * @function
  * @param {number} size - The size of the world.
  * @param {Array<Point.Point>} path - The path through the world.
  * @param {Array<Point.Point>} towers - The locations of the towers in the world.
@@ -41,7 +40,6 @@ function init(size: number, path: Array<Point.Point>, towers: Array<Point.Point>
 
 /**
  * Determines if a tile at the specified point in the given world is free.
- * @function
  * @param {Point.Point} point - The point to check.
  * @param {World} world - The world to check in.
  * @returns {boolean} True if the tile at the specified point is free, false otherwise.
@@ -57,7 +55,6 @@ function setTileFree(points: Array<Array<Tile.Tile>>, point: Point.Point, free: 
 
 /**
  * Sets the specified tile in the world to free or not.
- * @function
  * @param {Point.Point} point - The point representing the tile to modify.
  * @param {boolean} free - True if the tile should be set to free, otherwise false.
  * @param {World} world - The world containing the tile to modify.

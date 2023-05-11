@@ -49,7 +49,6 @@ type TowerTile = Tile;
 
 /**
  * Creates a new path tile.
- * @function
  * @param {number} [x=0] - The x-coordinate of the tile. Defaults to 0 if not provided.
  * @param {number} [y=0] - The y-coordinate of the tile. Defaults to 0 if not provided.
  * @throws Will throw an error if either x or y is negative.
@@ -62,7 +61,6 @@ function createPath(x: number = 0, y: number = 0): PathTile {
 
 /**
  * Creates a new ground tile.
- * @function
  * @param {number} [x=0] - The x-coordinate of the tile. Defaults to 0.
  * @param {number} [y=0] - The y-coordinate of the tile. Defaults to 0.
  * @throws Will throw an error if either x or y is negative.
@@ -75,7 +73,6 @@ function createGround(x: number = 0, y: number = 0): GroundTile {
 
 /**
  * Creates a new tower tile.
- * @function
  * @param {number} [x=0] - The x-coordinate of the tile. Defaults to 0.
  * @param {number} [y=0] - The y-coordinate of the tile. Defaults to 0.
  * @throws Will throw an error if either x or y is negative.
@@ -88,7 +85,6 @@ function createTower(x: number = 0, y: number = 0): TowerTile {
 
 /**
  * Determines whether a given tile is a path tile.
- * @function
  * @param {Tile} tile - The tile to check.
  * @returns {boolean} Returns true if the tile is a path tile, false otherwise.
  */
@@ -98,7 +94,6 @@ function isPathTile(tile: Tile): boolean {
 
 /**
  * Attempts to cast a given tile to a path tile.
- * @function
  * @param {Tile} tile - The tile to cast.
  * @returns {PathTile} A path tile element.
  */
@@ -108,7 +103,6 @@ function asPathTile(tile: Tile): PathTile {
 
 /**
  * Determines whether a given path tile is free to move on.
- * @function
  * @param {PathTile} tile - The path tile to check.
  * @returns {boolean} Returns true if the tile is free to move on, false otherwise.
  */
@@ -120,7 +114,6 @@ function isFree(tile: Tile): boolean {
 
 /**
  * Sets the "free" property of a path tile and returns a new path tile object.
- * @function
  * @param {PathTile} tile - The path tile to modify.
  * @param {boolean} free - The new value for the "free" property.
  * @returns {PathTile} A new path tile object with the updated "free" property.
