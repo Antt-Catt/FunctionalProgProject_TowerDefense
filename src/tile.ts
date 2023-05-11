@@ -15,7 +15,7 @@ enum TileType {
 }
 
 /**
- * Object that represents a tile on a game map.
+ * Represents a tile on a game map.
  * @typedef {Object} Tile
  * @property {TileType} type - The type of the tile
  * @property {Point.Point} pos - The position of the tile
