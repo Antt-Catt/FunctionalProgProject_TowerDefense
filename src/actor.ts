@@ -4,49 +4,106 @@ import * as Path from "./path.js";
 
 const startPosition: Point.Point = { x: -1, y: -1 };
 
+/**
+ * An enumeration of the types of actors in the game.
+ * @readonly
+ * @enum {string}
+ * @property {string} Enemy - Represents an enemy actor type.
+ * @property {string} Tower - Represents a tower actor type.
+ */
 enum ActorType {
     Enemy = "enemy",
     Tower = "tower",
 }
 
+/**
+ * An object representing an actor in the game.
+ * @typedef {Object} Actor
+ * @property {ActorType} type - The type of the actor.
+ * @property {Point} position - The position of the actor.
+ * @property {Object<string, Action>} actions - A dictionary of available actions for the actor.
+ */
 type Actor = {
     type: ActorType;
     position: Point.Point;
     actions: Record<string, Action>;
-    // characteristics?: Record<string, string | number>;
 }
 
+/**
+ * Action function type that represent a request from an actor.
+ * @typedef {Function} Action
+ * @param {Enemy|Tower} actor - The actor making the request.
+ * @param {World.World} world - The world in which the actor exists.
+ * @returns {Point.Point} - The resulting Point.Point object.
+ */
 type Action = (actor: Enemy | Tower, world: World.World) => Point.Point;
 
+/**
+ * An Enemy actor type, which is an Actor with additional properties type, path, health, and initialHealth.
+ * @typedef {Object} Enemy
+ * @property {ActorType.Enemy} type - The type of actor, which is always ActorType.Enemy.
+ * @property {Array<Point.Point>} path - The path the Enemy follows in the World.
+ * @property {number} health - The current health of the Enemy.
+ * @property {number} initialHealth - The initial health of the Enemy.
+ */
 type Enemy = Actor & {
     type: ActorType.Enemy;
     path: Array<Point.Point>;
     health: number;
     initialHealth: number;
-    // speed: number;
 }
+
+/**
+ * A Dead actor type, which is an Actor.
+ * @typedef {Object} Dead
+ * @property {Actor} - The type of actor, which is always Actor.
+ */
 type Dead = Actor;
 
+/**
+ * A Tower actor type, which is an Actor with additional properties type, damage, range, and shootable.
+ * @typedef {Object} Tower
+ * @property {ActorType.Tower} type - The type of actor, which is always ActorType.Tower.
+ * @property {number} damage - The damage dealt by the Tower.
+ * @property {number} range - The range of the Tower.
+ * @property {Array<Point.Point>} shootable - The list of points at which the Tower can shoot.
+*/
 type Tower = Actor & {
     type: ActorType.Tower;
     damage: number;
     range: number;
-    // cooldown: number;
     shootable: Array<Point.Point>;
 }
 
-//return new array of actors where the actor in k-position is shifted with newActor in the game.actors array
+/**
+ * Return a new array of Actors where the actor in k-position is shifted with newActor in the game.actors array.
+ * @param {Actor} newActor - The new actor to replace the existing actor.
+ * @param {Array<Actor>} actors - The array of actors to update.
+ * @param {number} k - The index of the actor to replace.
+ * @returns {Array<Actor>} - A new array of actors with the updated actor at the specified index.
+ */
 function newActors(newActor: Actor, actors: Array<Actor>, k: number): Array<Actor> {
     return [...actors.slice(0, k), newActor, ...actors.slice(k + 1)];
 }
 
-//it's in the name of the function xD
+/**
+ * It's in the name of the function xD.
+ * @param {Enemy} enemy - The enemy to reduce health on.
+ * @param {number} damage - The amount of health to remove from the enemy.
+ * @returns {Enemy} - A new Enemy object with the updated health.
+ */
 function removeHealth(enemy: Enemy, damage: number): Enemy {
     const newHealth: number = enemy.health - damage;
     return {...enemy, health: newHealth};
 }
 
-//return the actor in postion pos in array actors
+/**
+ * Returns the Actor in postion pos in array actors.
+ * @param {Array<Actor>} actors - The array of actors to search for a matching position.
+ * @param {Point.Point} pos - The position to match against each actor's position.
+ * @param {number} k - The current index of the first actor in the original array.
+ * @returns {number} - The index of the first actor whose position matches the specified point, or -1 if no match is found.
+ */
 function getIdx(actors: Array<Actor>, pos: Point.Point, k: number): number{
     if (Point.isEqual(actors[0].position, pos)) {
         return k;
@@ -58,6 +115,12 @@ function getIdx(actors: Array<Actor>, pos: Point.Point, k: number): number{
 
 const askForMove: Action = (actor: Enemy): Point.Point => { return actor.path[0]; };
 
+/**
+ * Initializes an array of tower actors based on a given set of tower positions.
+ * @function initTowers
+ * @param {Array<Point.Point>} towers - An array of tower positions.
+ * @returns {Array<Actor>} - An array of initialized tower actors.
+ */
 function init(size: number): Array<Actor> {
 
     function initTowers(towers: Array<Point.Point>): Array<Actor> {
@@ -133,11 +196,24 @@ function getActorType(actor: Actor): Enemy | Tower {
     return actor as Tower;
 }
 
+/**
+ * Calculates the Manhattan distance between two points and returns whether it is less than or equal to a given range.
+ * @param {number} r - The range to check against.
+ * @param {Point.Point} A - The first point to calculate the distance between.
+ * @param {Point.Point} B - The second point to calculate the distance between.
+ * @returns {boolean} - Whether the distance is less than or equal to the given range.
+ */
 function distance_manhattan(r: number, A: Point.Point, B: Point.Point): boolean {
     return (Math.abs(B.x - A.x) + Math.abs(B.y - A.y) <= r);
 }
 
-// doit etre appelee dans le main pour generer le champs shootable des tours
+/**
+ * Recursive function to calculate the reachable points for a given position and range, must be called in the main to generate the towers shootable fields.
+ * @param {Array<Point.Point>} path - The path to search for reachable points.
+ * @param {Point.Point} p - The position to search from.
+ * @param {number} r - The range of the position.
+ * @returns {Array<Point.Point>} - An array of reachable points.
+ */
 function reachable(path: Array<Point.Point>, p: Point.Point, r: number): Array<Point.Point> {
     const perimeter: Array<Point.Point> = [];
     function reachableRec(chemin: Array<Point.Point>, peri: Array<Point.Point>, p: Point.Point, r: number): Array<Point.Point> {
@@ -154,7 +230,12 @@ function reachable(path: Array<Point.Point>, p: Point.Point, r: number): Array<P
     return reachableRec(path, perimeter, p, r);
 }
 
-
+/**
+ * Finds the first occupied point in an array of points and returns it, if all points are free, the starting position is returned.
+ * @param {Array<Point.Point>} reach - An array of points to check for occupation.
+ * @param {World.World} world - The game world to check against for occupation.
+ * @returns {Point.Point} - The first occupied point in the array or the starting position if all points are free.
+ */
 function isthereanybody(reach: Array<Point.Point>, world: World.World): Point.Point {
     if (reach.length === 0)
         return startPosition;
