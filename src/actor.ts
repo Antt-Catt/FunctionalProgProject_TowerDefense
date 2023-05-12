@@ -167,26 +167,6 @@ const tiiir: Action = (actor: Tower, world: World.World): Point.Point => {
     return isthereanybody(actor.shootable, world);
 };
 
-
-// function kill(tile: Point.Point, world: World.World): boolean {
-//     if (world.points[tile.y][tile.x].toString() === "*")
-//         return true;
-//     return false;
-// }
-
-// function TowerAttack(actor: Actor, world: World.World): Point.Point {
-//     const tower = actor as Tower;
-//     function recAttack(tab: Array<Point.Point>, world: World.World): Point.Point {
-//         const k: Array<Point.Point> = tab.slice(-1);
-//         if (tab.length === 0)
-//             return { x: -1, y: -1 };
-//         if (kill(k[0], world))
-//             return k[0];
-//         return recAttack(tab, world);
-//     }
-//     return recAttack(tower.shootable, world);
-// }
-
 export {
     startPosition,
     ActorType,

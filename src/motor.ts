@@ -3,16 +3,13 @@ import { Point, Game, Actor} from "./phase.js";
 import * as Display from "./display.js";
 
 function loop(gameState: Game.GameState): Game.GameState {
-    if (gameState.end || gameState.round >= maxRound) {
+    if (gameState.end || gameState.round >= maxRound)
         return gameState;
-    }
-    console.log(`[-] Turn ${gameState.round}.`);
     const newGame: Game.GameState = phases.reduce((game: Game.GameState, aPhase: Phase.Phase) => {
         const proposals: Array<Point.Point> = game.actors.map((anActor) => {
             const actor: Actor.Enemy | Actor.Tower = Actor.getActorType(anActor);
             if (aPhase.name in actor.actions) {
-                const funcName = aPhase.name;
-                return actor.actions[funcName](actor, game.world);
+                return actor.actions[aPhase.name](actor, game.world);
             }
             return Actor.startPosition;
         });
