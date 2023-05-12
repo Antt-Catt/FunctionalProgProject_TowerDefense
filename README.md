@@ -38,7 +38,7 @@ git clone https://<user>@thor.enseirb-matmeca.fr/git/projetss6-tower-19042
 cd projetss6-tower-19042
 ```
 
-De plus, un certain nombre de packages sont indispensables au fonctionnement du jeu, ils peuvent être téléchargés en exécutant ligne suivante dans le répertoire du projet.
+De plus, un certain nombre de packages sont indispensables au fonctionnement du jeu, ils peuvent être téléchargés en exécutant la ligne suivante dans le répertoire du projet.
 ```sh
 npm install
 npm install --save-dev parcel
@@ -49,12 +49,12 @@ npm install --save-dev parcel
 
 ### Execution
 
-Pour executer notre jeu il vous faut d'abord créer les fichiers adequat à l'aide de :
+Pour executer le jeu, il faut d'abord créer les fichiers adequat à l'aide de :
 ```sh
 make all
 ```
 
-Le jeu peux ensuite être lancé sur la sortie standard (run) ou sur une page web dynamique (parcel) :
+Le jeu peux ensuite être lancé sur la sortie standard (`run`) ou sur une page web dynamique (`parcel`) :
 ```sh
 make run
 make parcel
@@ -73,7 +73,7 @@ Pour les executer il suffit de faire :
 make test
 ```
 
-### Rapport 
+### Rapport
 
 Un rapport LaTeX est disponnible, il peut être compilé dans le fichier `doc/` en utilisant `pdflatex` :
 ```sh

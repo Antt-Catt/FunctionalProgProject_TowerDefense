@@ -18,7 +18,6 @@ const runWithParcel = (typeof window !== 'undefined');
 
 /**
  * Creates a deep copy of an object or array.
- * @function
  * @param {any} obj - The object or array to be copied.
  * @returns {any} - Returns a deep copy of the object or array.
  */
@@ -34,7 +33,6 @@ const deepCopy = (obj: any): any => {
 
 /**
  * Makes a deep copy of a game state.
- * @function
  * @param {GameState.GameState} GameState - Game state to copy.
  * @returns {GameState} - A deep copy of GameState.
  */
