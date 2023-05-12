@@ -6,7 +6,7 @@
 >- [Prérequis](#prérequis)
 >- [Installation](#installation)
 >- [Utilisation](#utilisation)
->    - [Execution](#execution)
+>    - [Exécution](#execution)
 >    - [Tests](#tests)
 >    - [Rapport](#rapport)
 >    - [Nettoyage](#nettoyage)
@@ -17,13 +17,13 @@
 
 ## Description du projet
 Ce projet a pour but de nous initier au développement Javascript et web en créant une copie d'un [jeu de Tower Defense](https://fr.wikipedia.org/wiki/Tower_defense) respectant ce modèle. L'objectif étant d'obtenir un jeu ainsi qu'une page web permettant de projeter le déroulement du jeu.
-Il répond au [sujet Tower Defense](https://www.labri.fr/perso/renault/working/teaching/projets/2022-23-S6-Js-Tower.php) réalisé dans le cadre d'un projet du semestre 6 proposés aux étudiants de l'ENSEIRB-MATMECA.
-Le dépot est disponible sur la [forge de l'école](
+Il répond au [sujet Tower Defense](https://www.labri.fr/perso/renault/working/teaching/projets/2022-23-S6-Js-Tower.php) réalisé dans le cadre d'un projet du semestre 6 proposé aux étudiants de l'ENSEIRB-MATMECA.
+Le dépôt est disponible sur la [forge de l'école](
 https://thor.enseirb-matmeca.fr/ruby/projects/projetss6-tower).
 
 ## Prérequis 
 
-Ce projet necessite l'installation de  `git`, `make`,  ainsi que `npm` pour acceder à différents paquets indispensable pour la partie javascript de notre projet.
+Ce projet nécessite l'installation de  `git`, `make`,  ainsi que `npm` pour accéder à différents paquets indispensable pour la partie javascript de notre projet.
 ```sh
 sudo apt-get install git
 sudo apt-get install make
@@ -49,7 +49,7 @@ npm install --save-dev parcel
 
 ### Execution
 
-Pour executer le jeu, il faut d'abord créer les fichiers adequat à l'aide de :
+Pour exécuter le jeu, il faut d'abord créer les fichiers adéquats à l'aide de :
 ```sh
 make all
 ```
@@ -67,37 +67,37 @@ http://localhost:1234
 
 ### Tests
 
-Des tests sont disponible afin de vérifier le bon fonctionnement de chaque partie du projet.
-Pour les executer il suffit de faire :
+Des tests sont disponibles afin de vérifier le bon fonctionnement de chaque partie du projet.
+Pour les exécuter il suffit de faire :
 ```sh
 make test
 ```
 
 ### Rapport
 
-Un rapport LaTeX est disponnible, il peut être compilé dans le fichier `doc/` en utilisant `pdflatex` :
+Un rapport LaTeX est disponible, il peut être compilé dans le fichier `doc/` en utilisant `pdflatex` :
 ```sh
 cd doc/
 pdflatex report.tex
 ```
 
 ### Nettoyage 
-Les fichiers créés lors de l'execution peuvent être supprimé en utilisant : 
+Les fichiers créés lors de l'exécution peuvent être supprimés en utilisant : 
 ```sh
 make clean
 ```
-Cela supprime tout les fichiers javascript du dossier dist/ ainsi que les coverage et vide le parcelle cache.
+Cela supprime tout les fichiers javascript du dossier dist/ ainsi que les coverages et vide le parcel cache.
 
-## Contact
+## Contacts
 
-- Cattarin Antton : acattarin@enseirb-matmeca.fr
-- [Durand Arthur](https://www.linkedin.com/in/arthur-durand-50384a24b/) : adurand015@enseirb-matmeca.fr
-- [Hamouche Luxel](https://www.linkedin.com/in/luxel-hamouche/) : lhamouche@enseirb-matmeca.fr
-- Robert Joachim : jrobert003@enseirb-matmeca.fr
+- CATTARIN Antton : acattarin@enseirb-matmeca.fr
+- [DURAND Arthur](https://www.linkedin.com/in/arthur-durand-50384a24b/) : adurand015@enseirb-matmeca.fr
+- [HAMOUCHE Luxel](https://www.linkedin.com/in/luxel-hamouche/) : lhamouche@enseirb-matmeca.fr
+- ROBERT Joachim : jrobert003@enseirb-matmeca.fr
 
 ## Remerciements
 
-Encadrant lors des séances de projet : M. TA
+Encadrant lors des séances de projet : M. Ta
 
 Charger de projet : M. Renault
 
