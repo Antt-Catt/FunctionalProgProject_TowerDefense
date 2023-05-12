@@ -3,3 +3,7 @@ dist/*
 node_modules/*
 *.log
 package-lock.json
+doc/*.out
+doc/*.aux
+doc/*.log
+doc/*.toc

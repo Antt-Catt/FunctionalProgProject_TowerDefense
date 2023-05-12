@@ -16,4 +16,4 @@ parcel:
 	npx parcel html/game.html
 
 clean:
-	rm -rf *~ coverage .parcel-cache dist/*
+	rm -rf *~ coverage .parcel-cache dist/* doc/*.aux doc/*.toc doc/*.log doc/*.out doc/report.pdf
