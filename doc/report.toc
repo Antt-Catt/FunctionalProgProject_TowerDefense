@@ -1,0 +1,7 @@
+\select@language {french}
+\contentsline {chapter}{\numberline {1}Le plateau et son impl\IeC {\'e}mentation}{2}{chapter.1}
+\contentsline {section}{\numberline {1.1}Repr\IeC {\'e}sentation du monde}{2}{section.1.1}
+\contentsline {section}{\numberline {1.2}Biblioth\IeC {\`e}que GSL}{3}{section.1.2}
+\contentsline {chapter}{\numberline {2}Conclusion}{5}{chapter.2}
+\contentsline {section}{\numberline {2.1}Difficult\IeC {\'e}s rencontr\IeC {\'e}es}{5}{section.2.1}
+\contentsline {section}{\numberline {2.2}Bilan du projet}{5}{section.2.2}
